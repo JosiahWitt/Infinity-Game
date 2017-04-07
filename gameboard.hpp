@@ -1,5 +1,5 @@
-#ifndef game_board_hpp
-#define game_board_hpp
+#ifndef gameboard_hpp
+#define gameboard_hpp
 
 #include "block.hpp"
 
