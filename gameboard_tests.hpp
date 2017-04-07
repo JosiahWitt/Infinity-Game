@@ -18,4 +18,11 @@ void gameboardTests_run();
 */
 bool gameboardTests_constructors();
 
+/**
+* Requires: nothing
+* Modifies: nothing
+* Effects: Test getGamePixelWidth() and getGamePixelHight()
+*/
+bool gameboardTests_getGamePixelWidthAndHeight();
+
 #endif
