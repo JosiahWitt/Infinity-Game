@@ -1,5 +1,8 @@
 #include <iostream>
 #include <string>
+
+#include "game-board.hpp"
+
 using namespace std;
 
 /**
