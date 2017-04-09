@@ -14,8 +14,8 @@ void wallTests_run();
 /**
 * Requires: nothing
 * Modifies: nothing
-* Effects: Tests constructors
+* Effects: Tests canMoveOnTop() and getBlockType()
 */
-bool wallTests_constructors();
+bool wallTests_constants();
 
 #endif

@@ -8,7 +8,7 @@ void floorTests_run() {
   Testing t;
 
   // Run all tests
-  //   t.assert(floorTests_constructors());
+  t.assert(floorTests_constants());
 
   // Display pass or fail result
   if (t.getResult()) {
@@ -22,13 +22,15 @@ void floorTests_run() {
 
 // *** Tests ***
 
-// Test constructors
-bool floorTests_constructors() {
+// Test canMoveOnTop() and getBlockType()
+bool floorTests_constants() {
   // Start new testing object
-  Testing t("constructors");
+  Testing t("canMoveOnTop() and getBlockType()");
 
-  // Create an object and assert its default constructor worked
-  // t.assert(boolean statement, "Helpful debugging string");
+  // Create an object and assert its constants are correct
+  Floor f;
+  t.assert(f.canMoveOnTop() == true, "Cannot move on top of floor");
+  t.assert(f.getBlockType() == FloorBlock, "Floor is not a FloorBlock");
 
   return t.getResult(); // Return pass or fail result
 }

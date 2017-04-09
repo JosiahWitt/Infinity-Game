@@ -8,7 +8,7 @@ void playerTests_run() {
   Testing t;
 
   // Run all tests
-  //   t.assert(playerTests_constructors());
+  t.assert(playerTests_constants());
 
   // Display pass or fail result
   if (t.getResult()) {
@@ -22,13 +22,15 @@ void playerTests_run() {
 
 // *** Tests ***
 
-// Test constructors
-bool playerTests_constructors() {
+// Test canMoveOnTop() and getBlockType()
+bool playerTests_constants() {
   // Start new testing object
-  Testing t("constructors");
+  Testing t("canMoveOnTop() and getBlockType()");
 
-  // Create an object and assert its default constructor worked
-  // t.assert(boolean statement, "Helpful debugging string");
+  // Create an object and assert its constants are correct
+  Player p;
+  t.assert(p.canMoveOnTop() == false, "Can move on top of player");
+  t.assert(p.getBlockType() == PlayerBlock, "Player is not a PlayerBlock");
 
   return t.getResult(); // Return pass or fail result
 }

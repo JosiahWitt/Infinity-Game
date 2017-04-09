@@ -14,8 +14,8 @@ void floorTests_run();
 /**
 * Requires: nothing
 * Modifies: nothing
-* Effects: Tests constructors
+* Effects: Tests canMoveOnTop() and getBlockType()
 */
-bool floorTests_constructors();
+bool floorTests_constants();
 
 #endif

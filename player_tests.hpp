@@ -14,8 +14,8 @@ void playerTests_run();
 /**
 * Requires: nothing
 * Modifies: nothing
-* Effects: Tests constructors
+* Effects: Tests canMoveOnTop() and getBlockType()
 */
-bool playerTests_constructors();
+bool playerTests_constants();
 
 #endif
