@@ -18,4 +18,11 @@ void blockTests_run();
 */
 bool blockTests_constructors();
 
+/**
+* Requires: nothing
+* Modifies: nothing
+* Effects: Tests setColor
+*/
+bool blockTests_setColor();
+
 #endif
