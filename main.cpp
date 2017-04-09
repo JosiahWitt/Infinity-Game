@@ -26,10 +26,54 @@ int main(int argc, char const *argv[]) {
     // Run GUI
     runGUI();
   } else {
-    // TODO: Get users input to launch tests or gui
-    cout << "Please use a command line argument. To run tests use 'test'. To "
-            "launch the game use 'gui'."
-         << endl;
+    // Present the user with the options
+    cout << "Would you like to: " << endl
+         << " 1) Launch the game" << endl
+         << " 2) Run tests" << endl
+         << "Please enter your choice: ";
+
+    // Get the user's choice
+    int option;
+    while (!(cin >> option) || !(option == 1 || option == 2 || option == 42)) {
+      // Not in a good stream state, so clear the stream
+      cin.clear();
+
+      // Get rid of the bad input
+      string junk;
+      getline(cin, junk);
+
+      // Ask the user to try again
+      cout
+          << "I'm sorry, I couldn't understand that option, please try again: ";
+    }
+
+    // Take the specified action
+    switch (option) {
+    case 1:
+      // Launch the game
+      cout << endl;
+      runGUI();
+      break;
+    case 2:
+      // Run tests
+      cout << endl;
+      runTests();
+      break;
+    case 42:
+      // Bonus mode
+      cout << endl;
+      cout << "You found the bonus mode! Unlocking Infinity..." << endl;
+      cout << "Actually, it doesn't do anything special at the moment, except "
+              "run both the tests and the game."
+           << endl;
+      cout << "I'm sorry for getting your hopes up... unless, of course, "
+              "that's what you were looking for! :)"
+           << endl
+           << endl;
+      runTests();
+      cout << endl;
+      runGUI();
+    }
   }
 
   return 0;
