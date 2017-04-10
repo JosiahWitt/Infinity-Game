@@ -40,3 +40,24 @@ void Block::setColor(Color c) {
 void Block::draw(int pixelX, int pixelY, int width, int height) const {
   // TODO: Implement drawing
 }
+
+/**
+* Requires: nothing
+* Modifies: nothing
+* Effects: Convert the block to json
+*/
+json Block::toJson() const {
+  return {{"color", color.toJson()}, {"type", getBlockType()}};
+}
+
+/**
+* Requires: nothing
+* Modifies: nothing
+* Effects: Convert json to the block
+*/
+void Block::fromJson(json j) {
+  // Import the color
+  setColor({j.at("color").at("r").get<double>(),
+            j.at("color").at("g").get<double>(),
+            j.at("color").at("b").get<double>()});
+}

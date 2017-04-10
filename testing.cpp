@@ -49,8 +49,8 @@ Testing::~Testing() {
 * Modifies: nothing
 * Effects: Checks if test is true, if not prints failed message
 */
-void Testing::assert(bool test, string message) {
-  assert(test);
+void Testing::check(bool test, string message) {
+  check(test);
   if (!test) {
     cout << "   * Test Case Failed: " << message << endl;
   }
@@ -61,7 +61,7 @@ void Testing::assert(bool test, string message) {
 * Modifies: nothing
 * Effects: Checks if test is true
 */
-void Testing::assert(bool test) {
+void Testing::check(bool test) {
   // Check if the test passed
   numTested++;
   if (!test) {

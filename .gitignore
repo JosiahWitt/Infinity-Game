@@ -3,3 +3,5 @@ main
 GPATH
 GRTAGS
 GTAGS
+*.infinity.json
+*.old

@@ -8,7 +8,7 @@ void wallTests_run() {
   Testing t;
 
   // Run all tests
-  t.assert(wallTests_constants());
+  t.check(wallTests_constants());
 
   // Display pass or fail result
   if (t.getResult()) {
@@ -27,10 +27,10 @@ bool wallTests_constants() {
   // Start new testing object
   Testing t("canMoveOnTop() and getBlockType()");
 
-  // Create an object and assert its constants are correct
+  // Create an object and check its constants are correct
   Wall w;
-  t.assert(w.canMoveOnTop() == false, "Can move on top of wall");
-  t.assert(w.getBlockType() == WallBlock, "Wall is not a WallBlock");
+  t.check(w.canMoveOnTop() == false, "Can move on top of wall");
+  t.check(w.getBlockType() == WallBlock, "Wall is not a WallBlock");
 
   return t.getResult(); // Return pass or fail result
 }

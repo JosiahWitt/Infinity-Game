@@ -25,4 +25,11 @@ bool blockTests_constructors();
 */
 bool blockTests_setColor();
 
+/**
+* Requires: nothing
+* Modifies: nothing
+* Effects: Tests toJson and fromJson
+*/
+bool blockTests_toJsonAndFromJson();
+
 #endif

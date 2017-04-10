@@ -1,17 +1,22 @@
 #ifndef block_hpp
 #define block_hpp
 
+#include "lib/json.hpp"
 #include <string>
 
 using namespace std;
+using namespace nlohmann;
 
 // RGB color values for each block
 struct Color {
   double r, g, b;
+
+  // Convert the color to json
+  json toJson() const { return {{"r", r}, {"g", g}, {"b", b}}; }
 };
 
 // Type of the block
-enum BlockType { PlayerBlock, FloorBlock, WallBlock };
+enum BlockType { PlayerBlock = 1, FloorBlock = 2, WallBlock = 3 };
 
 class Block {
 public:
@@ -62,6 +67,20 @@ public:
   * Effects: Returns the type of block
   */
   virtual BlockType getBlockType() const = 0;
+
+  /**
+  * Requires: nothing
+  * Modifies: nothing
+  * Effects: Convert the block to json
+  */
+  virtual json toJson() const;
+
+  /**
+  * Requires: nothing
+  * Modifies: nothing
+  * Effects: Convert json to the block
+  */
+  virtual void fromJson(json j);
 
 protected:
   // The color of the block

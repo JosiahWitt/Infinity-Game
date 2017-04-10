@@ -1,4 +1,8 @@
 #include "gameboard.hpp"
+#include <fstream>
+#include <iostream>
+#include <regex>
+#include <typeinfo>
 
 /**
 * Requires: nothing
@@ -40,6 +44,9 @@ GameBoard::GameBoard(int nBlocksWide, int nBlocksHigh, int blockW, int blockH) {
   } else {
     blockHeight = blockH;
   }
+
+  // Initialize the seed to 0
+  seed = 0;
 }
 
 /**
@@ -59,3 +66,134 @@ int GameBoard::getBlockHeight() const { return blockHeight; }
 */
 int GameBoard::getGamePixelWidth() const { return blockWidth * numBlocksWide; }
 int GameBoard::getGamePixelHight() const { return blockHeight * numBlocksHigh; }
+
+/**
+* Requires: a valid path to save the file to
+* Modifies: nothing
+* Effects: saves the game to a file
+*/
+void GameBoard::saveGame(string filename) {
+  // If filename is empty, use default filename
+  if (filename.empty()) {
+    filename = "game.infinity.json";
+  }
+
+  // Open session file
+  ofstream gameFile(filename);
+  if (gameFile) {
+    // Create new json object
+    json gameJson;
+
+    // Add the game dimensions
+    gameJson["numBlocksWide"] = numBlocksWide;
+    gameJson["numBlocksHigh"] = numBlocksHigh;
+    gameJson["blockWidth"] = blockWidth;
+    gameJson["blockHeight"] = blockHeight;
+
+    // Add the seed
+    gameJson["seed"] = seed;
+
+    // Add the player
+    gameJson["player"] = player.toJson();
+
+    // Add the changes
+    for (map<int, map<int, unique_ptr<Block>>>::iterator i = changes.begin();
+         i != changes.end(); i++) {
+      for (map<int, unique_ptr<Block>>::iterator j = (i->second).begin();
+           j != (i->second).end(); j++) {
+        json object = (j->second)->toJson();
+        object["row"] = i->first;
+        object["column"] = j->first;
+        gameJson["changes"].push_back(object);
+      }
+    }
+
+    // Save to the file in pretty print
+    gameFile << setw(4) << gameJson << endl;
+  }
+
+  // Close file
+  gameFile.close();
+}
+
+/**
+* Requires: a valid path to an existing game file
+* Modifies: all GameBoard fields
+* Effects: loads the game from a file
+*/
+void GameBoard::loadGame(string filename) {
+  // If filename is empty, use default filename
+  if (filename.empty()) {
+    filename = "game.infinity.json";
+  }
+
+  // Open game file
+  ifstream gameFile(filename);
+  if (gameFile) {
+    // Create new json object
+    json gameJson;
+
+    // Try converting file to json object
+    try {
+      gameFile >> gameJson;
+    } catch (exception e) {
+      cout << "Error converting file to json..." << endl;
+    }
+
+    // Load game dimensions
+    try {
+      numBlocksWide = gameJson.at("numBlocksWide").get<int>();
+      numBlocksHigh = gameJson.at("numBlocksHigh").get<int>();
+      blockWidth = gameJson.at("blockWidth").get<int>();
+      blockHeight = gameJson.at("blockHeight").get<int>();
+    } catch (exception e) {
+      cout << "Syntax invalid for save file... Error loading game dimensions..."
+           << endl;
+    }
+
+    // Load game seed
+    try {
+      seed = gameJson.at("seed").get<int>();
+    } catch (exception e) {
+      cout << "Syntax invalid for save file... Error loading seed..." << endl;
+    }
+
+    // Load player
+    try {
+      player.fromJson(gameJson.at("player"));
+    } catch (exception e) {
+      cout << "Syntax invalid for save file... Error loading player..." << endl;
+    }
+
+    // TODO: Generate board
+
+    // Load changed blocks
+    try {
+      for (json::iterator i = gameJson["changes"].begin();
+           i != gameJson["changes"].end(); i++) {
+        switch (i->at("type").get<int>()) {
+        case WallBlock:
+          changes[i->at("row").get<int>()][i->at("column").get<int>()] =
+              make_unique<Wall>();
+          break;
+        case FloorBlock:
+          changes[i->at("row").get<int>()][i->at("column").get<int>()] =
+              make_unique<Floor>();
+          break;
+        }
+        changes[i->at("row").get<int>()][i->at("column").get<int>()]->fromJson(
+            *i);
+
+        // TODO: Import changes on to board
+      }
+    } catch (exception e) {
+      cout << "Syntax invalid for save file... Error loading changed blocks..."
+           << endl;
+    }
+  } else {
+    cout << "Couldn't find file... game not loaded..." << endl;
+  }
+
+  // Close file
+  gameFile.close();
+}

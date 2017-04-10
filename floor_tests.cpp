@@ -8,7 +8,7 @@ void floorTests_run() {
   Testing t;
 
   // Run all tests
-  t.assert(floorTests_constants());
+  t.check(floorTests_constants());
 
   // Display pass or fail result
   if (t.getResult()) {
@@ -27,10 +27,10 @@ bool floorTests_constants() {
   // Start new testing object
   Testing t("canMoveOnTop() and getBlockType()");
 
-  // Create an object and assert its constants are correct
+  // Create an object and check its constants are correct
   Floor f;
-  t.assert(f.canMoveOnTop() == true, "Cannot move on top of floor");
-  t.assert(f.getBlockType() == FloorBlock, "Floor is not a FloorBlock");
+  t.check(f.canMoveOnTop() == true, "Cannot move on top of floor");
+  t.check(f.getBlockType() == FloorBlock, "Floor is not a FloorBlock");
 
   return t.getResult(); // Return pass or fail result
 }

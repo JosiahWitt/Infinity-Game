@@ -33,14 +33,14 @@ public:
   * Modifies: nothing
   * Effects: Checks if test is true, if not prints failed message
   */
-  void assert(bool test, string message);
+  void check(bool test, string message);
 
   /**
   * Requires: boolean test
   * Modifies: nothing
   * Effects: Checks if test is true
   */
-  void assert(bool test);
+  void check(bool test);
 
   /**
   * Requires: nothing

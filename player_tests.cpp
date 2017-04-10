@@ -8,7 +8,7 @@ void playerTests_run() {
   Testing t;
 
   // Run all tests
-  t.assert(playerTests_constants());
+  t.check(playerTests_constants());
 
   // Display pass or fail result
   if (t.getResult()) {
@@ -27,10 +27,10 @@ bool playerTests_constants() {
   // Start new testing object
   Testing t("canMoveOnTop() and getBlockType()");
 
-  // Create an object and assert its constants are correct
+  // Create an object and check its constants are correct
   Player p;
-  t.assert(p.canMoveOnTop() == false, "Can move on top of player");
-  t.assert(p.getBlockType() == PlayerBlock, "Player is not a PlayerBlock");
+  t.check(p.canMoveOnTop() == false, "Can move on top of player");
+  t.check(p.getBlockType() == PlayerBlock, "Player is not a PlayerBlock");
 
   return t.getResult(); // Return pass or fail result
 }

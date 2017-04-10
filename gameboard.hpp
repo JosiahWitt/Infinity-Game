@@ -2,7 +2,9 @@
 #define gameboard_hpp
 
 #include "block.hpp"
+#include "floor.hpp"
 #include "player.hpp"
+#include "wall.hpp"
 #include <map>
 #include <memory>
 #include <random>
@@ -49,14 +51,14 @@ public:
   * Modifies: nothing
   * Effects: saves the game to a file
   */
-  void saveGame(string filename);
+  void saveGame(string filename = "");
 
   /**
   * Requires: a valid path to an existing game file
   * Modifies: all GameBoard fields
   * Effects: loads the game from a file
   */
-  void loadGame(string filename);
+  void loadGame(string filename = "");
 
   /**
   * Requires: nothing
@@ -95,8 +97,8 @@ private:
   vector<vector<unique_ptr<Block>>> board;
 
   // Store a map of changes to the default blocks
-  //  Note: 'n:m' maps to the element at board[n][m]
-  map<string, unique_ptr<Block>> changes;
+  //  Note: changes[n][m] maps to the element at board[n][m]
+  map<int, map<int, unique_ptr<Block>>> changes;
 
   // Store the player object
   Player player;
