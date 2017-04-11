@@ -7,7 +7,7 @@ public:
   BasicBlock() : Block() {}
   BasicBlock(Color c) : Block(c) {}
   // These methods will not be tested here, but in the actual children of Block
-  virtual bool canMoveOnTop() const { false; }
+  virtual bool canMoveOnTop() const { return false; }
   virtual BlockType getBlockType() const { return PlayerBlock; }
 };
 
