@@ -93,6 +93,9 @@ private:
   // Store the seed used to generate the board
   int seed;
 
+  // Store the random object
+  mt19937 rand;
+
   // Store the 2D vector of pointers to the blocks on the board
   vector<vector<unique_ptr<Block>>> board;
 

@@ -158,6 +158,9 @@ void GameBoard::loadGame(string filename) {
       cout << "Syntax invalid for save file... Error loading seed..." << endl;
     }
 
+    // Create random object using the seed
+    rand.seed(seed);
+
     // Load player
     try {
       player.fromJson(gameJson.at("player"));
@@ -169,20 +172,20 @@ void GameBoard::loadGame(string filename) {
 
     // Load changed blocks
     try {
-      for (json::iterator i = gameJson["changes"].begin();
-           i != gameJson["changes"].end(); i++) {
-        switch (i->at("type").get<int>()) {
+      for (json::iterator change = gameJson["changes"].begin();
+           change != gameJson["changes"].end(); change++) {
+        switch (change->at("type").get<int>()) {
         case WallBlock:
-          changes[i->at("row").get<int>()][i->at("column").get<int>()] =
-              make_unique<Wall>();
+          changes[change->at("row").get<int>()]
+                 [change->at("column").get<int>()] = make_unique<Wall>();
           break;
         case FloorBlock:
-          changes[i->at("row").get<int>()][i->at("column").get<int>()] =
-              make_unique<Floor>();
+          changes[change->at("row").get<int>()]
+                 [change->at("column").get<int>()] = make_unique<Floor>();
           break;
         }
-        changes[i->at("row").get<int>()][i->at("column").get<int>()]->fromJson(
-            *i);
+        changes[change->at("row").get<int>()][change->at("column").get<int>()]
+            ->fromJson(*change);
 
         // TODO: Import changes on to board
       }
