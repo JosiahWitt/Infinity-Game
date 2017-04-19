@@ -45,8 +45,11 @@ GameBoard::GameBoard(int nBlocksWide, int nBlocksHigh, int blockW, int blockH) {
     blockHeight = blockH;
   }
 
-  // Initialize the seed to 0
-  seed = 0;
+  // Initialize the seed to 42
+  seed = 42;
+
+  // Initialize the percent wall
+  percentWall = 0.3;
 }
 
 /**
@@ -93,17 +96,20 @@ void GameBoard::saveGame(string filename) {
     // Add the seed
     gameJson["seed"] = seed;
 
+    // Add the percentages
+    gameJson["percentWall"] = percentWall;
+
     // Add the player
     gameJson["player"] = player.toJson();
 
     // Add the changes
-    for (map<int, map<int, unique_ptr<Block>>>::iterator i = changes.begin();
+    for (map<int, map<int, shared_ptr<Block>>>::iterator i = changes.begin();
          i != changes.end(); i++) {
-      for (map<int, unique_ptr<Block>>::iterator j = (i->second).begin();
+      for (map<int, shared_ptr<Block>>::iterator j = (i->second).begin();
            j != (i->second).end(); j++) {
         json object = (j->second)->toJson();
-        object["row"] = i->first;
-        object["column"] = j->first;
+        object["column"] = i->first;
+        object["row"] = j->first;
         gameJson["changes"].push_back(object);
       }
     }
@@ -161,6 +167,14 @@ void GameBoard::loadGame(string filename) {
     // Create random object using the seed
     rand.seed(seed);
 
+    // Load board percentages
+    try {
+      percentWall = gameJson.at("percentWall").get<double>();
+    } catch (exception e) {
+      cout << "Syntax invalid for save file... Error loading percentages..."
+           << endl;
+    }
+
     // Load player
     try {
       player.fromJson(gameJson.at("player"));
@@ -168,27 +182,28 @@ void GameBoard::loadGame(string filename) {
       cout << "Syntax invalid for save file... Error loading player..." << endl;
     }
 
-    // TODO: Generate board
-
     // Load changed blocks
     try {
       for (json::iterator change = gameJson["changes"].begin();
            change != gameJson["changes"].end(); change++) {
+        // Create the type of block
         switch (change->at("type").get<int>()) {
         case WallBlock:
-          changes[change->at("row").get<int>()]
-                 [change->at("column").get<int>()] = make_unique<Wall>();
+          changes[change->at("column").get<int>()]
+                 [change->at("row").get<int>()] = make_shared<Wall>();
           break;
         case FloorBlock:
-          changes[change->at("row").get<int>()]
-                 [change->at("column").get<int>()] = make_unique<Floor>();
+          changes[change->at("column").get<int>()]
+                 [change->at("row").get<int>()] = make_shared<Floor>();
           break;
         }
-        changes[change->at("row").get<int>()][change->at("column").get<int>()]
+        // Load the data into the block
+        changes[change->at("column").get<int>()][change->at("row").get<int>()]
             ->fromJson(*change);
-
-        // TODO: Import changes on to board
       }
+
+      // Generate the board
+      generateBoard();
     } catch (exception e) {
       cout << "Syntax invalid for save file... Error loading changed blocks..."
            << endl;
@@ -199,4 +214,55 @@ void GameBoard::loadGame(string filename) {
 
   // Close file
   gameFile.close();
+}
+
+/**
+* Requires: nothing
+* Modifies: nothing
+* Effects: Displays the board to the console
+*/
+void GameBoard::display() const {
+  // Loop through the board to print it out
+  for (int row = 0; row < numBlocksHigh; row++) {
+    for (int column = 0; column < numBlocksWide; column++) {
+      if (board[column][row]->getBlockType() == WallBlock) {
+        cout << "W "; // Wall is W
+      } else if (board[column][row]->getBlockType() == FloorBlock) {
+        cout << "F "; // Floor is F
+      } else {
+        cout << board[column][row]->getBlockType() << " ";
+      }
+    }
+    cout << endl;
+  }
+}
+
+/**
+* Requires: nothing
+* Modifies: board
+* Effects: generates the board based on the seed
+*/
+void GameBoard::generateBoard() {
+  // Generate a new distribution engine
+  uniform_real_distribution<> dist;
+
+  for (int column = 0; column < numBlocksWide; column++) {
+    // Create a new column
+    board.push_back(vector<shared_ptr<Block>>());
+    for (int row = 0; row < numBlocksHigh; row++) {
+      // If there is an existing block for here in the changes map, use it
+      if (changes.find(column) != changes.end() &&
+          changes[column].find(row) != changes[column].end()) {
+        board[column].push_back(changes[column][row]); // Add to the board
+        dist(rand); // Eat the random value for this location
+      } else {
+        // Randomly create a new block for the board
+        if (dist(rand) < percentWall) {
+          board[column].push_back(make_shared<Wall>());
+        } else {
+          board[column].push_back(make_shared<Floor>());
+        }
+      }
+    }
+  }
 }

@@ -81,6 +81,13 @@ public:
   */
   void moveWall(int fromX, int fromY, int toX, int toY);
 
+  /**
+  * Requires: nothing
+  * Modifies: nothing
+  * Effects: Displays the board to the console
+  */
+  void display() const;
+
 private:
   // Number of blocks to render for the height and for the width -- set at
   // object construction
@@ -96,12 +103,15 @@ private:
   // Store the random object
   mt19937 rand;
 
+  // Store the percent (in decimal) for the amount of random wall
+  double percentWall;
+
   // Store the 2D vector of pointers to the blocks on the board
-  vector<vector<unique_ptr<Block>>> board;
+  vector<vector<shared_ptr<Block>>> board;
 
   // Store a map of changes to the default blocks
   //  Note: changes[n][m] maps to the element at board[n][m]
-  map<int, map<int, unique_ptr<Block>>> changes;
+  map<int, map<int, shared_ptr<Block>>> changes;
 
   // Store the player object
   Player player;

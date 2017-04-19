@@ -120,4 +120,6 @@ void runTests() {
 * Modifies: nothing
 * Effects: Launches the game
 */
-void runGUI() { cout << "Launching Infinity..." << endl; }
+void runGUI() {
+  cout << "This will launch Infinity when we add the graphics..." << endl;
+}
