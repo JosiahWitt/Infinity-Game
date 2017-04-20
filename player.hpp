@@ -18,8 +18,12 @@ public:
   * Effects: Returns the type of block
   */
   virtual BlockType getBlockType() const override;
-
+    
+    Color getAlternateColor();
+    void setAlternateColor(Color c);
+    void swapColor();
 private:
+    Color alternateColor;
 };
 
 #endif
