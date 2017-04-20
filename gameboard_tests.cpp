@@ -10,6 +10,7 @@ void gameboardTests_run() {
   // Run all tests
   t.check(gameboardTests_constructors());
   t.check(gameboardTests_getGamePixelWidthAndHeight());
+  t.check(gameboardTests_SaveandLoad());
 
   // Display pass or fail result
   if (t.getResult()) {
@@ -73,16 +74,16 @@ bool gameboardTests_SaveandLoad() {
 	// Start new testing object
 	Testing t("saveGame() and loadGame()");
 
-	// Create an object and check the
+	// Create an object, save it, create a new object load it, and make sure the values are loaded correctly
 	GameBoard g1(1,2,3,4);
 	g1.saveGame();
 	
 	GameBoard g2;
 	g2.loadGame();
 
-	t.check(g1.getBlockHeight() == g2.getBlockHeight() && g1.getBlockWidth() == g2.getBlockWidth && 
+	t.check(g1.getBlockHeight() == g2.getBlockHeight() && g1.getBlockWidth() == g2.getBlockWidth() && 
 	g1.getNumBlocksHigh() == g2.getNumBlocksHigh() && g1.getNumBlocksWide() == g2.getNumBlocksWide(),
-	"saveGame() and loadGame() works");
+	"saveGame() and loadGame() doesn't work");
 	// Jose working here
 
 	
