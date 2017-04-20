@@ -38,7 +38,7 @@ void Block::setColor(Color c) {
 * Effects: Draws the block to the screen at the specified location
 */
 void Block::draw(int pixelX, int pixelY, int width, int height) const {
-  // TODO: Implement drawing
+  // TODO: Implement drawing when we use graphics
 }
 
 /**

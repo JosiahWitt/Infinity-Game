@@ -220,6 +220,36 @@ void GameBoard::loadGame(string filename) {
 }
 
 /**
+* Requires: a GameDirection
+* Modifies: player
+* Effects: moves the player in the direction specified
+*/
+void GameBoard::movePlayer(GameDirection direction){
+  if(direction == DIR_LEFT && player.getX() < numBlocksWide && board[player.getX()+1][player.getY()]->canMoveOnTop()){
+    // We can move to the left
+    player.setX(player.getX() + 1);
+  }else if(direction == DIR_RIGHT && player.getX() > 0 && board[player.getX()-1][player.getY()]->canMoveOnTop()){
+    // We can move to the right
+    player.setX(player.getX() - 1);
+  }else if(direction == DIR_UP && player.getY() > 0 && board[player.getX()][player.getY()-1]->canMoveOnTop()){
+    // We can move up
+    player.setX(player.getX() + 1);
+  }else if(direction == DIR_DOWN && player.getY() < numBlocksHigh && board[player.getX()][player.getY()+1]->canMoveOnTop()){
+    // We can move down
+    player.setX(player.getX() + 1);
+  }
+}
+
+/**
+* Requires: an integer position x and an integer position y
+* Modifies: board
+* Effects: maps the given positions to the grid and moves the wall
+*/
+void GameBoard::moveWall(int fromX, int fromY, int toX, int toY){
+  // TODO: Implement
+}
+
+/**
 * Requires: nothing
 * Modifies: nothing
 * Effects: Displays the board to the console

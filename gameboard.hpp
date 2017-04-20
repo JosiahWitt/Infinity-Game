@@ -103,7 +103,7 @@ private:
   vector<vector<shared_ptr<Block>>> board;
 
   // Store a map of changes to the default blocks
-  //  Note: changes[n][m] maps to the element at board[n][m]
+  //  Note: changes[column][row] maps to the element at board[column][row]
   map<int, map<int, shared_ptr<Block>>> changes;
 
   // Store the player object
