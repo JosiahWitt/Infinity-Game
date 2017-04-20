@@ -9,6 +9,7 @@ void playerTests_run() {
 
   // Run all tests
   t.check(playerTests_constants());
+    t.check(playerTests_colors());
 
   // Display pass or fail result
   if (t.getResult()) {
@@ -34,3 +35,37 @@ bool playerTests_constants() {
 
   return t.getResult(); // Return pass or fail result
 }
+
+// Test getAlternateColor(), setAlternateColor(Color c), and swapColor()
+bool playerTests_colors() {
+    // Start new testing object
+    Testing t("getAlternateColor(), setAlternateColor(Color c), and swapColor()");
+    
+    // Create an object, change the color, and check its color was updated
+    Player p1;
+    p1.setAlternateColor({1, 0.4, 0.856});
+    t.check(p1.getAlternateColor().r == 1 && p1.getAlternateColor().g == 0.4 &&
+            p1.getAlternateColor().b == 0.856,
+            "Custom color not set correctly.");
+    
+    // Try setting the color all negative
+    p1.setAlternateColor({-1, -2, -3});
+    t.check(p1.getAlternateColor().r == 0 && p1.getAlternateColor().g == 0 && p1.getAlternateColor().b == 0,
+            "Negative custom color not set correctly.");
+    
+    // Try setting the color all greater than 1
+    p1.setAlternateColor({2, 234, 3.14});
+    t.check(p1.getAlternateColor().r == 1 && p1.getAlternateColor().g == 1 && p1.getAlternateColor().b == 1,
+            "Negative custom color not set correctly.");
+    
+    // Create an object with out of bounds numbers and check its colors were set
+    // correctly
+    Player p2;
+    p2.setAlternateColor({-1, 5, 0.856});
+    t.check(p2.getAlternateColor().r == 0 && p2.getAlternateColor().g == 1 &&
+            p2.getAlternateColor().b == 0.856,
+            "Out of bounds color not set correctly.");
+    
+    return t.getResult(); // Return pass or fail result
+}
+

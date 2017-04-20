@@ -18,4 +18,10 @@ void playerTests_run();
 */
 bool playerTests_constants();
 
+/**
+ * Requires: nothing
+ * Modifies: nothing
+ * Effects: Tests getAlternateColor(), setAlternateColor(Color c), and swapColor()
+ */
+bool playerTests_colors();
 #endif
