@@ -9,7 +9,8 @@ void playerTests_run() {
 
   // Run all tests
   t.check(playerTests_constants());
-    t.check(playerTests_colors());
+  t.check(playerTests_colors());
+  t.check(playerTests_coordinates());
 
   // Display pass or fail result
   if (t.getResult()) {
@@ -69,3 +70,22 @@ bool playerTests_colors() {
     return t.getResult(); // Return pass or fail result
 }
 
+/**
+* Requires: nothing
+* Modifies: nothing
+* Effects: test getters and setters
+*/
+
+bool playerTests_coordinates() {
+	// Start new testing object
+	Testing t("setX()/setY() and getX()/getY()");
+
+	// Create an object and check its getters and setters are correct
+	Player p;
+	p.setX(12);
+	p.setY(40);
+	t.check(p.getX() == 12, "Player x position is not 12"); // work here
+	t.check(p.getY() == 40, "Player y position is not 40");
+
+	return t.getResult(); // Return pass or fail result
+}

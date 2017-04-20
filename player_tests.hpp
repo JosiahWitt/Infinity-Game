@@ -24,4 +24,11 @@ bool playerTests_constants();
  * Effects: Tests getAlternateColor(), setAlternateColor(Color c), and swapColor()
  */
 bool playerTests_colors();
+
+/**
+* Requires: nothing
+* Modifies: nothing
+* Effects: Tests setX(), setY(), getX(), getY()
+*/
+bool playerTests_coordinates();
 #endif

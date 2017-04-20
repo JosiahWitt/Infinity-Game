@@ -45,3 +45,34 @@ void Player::swapColor() {
     color = alternateColor;
     alternateColor = temp;
 }
+
+/**
+* Requires: nothing
+* Modifies: nothing
+* Effects: returns the players x and y coordinates
+*/
+
+int Player::getX() const{
+	return vectorx;
+}
+int Player::getY() const {
+	return vectory;
+}
+/**
+* Requires: nothing
+* Modifies: nothing
+* Effects: sets players x and y coordinates
+*/
+void Player::setX(int x) {
+	if (x < 0) {
+		x = 0;
+	} 
+	vectorx = x;
+}
+
+void Player::setY(int y) {
+	if (y < 0) {
+		y = 0;
+	}
+	vectory = y;
+}
