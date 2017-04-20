@@ -233,10 +233,10 @@ void GameBoard::movePlayer(GameDirection direction){
     player.setX(player.getX() - 1);
   }else if(direction == DIR_UP && player.getY() > 0 && board[player.getX()][player.getY()-1]->canMoveOnTop()){
     // We can move up
-    player.setX(player.getX() + 1);
+    player.setY(player.getY() - 1);
   }else if(direction == DIR_DOWN && player.getY() < numBlocksHigh && board[player.getX()][player.getY()+1]->canMoveOnTop()){
     // We can move down
-    player.setX(player.getX() + 1);
+    player.setY(player.getY() + 1);
   }
 }
 
