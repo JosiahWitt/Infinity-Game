@@ -68,3 +68,24 @@ bool gameboardTests_getGamePixelWidthAndHeight() {
 
   return t.getResult(); // Return pass or fail result
 }
+
+bool gameboardTests_SaveandLoad() {
+	// Start new testing object
+	Testing t("saveGame() and loadGame()");
+
+	// Create an object and check the
+	GameBoard g1(1,2,3,4);
+	g1.saveGame();
+	
+	GameBoard g2;
+	g2.loadGame();
+
+	t.check(g1.getBlockHeight() == g2.getBlockHeight() && g1.getBlockWidth() == g2.getBlockWidth && 
+	g1.getNumBlocksHigh() == g2.getNumBlocksHigh() && g1.getNumBlocksWide() == g2.getNumBlocksWide(),
+	"saveGame() and loadGame() works");
+	// Jose working here
+
+	
+
+	return t.getResult(); // Return pass or fail result
+}

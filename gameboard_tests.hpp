@@ -25,4 +25,12 @@ bool gameboardTests_constructors();
 */
 bool gameboardTests_getGamePixelWidthAndHeight();
 
+/**
+* Requires: nothing
+* Modifies: nothing
+* Effects: Test saveGame() and loadGame()
+*/
+bool gameboardTests_SaveandLoad();
+
+
 #endif
