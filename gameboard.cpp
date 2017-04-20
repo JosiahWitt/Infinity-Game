@@ -45,11 +45,14 @@ GameBoard::GameBoard(int nBlocksWide, int nBlocksHigh, int blockW, int blockH) {
     blockHeight = blockH;
   }
 
-  // Initialize the seed to 42
-  seed = 42;
+  // Initialize the seed the current timestamp
+  seed = time(nullptr);
 
   // Initialize the percent wall
   percentWall = 0.3;
+
+  // Generate the board
+  generateBoard();
 }
 
 /**
@@ -245,6 +248,9 @@ void GameBoard::display() const {
 void GameBoard::generateBoard() {
   // Generate a new distribution engine
   uniform_real_distribution<> dist;
+
+  // Clear the current board
+  board.clear();
 
   for (int column = 0; column < numBlocksWide; column++) {
     // Create a new column

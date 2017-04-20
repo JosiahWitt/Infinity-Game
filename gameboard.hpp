@@ -61,13 +61,6 @@ public:
   void loadGame(string filename = "");
 
   /**
-  * Requires: nothing
-  * Modifies: all GameBoard fields
-  * Effects: creates a new game
-  */
-  void newGame();
-
-  /**
   * Requires: a GameDirection
   * Modifies: player
   * Effects: moves the player in the direction specified
