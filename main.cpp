@@ -129,3 +129,4 @@ void runTests() {
 void runGUI() {
   cout << "This will launch Infinity when we add the graphics..." << endl;
 }
+
