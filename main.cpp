@@ -10,7 +10,7 @@
 
 using namespace std;
 
-// These two methods are defined below
+// These methods are defined below
 void runTests();
 void runGUI();
 
@@ -63,7 +63,8 @@ int main(int argc, char const *argv[]) {
     case 42:
       // Bonus mode
       cout << endl;
-      cout << "You found the bonus mode! Unlocking Infinity..." << endl;
+      cout << "You found the bonus mode! Unlocking Infinity and Beyond..."
+           << endl;
       cout << "Actually, it doesn't do anything special at the moment, except "
               "run both the tests and the game."
            << endl;
@@ -138,5 +139,56 @@ void runTests() {
 * Effects: Launches the game
 */
 void runGUI() {
-  cout << "This will launch Infinity when we add the graphics..." << endl;
+  cout << "This will launch Infinity when we add the graphics." << endl;
+  cout
+      << "Right now, it serves as an example that saves and loads instances of "
+         "the game."
+      << endl
+      << endl;
+
+  // Present the user with the options
+  cout << "Would you like to: " << endl
+       << " 1) Save an instance of the game" << endl
+       << " 2) Load an instance of the game" << endl
+       << "Please enter your choice: ";
+
+  // Get the user's choice
+  int option;
+  while (!(cin >> option) || !(option == 1 || option == 2)) {
+    // Not in a good stream state, so clear the stream
+    cin.clear();
+
+    // Get rid of the bad input
+    string junk;
+    getline(cin, junk);
+
+    // Ask the user to try again
+    cout << "I'm sorry, I couldn't understand that option, please try again: ";
+  }
+
+  // Create a new gameboard
+  GameBoard g;
+
+  // Take the specified action
+  switch (option) {
+  case 1:
+    if (g.saveGame()) {
+      cout << "Saved!" << endl;
+    } else {
+      cout << "Error saving game. Couldn't open file." << endl;
+    }
+    break;
+  case 2:
+    if (g.loadGame()) {
+      cout << "Loaded!" << endl;
+    } else {
+      cout << "Error loading game. Couldn't open the file." << endl;
+    }
+    break;
+  }
+
+  cout << endl;
+  cout << "Once graphics are added, we will use a keyboard shortcut to "
+          "save the game while it is running."
+       << endl;
 }

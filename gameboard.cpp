@@ -122,7 +122,10 @@ int GameBoard::getGamePixelHight() const { return blockHeight * numBlocksHigh; }
 * Modifies: nothing
 * Effects: saves the game to a file
 */
-void GameBoard::saveGame(string filename) {
+bool GameBoard::saveGame(string filename) {
+  // Keep track of save status
+  bool isSaved = true;
+
   // If filename is empty, use default filename
   if (filename.empty()) {
     filename = "game.infinity.json";
@@ -163,10 +166,16 @@ void GameBoard::saveGame(string filename) {
 
     // Save to the file in pretty print
     gameFile << setw(4) << gameJson << endl;
+  } else {
+    // Error opening file
+    isSaved = false;
   }
 
   // Close file
   gameFile.close();
+
+  // Return saved status
+  return isSaved;
 }
 
 /**
@@ -174,7 +183,10 @@ void GameBoard::saveGame(string filename) {
 * Modifies: all GameBoard fields
 * Effects: loads the game from a file
 */
-void GameBoard::loadGame(string filename) {
+bool GameBoard::loadGame(string filename) {
+  // Keep track of the game load status
+  bool isLoaded = true;
+
   // If filename is empty, use default filename
   if (filename.empty()) {
     filename = "game.infinity.json";
@@ -191,6 +203,7 @@ void GameBoard::loadGame(string filename) {
       gameFile >> gameJson;
     } catch (exception e) {
       cout << "Error converting file to json..." << endl;
+      isLoaded = false;
     }
 
     // Load game dimensions
@@ -202,6 +215,7 @@ void GameBoard::loadGame(string filename) {
     } catch (exception e) {
       cout << "Syntax invalid for save file... Error loading game dimensions..."
            << endl;
+      isLoaded = false;
     }
 
     // Load game seed
@@ -209,6 +223,7 @@ void GameBoard::loadGame(string filename) {
       seed = gameJson.at("seed").get<int>();
     } catch (exception e) {
       cout << "Syntax invalid for save file... Error loading seed..." << endl;
+      isLoaded = false;
     }
 
     // Create random object using the seed
@@ -220,6 +235,7 @@ void GameBoard::loadGame(string filename) {
     } catch (exception e) {
       cout << "Syntax invalid for save file... Error loading percentages..."
            << endl;
+      isLoaded = false;
     }
 
     // Load player
@@ -227,6 +243,7 @@ void GameBoard::loadGame(string filename) {
       player.fromJson(gameJson.at("player"));
     } catch (exception e) {
       cout << "Syntax invalid for save file... Error loading player..." << endl;
+      isLoaded = false;
     }
 
     // Load changed blocks
@@ -254,13 +271,18 @@ void GameBoard::loadGame(string filename) {
     } catch (exception e) {
       cout << "Syntax invalid for save file... Error loading changed blocks..."
            << endl;
+      isLoaded = false;
     }
   } else {
-    cout << "Couldn't find file... game not loaded..." << endl;
+    // Couldn't find file
+    isLoaded = false;
   }
 
   // Close file
   gameFile.close();
+
+  // Return loaded result
+  return isLoaded;
 }
 
 /**

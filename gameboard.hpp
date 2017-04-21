@@ -63,16 +63,16 @@ public:
   /**
   * Requires: a valid path to save the file to
   * Modifies: nothing
-  * Effects: saves the game to a file
+  * Effects: saves the game to a file, returns save status
   */
-  void saveGame(string filename = "");
+  bool saveGame(string filename = "");
 
   /**
   * Requires: a valid path to an existing game file
   * Modifies: all GameBoard fields
-  * Effects: loads the game from a file
+  * Effects: loads the game from a file, returns load status
   */
-  void loadGame(string filename = "");
+  bool loadGame(string filename = "");
 
   /**
   * Requires: a GameDirection
