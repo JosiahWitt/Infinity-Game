@@ -69,3 +69,41 @@ void Player::setVectorY(int y) {
 */
 int Player::getVectorX() const { return vectorX; }
 int Player::getVectorY() const { return vectorY; }
+
+/**
+* Requires: nothing
+* Modifies: nothing
+* Effects: Convert the player to json
+*/
+json Player::toJson() const {
+  // Get the parent's json
+  json obj = Block::toJson();
+
+  // Add the alternate color
+  obj["alternateColor"] = alternateColor.toJson();
+
+  // Add the player's vector positions
+  obj["vectorX"] = vectorX;
+  obj["vectorY"] = vectorY;
+
+  return obj;
+}
+
+/**
+* Requires: json object
+* Modifies: alternateColor and vectorX/Y
+* Effects: Convert json to the player
+*/
+void Player::fromJson(json j) {
+  // Import into the parent
+  Block::fromJson(j);
+
+  // Import the alternate color
+  setAlternateColor({j.at("alternateColor").at("r").get<double>(),
+                     j.at("alternateColor").at("g").get<double>(),
+                     j.at("alternateColor").at("b").get<double>()});
+
+  // Import the player's vector positions
+  vectorX = j.at("vectorX").get<int>();
+  vectorY = j.at("vectorY").get<int>();
+}

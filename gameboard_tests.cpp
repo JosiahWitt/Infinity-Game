@@ -122,11 +122,11 @@ bool gameboardTests_saveAndLoad() {
               g3.getNumBlocksWide() == g4.getNumBlocksWide() &&
               g3.getSeed() == g4.getSeed() &&
               g3.getPercentWall() == g4.getPercentWall() &&
-              g3.getChanges()[1][1]->getBlockType() == WallBlock &&
-              g3.getChanges()[1][2]->getBlockType() == FloorBlock &&
-              g3.getChanges()[3][6]->getBlockType() == FloorBlock &&
-              g3.getPlayer().getVectorX() == 1 &&
-              g3.getPlayer().getVectorY() == 0,
+              g4.getChanges()[1][1]->getBlockType() == WallBlock &&
+              g4.getChanges()[1][2]->getBlockType() == FloorBlock &&
+              g4.getChanges()[3][6]->getBlockType() == FloorBlock &&
+              g4.getPlayer().getVectorX() == 1 &&
+              g4.getPlayer().getVectorY() == 0,
           "saveGame() and loadGame() doesn't work for custom seed, "
           "percentWall, and changes");
 

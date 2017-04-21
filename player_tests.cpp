@@ -11,6 +11,7 @@ bool playerTests_run() {
   t.check(playerTests_constants());
   t.check(playerTests_colors());
   t.check(playerTests_coordinates());
+  t.check(playerTests_toJsonAndFromJson());
 
   // Display pass or fail result
   if (t.getResult()) {
@@ -74,12 +75,7 @@ bool playerTests_colors() {
   return t.getResult(); // Return pass or fail result
 }
 
-/**
-* Requires: nothing
-* Modifies: nothing
-* Effects: test getters and setters
-*/
-
+// Test setX()/setY() and getX()/getY()
 bool playerTests_coordinates() {
   // Start new testing object
   Testing t("setX()/setY() and getX()/getY()");
@@ -96,6 +92,51 @@ bool playerTests_coordinates() {
   p.setVectorY(-20);
   t.check(p.getVectorX() == 0, "Player x position is not 0");
   t.check(p.getVectorY() == 0, "Player y position is not 0");
+
+  return t.getResult(); // Return pass or fail result
+}
+
+// Tests toJson and fromJson
+bool playerTests_toJsonAndFromJson() {
+  // Start new testing object
+  Testing t("toJson() and fromJson()");
+
+  // Create an object, and export and import using json, and
+  // assert the json is identical
+  Player p1;
+  json j1 = p1.toJson();
+  Player p2;
+  p2.fromJson(j1);
+  t.check(p2.getColor().r == 0 && p2.getColor().g == 0 && p2.getColor().b == 0,
+          "Didn't export and import default JSON correctly.");
+
+  // Create an object, change the color, and export and import using json, and
+  // assert the json is identical
+  Player p3;
+  p3.setAlternateColor({1, 0.4, 0.856});
+  p3.setVectorX(5);
+  p3.setVectorY(6);
+  json j3 = p3.toJson();
+  Player p4;
+  p4.fromJson(j3);
+  t.check(p4.getAlternateColor().r == 1 && p4.getAlternateColor().g == 0.4 &&
+              p4.getAlternateColor().b == 0.856 && p4.getVectorX() == 5 &&
+              p4.getVectorY() == 6,
+          "Didn't export and import custom JSON correctly.");
+
+  // Import json into an object, and assert the color, alternateColor, and
+  // player's vector positions were updated correctly
+  Player p5;
+  p5.fromJson({{"color", {{"r", 0.9}, {"g", 0.8}, {"b", 0.7}}},
+               {"alternateColor", {{"r", 0.3}, {"g", 0.4}, {"b", 0.5}}},
+               {"vectorX", 23},
+               {"vectorY", 42}});
+  t.check(p5.getColor().r == 0.9 && p5.getColor().g == 0.8 &&
+              p5.getColor().b == 0.7 && p5.getAlternateColor().r == 0.3 &&
+              p5.getAlternateColor().g == 0.4 &&
+              p5.getAlternateColor().b == 0.5 && p5.getVectorX() == 23 &&
+              p5.getVectorY() == 42,
+          "Didn't import custom JSON correctly.");
 
   return t.getResult(); // Return pass or fail result
 }

@@ -56,8 +56,22 @@ public:
   int getVectorX() const;
   int getVectorY() const;
 
+  /**
+  * Requires: nothing
+  * Modifies: nothing
+  * Effects: Convert the player to json
+  */
+  virtual json toJson() const override;
+
+  /**
+* Requires: json object
+* Modifies: alternateColor and vectorX/Y
+  * Effects: Convert json to the player
+  */
+  virtual void fromJson(json j) override;
+
 private:
-  Color alternateColor; // Player color we can swap to
+  Color alternateColor = {0, 0, 0}; // Player color we can swap to
   int vectorX = 0;
   int vectorY = 0;
 };

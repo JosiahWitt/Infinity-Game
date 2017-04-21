@@ -32,4 +32,12 @@ bool playerTests_colors();
 * Effects: Tests setX(), setY(), getX(), getY()
 */
 bool playerTests_coordinates();
+
+/**
+* Requires: nothing
+* Modifies: nothing
+* Effects: Tests toJson and fromJson
+*/
+bool playerTests_toJsonAndFromJson();
+
 #endif

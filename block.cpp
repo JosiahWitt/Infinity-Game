@@ -51,8 +51,8 @@ json Block::toJson() const {
 }
 
 /**
-* Requires: nothing
-* Modifies: nothing
+* Requires: json object
+* Modifies: color
 * Effects: Convert json to the block
 */
 void Block::fromJson(json j) {
