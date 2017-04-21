@@ -18,4 +18,10 @@ void floorTests_run();
 */
 bool floorTests_constants();
 
+/**
+ * Requires: nothing
+ * Modifies: nothing
+ * Effects: Tests getTypeOfFloor() and changeFloorType()
+ */
+bool floorTests_types();
 #endif
