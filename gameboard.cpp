@@ -293,15 +293,6 @@ void GameBoard::movePlayer(GameDirection direction) {
 }
 
 /**
-* Requires: an integer position x and an integer position y
-* Modifies: board
-* Effects: maps the given positions to the grid and moves the wall
-*/
-void GameBoard::moveWall(int fromX, int fromY, int toX, int toY) {
-  // TODO: Implement
-}
-
-/**
 * Requires: nothing
 * Modifies: nothing
 * Effects: Displays the board to the console
