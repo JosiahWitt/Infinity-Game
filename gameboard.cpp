@@ -102,7 +102,7 @@ int GameBoard::getNumBlocksHigh() const { return numBlocksHigh; }
 int GameBoard::getBlockWidth() const { return blockWidth; }
 int GameBoard::getBlockHeight() const { return blockHeight; }
 int GameBoard::getSeed() const { return seed; }
-int GameBoard::getPercentWall() const { return percentWall; }
+double GameBoard::getPercentWall() const { return percentWall; }
 Player GameBoard::getPlayer() const { return player; }
 vector<vector<shared_ptr<Block>>> GameBoard::getBoard() const { return board; }
 map<int, map<int, shared_ptr<Block>>> GameBoard::getChanges() const {

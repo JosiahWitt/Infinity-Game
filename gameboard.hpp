@@ -47,7 +47,7 @@ public:
   int getBlockHeight() const;
   // These getters are used for testing purposes
   int getSeed() const;
-  int getPercentWall() const;
+  double getPercentWall() const;
   Player getPlayer() const;
   vector<vector<shared_ptr<Block>>> getBoard() const;
   map<int, map<int, shared_ptr<Block>>> getChanges() const;
