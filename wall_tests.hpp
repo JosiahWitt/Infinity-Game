@@ -9,7 +9,7 @@
 * Modifies: nothing
 * Effects: Runs all tests
 */
-void wallTests_run();
+bool wallTests_run();
 
 /**
 * Requires: nothing

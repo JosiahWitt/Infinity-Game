@@ -9,7 +9,7 @@
 * Modifies: nothing
 * Effects: Runs all tests
 */
-void floorTests_run();
+bool floorTests_run();
 
 /**
 * Requires: nothing

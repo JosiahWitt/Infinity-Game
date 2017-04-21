@@ -9,7 +9,7 @@
 * Modifies: nothing
 * Effects: Runs all tests
 */
-void blockTests_run();
+bool blockTests_run();
 
 /**
 * Requires: nothing

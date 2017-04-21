@@ -27,6 +27,14 @@ public:
   * Effects: Creates a new gameboard
   */
   GameBoard(int nBlocksWide, int nBlocksHigh, int blockW, int blockH);
+  /**
+  * Requires: same as previous constructor, plus seed, percentWall, and changes
+  * Modifies: numBlocksWide, numBlocksHigh, blockWidth, blockHeight, seed,
+  * percentWall, and changes map
+  * Effects: Creates a new gameboard - used primarly for testing purposes
+  */
+  GameBoard(int nBlocksWide, int nBlocksHigh, int blockW, int blockH, int s,
+            double pWall = -1, map<int, map<int, shared_ptr<Block>>> c = {});
 
   /**
   * Requires: nothing
@@ -37,6 +45,11 @@ public:
   int getNumBlocksHigh() const;
   int getBlockWidth() const;
   int getBlockHeight() const;
+  // These getters are used for testing purposes
+  int getSeed() const;
+  int getPercentWall() const;
+  vector<vector<shared_ptr<Block>>> getBoard() const;
+  map<int, map<int, shared_ptr<Block>>> getChanges() const;
 
   /**
   * Requires: nothing

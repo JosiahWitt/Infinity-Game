@@ -1,6 +1,6 @@
 #include "wall_tests.hpp"
 
-void wallTests_run() {
+bool wallTests_run() {
   cout << "Running Wall Tests:" << endl;
   cout << "-------------------" << endl;
 
@@ -18,6 +18,8 @@ void wallTests_run() {
     cout << "Failed " << t.getNumFailed() << "/" << t.getNumTested()
          << " test(s). See message(s) above." << endl;
   }
+
+  return t.getResult();
 }
 
 // *** Tests ***

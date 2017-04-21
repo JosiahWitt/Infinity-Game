@@ -10,13 +10,14 @@
 
 using namespace std;
 
+// These two methods are defined below
 void runTests();
 void runGUI();
 
 /**
- * Requires:
- * Modifies:
- * Effects:
+ * Requires: The command line arguments
+ * Modifies: everything
+ * Effects: Starts the application
 */
 int main(int argc, char const *argv[]) {
   if (argc > 1 && string(argv[1]) == "test") {
@@ -88,31 +89,47 @@ void runTests() {
   cout << "TESTING" << endl;
   cout << "-------" << endl << endl;
 
-  gameboardTests_run();
+  // Create a new testing object to keep track of the results of each test
+  Testing t;
+
+  t.check(gameboardTests_run());
 
   cout << endl
        << "--------------------------------------------" << endl
        << endl;
 
-  blockTests_run();
+  t.check(blockTests_run());
 
   cout << endl
        << "--------------------------------------------" << endl
        << endl;
 
-  playerTests_run();
+  t.check(playerTests_run());
 
   cout << endl
        << "--------------------------------------------" << endl
        << endl;
 
-  floorTests_run();
+  t.check(floorTests_run());
 
   cout << endl
        << "--------------------------------------------" << endl
        << endl;
 
-  wallTests_run();
+  t.check(wallTests_run());
+
+  cout << endl
+       << "--------------------------------------------" << endl
+       << endl;
+
+  // Display pass or fail result
+  if (t.getResult()) {
+    cout << "*** Done testing. All " << t.getNumTested()
+         << " test sections passed! ***" << endl;
+  } else {
+    cout << "*** Failed " << t.getNumFailed() << "/" << t.getNumTested()
+         << " test section(s). See message(s) above. ***" << endl;
+  }
 }
 
 /**
@@ -123,4 +140,3 @@ void runTests() {
 void runGUI() {
   cout << "This will launch Infinity when we add the graphics..." << endl;
 }
-

@@ -9,7 +9,7 @@
 * Modifies: nothing
 * Effects: Runs all tests
 */
-void gameboardTests_run();
+bool gameboardTests_run();
 
 /**
 * Requires: nothing
@@ -30,7 +30,13 @@ bool gameboardTests_getGamePixelWidthAndHeight();
 * Modifies: nothing
 * Effects: Test saveGame() and loadGame()
 */
-bool gameboardTests_SaveandLoad();
+bool gameboardTests_saveAndLoad();
 
+/**
+* Requires: nothing
+* Modifies: nothing
+* Effects: Test generateBoard()
+*/
+bool gameboardTests_generateBoard();
 
 #endif

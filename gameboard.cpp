@@ -45,13 +45,43 @@ GameBoard::GameBoard(int nBlocksWide, int nBlocksHigh, int blockW, int blockH) {
     blockHeight = blockH;
   }
 
-  // Initialize the seed the current timestamp
+  // Initialize the seed to the current timestamp
   seed = time(nullptr);
+  rand.seed(seed);
 
   // Initialize the percent wall
   percentWall = 0.3;
 
   // Generate the board
+  generateBoard();
+}
+/**
+* Requires: same as previous constructor, plus seed, percentWall, and changes
+* Modifies: numBlocksWide, numBlocksHigh, blockWidth, blockHeight, seed,
+* percentWall, and changes map
+* Effects: Creates a new gameboard (used primarly for testing purposes)
+*/
+GameBoard::GameBoard(int nBlocksWide, int nBlocksHigh, int blockW, int blockH,
+                     int s, double pWall,
+                     map<int, map<int, shared_ptr<Block>>> c)
+    : GameBoard(nBlocksWide, nBlocksHigh, blockW, blockH) {
+  // If the seed is set, use it
+  if (s != 0) {
+    seed = s;
+    rand.seed(seed);
+  }
+
+  // If the wall is set, use it
+  if (pWall != -1) {
+    percentWall = max(0.0, min(pWall, 1.0));
+  }
+
+  // Set the changes if it is not empty
+  if (!c.empty()) {
+    changes = c;
+  }
+
+  // Regenerate the board (since this will only be used in testing, it's fine)
   generateBoard();
 }
 
@@ -64,6 +94,12 @@ int GameBoard::getNumBlocksWide() const { return numBlocksWide; }
 int GameBoard::getNumBlocksHigh() const { return numBlocksHigh; }
 int GameBoard::getBlockWidth() const { return blockWidth; }
 int GameBoard::getBlockHeight() const { return blockHeight; }
+int GameBoard::getSeed() const { return seed; }
+int GameBoard::getPercentWall() const { return percentWall; }
+vector<vector<shared_ptr<Block>>> GameBoard::getBoard() const { return board; }
+map<int, map<int, shared_ptr<Block>>> GameBoard::getChanges() const {
+  return changes;
+}
 
 /**
 * Requires: nothing
@@ -224,19 +260,26 @@ void GameBoard::loadGame(string filename) {
 * Modifies: player
 * Effects: moves the player in the direction specified
 */
-void GameBoard::movePlayer(GameDirection direction){
-  if(direction == DIR_LEFT && player.getX() < numBlocksWide && board[player.getX()+1][player.getY()]->canMoveOnTop()){
+void GameBoard::movePlayer(GameDirection direction) {
+  if (direction == DIR_LEFT && player.getVectorX() < numBlocksWide &&
+      board[player.getVectorX() + 1][player.getVectorY()]->canMoveOnTop()) {
     // We can move to the left
-    player.setX(player.getX() + 1);
-  }else if(direction == DIR_RIGHT && player.getX() > 0 && board[player.getX()-1][player.getY()]->canMoveOnTop()){
+    player.setVectorX(player.getVectorX() + 1);
+  } else if (direction == DIR_RIGHT && player.getVectorX() > 0 &&
+             board[player.getVectorX() - 1][player.getVectorY()]
+                 ->canMoveOnTop()) {
     // We can move to the right
-    player.setX(player.getX() - 1);
-  }else if(direction == DIR_UP && player.getY() > 0 && board[player.getX()][player.getY()-1]->canMoveOnTop()){
+    player.setVectorX(player.getVectorX() - 1);
+  } else if (direction == DIR_UP && player.getVectorY() > 0 &&
+             board[player.getVectorX()][player.getVectorY() - 1]
+                 ->canMoveOnTop()) {
     // We can move up
-    player.setY(player.getY() - 1);
-  }else if(direction == DIR_DOWN && player.getY() < numBlocksHigh && board[player.getX()][player.getY()+1]->canMoveOnTop()){
+    player.setVectorY(player.getVectorY() - 1);
+  } else if (direction == DIR_DOWN && player.getVectorY() < numBlocksHigh &&
+             board[player.getVectorX()][player.getVectorY() + 1]
+                 ->canMoveOnTop()) {
     // We can move down
-    player.setY(player.getY() + 1);
+    player.setVectorY(player.getVectorY() + 1);
   }
 }
 
@@ -245,7 +288,7 @@ void GameBoard::movePlayer(GameDirection direction){
 * Modifies: board
 * Effects: maps the given positions to the grid and moves the wall
 */
-void GameBoard::moveWall(int fromX, int fromY, int toX, int toY){
+void GameBoard::moveWall(int fromX, int fromY, int toX, int toY) {
   // TODO: Implement
 }
 
@@ -293,7 +336,7 @@ void GameBoard::generateBoard() {
         dist(rand); // Eat the random value for this location
       } else {
         // Randomly create a new block for the board
-        if (dist(rand) < percentWall) {
+        if (dist(rand) <= percentWall) {
           board[column].push_back(make_shared<Wall>());
         } else {
           board[column].push_back(make_shared<Floor>());

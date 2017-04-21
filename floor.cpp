@@ -19,9 +19,7 @@ BlockType Floor::getBlockType() const { return FloorBlock; }
  * Modifies: nothing
  * Effects: gets type of floor
  */
-TypeOfFloor Floor::getTypeOfFloor() {
-    return floor;
-}
+TypeOfFloor Floor::getTypeOfFloor() const { return floorType; }
 
 /**
  * Requires: nothing
@@ -29,13 +27,16 @@ TypeOfFloor Floor::getTypeOfFloor() {
  * Effects: changes type of floor
  */
 void Floor::setTypeOfFloor(TypeOfFloor f) {
-    floor = f;
-    switch(f) {
-        case GrassFloor: setColor({0,123/255.0,12/255.0});
-            break;
-        case SandFloor: setColor({237/255.0,201/255.0,175/255.0});
-            break;
-        case DirtFloor: setColor({120/255.0,72/255.0,0});
-            break;
-    }
+  floorType = f;
+  switch (f) {
+  case GrassFloor:
+    setColor({0, 123 / 255.0, 12 / 255.0});
+    break;
+  case SandFloor:
+    setColor({237 / 255.0, 201 / 255.0, 175 / 255.0});
+    break;
+  case DirtFloor:
+    setColor({120 / 255.0, 72 / 255.0, 0});
+    break;
+  }
 }

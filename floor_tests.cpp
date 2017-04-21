@@ -1,6 +1,6 @@
 #include "floor_tests.hpp"
 
-void floorTests_run() {
+bool floorTests_run() {
   cout << "Running Floor Tests:" << endl;
   cout << "--------------------" << endl;
 
@@ -9,7 +9,7 @@ void floorTests_run() {
 
   // Run all tests
   t.check(floorTests_constants());
-    t.check(floorTests_types());
+  t.check(floorTests_types());
 
   // Display pass or fail result
   if (t.getResult()) {
@@ -19,6 +19,8 @@ void floorTests_run() {
     cout << "Failed " << t.getNumFailed() << "/" << t.getNumTested()
          << " test(s). See message(s) above." << endl;
   }
+
+  return t.getResult();
 }
 
 // *** Tests ***
@@ -38,21 +40,26 @@ bool floorTests_constants() {
 
 // Test getTypeOfFloor() and changeFloorType()
 bool floorTests_types() {
-    // Start new testing object
-    Testing t("getTypeOfFloor() and changeFloorType()");
-    
-    // Create the object and test to see if it can get and set floor type
-    Floor f;
-    t.check(f.getTypeOfFloor() == GrassFloor, "Floor is not a GrassFloor");
-    f.setTypeOfFloor(GrassFloor);
-    t.check(f.getColor().r == 0 && f.getColor().g == 123/255.0 && f.getColor().b == 12/255.0, "Floor isn't the correct color");
-    
-    f.setTypeOfFloor(SandFloor);
-    t.check(f.getColor().r == 237/255.0 && f.getColor().g == 201/255.0 && f.getColor().b == 175/255.0, "Floor isn't the correct color");
-    
-    f.setTypeOfFloor(DirtFloor);
-    t.check(f.getColor().r == 120/255.0 && f.getColor().g == 72/255.0 && f.getColor().b == 0, "Floor isn't the correct color");
-    
-    return t.getResult(); // Return pass or fail result
-}
+  // Start new testing object
+  Testing t("getTypeOfFloor() and changeFloorType()");
 
+  // Create the object and test to see if it can get and set floor type
+  Floor f;
+  t.check(f.getTypeOfFloor() == GrassFloor, "Floor is not a GrassFloor");
+  f.setTypeOfFloor(GrassFloor);
+  t.check(f.getColor().r == 0 && f.getColor().g == 123 / 255.0 &&
+              f.getColor().b == 12 / 255.0,
+          "GrassFloor isn't the correct color");
+
+  f.setTypeOfFloor(SandFloor);
+  t.check(f.getColor().r == 237 / 255.0 && f.getColor().g == 201 / 255.0 &&
+              f.getColor().b == 175 / 255.0,
+          "SandFloor isn't the correct color");
+
+  f.setTypeOfFloor(DirtFloor);
+  t.check(f.getColor().r == 120 / 255.0 && f.getColor().g == 72 / 255.0 &&
+              f.getColor().b == 0,
+          "DirtFloor isn't the correct color");
+
+  return t.getResult(); // Return pass or fail result
+}

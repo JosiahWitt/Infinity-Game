@@ -11,7 +11,7 @@ public:
   virtual BlockType getBlockType() const { return PlayerBlock; }
 };
 
-void blockTests_run() {
+bool blockTests_run() {
   cout << "Running Block Tests:" << endl;
   cout << "--------------------" << endl;
 
@@ -31,6 +31,8 @@ void blockTests_run() {
     cout << "Failed " << t.getNumFailed() << "/" << t.getNumTested()
          << " test(s). See message(s) above." << endl;
   }
+
+  return t.getResult();
 }
 
 // *** Tests ***
