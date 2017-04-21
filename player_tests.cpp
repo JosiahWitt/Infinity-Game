@@ -107,7 +107,10 @@ bool playerTests_toJsonAndFromJson() {
   json j1 = p1.toJson();
   Player p2;
   p2.fromJson(j1);
-  t.check(p2.getColor().r == 0 && p2.getColor().g == 0 && p2.getColor().b == 0,
+  t.check(p2.getColor().r == 0 && p2.getColor().g == 0 &&
+              p2.getColor().b == 0 && p2.getAlternateColor().r == 0 &&
+              p2.getAlternateColor().g == 0 && p2.getAlternateColor().b == 0 &&
+              p2.getVectorX() == 0 && p2.getVectorY() == 0,
           "Didn't export and import default JSON correctly.");
 
   // Create an object, change the color, and export and import using json, and

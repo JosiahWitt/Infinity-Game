@@ -19,14 +19,14 @@ BlockType Floor::getBlockType() const { return FloorBlock; }
  * Modifies: nothing
  * Effects: gets type of floor
  */
-TypeOfFloor Floor::getTypeOfFloor() const { return floorType; }
+FloorType Floor::getFloorType() const { return floorType; }
 
 /**
  * Requires: nothing
  * Modifies: nothing
  * Effects: changes type of floor
  */
-void Floor::setTypeOfFloor(TypeOfFloor f) {
+void Floor::setFloorType(FloorType f) {
   floorType = f;
   switch (f) {
   case GrassFloor:
@@ -39,4 +39,32 @@ void Floor::setTypeOfFloor(TypeOfFloor f) {
     setColor({120 / 255.0, 72 / 255.0, 0});
     break;
   }
+}
+
+/**
+* Requires: nothing
+* Modifies: nothing
+* Effects: Convert the floor to json
+*/
+json Floor::toJson() const {
+  // Get the parent's json
+  json obj = Block::toJson();
+
+  // Add the floor type
+  obj["floorType"] = floorType;
+
+  return obj;
+}
+
+/**
+* Requires: json object
+* Modifies: alternateColor and vectorX/Y
+* Effects: Convert json to the floor
+*/
+void Floor::fromJson(json j) {
+  // Import into the parent
+  Block::fromJson(j);
+
+  // Import the floor type
+  floorType = j.at("floorType").get<FloorType>();
 }

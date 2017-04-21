@@ -21,7 +21,15 @@ bool floorTests_constants();
 /**
  * Requires: nothing
  * Modifies: nothing
- * Effects: Tests getTypeOfFloor() and changeFloorType()
+ * Effects: Tests getFloorType() and changeFloorType()
  */
 bool floorTests_types();
+
+/**
+* Requires: nothing
+* Modifies: nothing
+* Effects: Tests toJson and fromJson
+*/
+bool floorTests_toJsonAndFromJson();
+
 #endif

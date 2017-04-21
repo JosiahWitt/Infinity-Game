@@ -3,7 +3,8 @@
 
 #include "block.hpp"
 
-enum TypeOfFloor { GrassFloor, SandFloor, DirtFloor };
+enum FloorType { GrassFloor = 1, SandFloor = 2, DirtFloor = 3 };
+
 class Floor : public Block {
 public:
   /**
@@ -25,16 +26,30 @@ public:
    * Modifies: nothing
    * Effects: gets type of floor
    */
-  TypeOfFloor getTypeOfFloor() const;
+  FloorType getFloorType() const;
   /**
    * Requires: nothing
    * Modifies: nothing
    * Effects: changes type of floor
    */
-  void setTypeOfFloor(TypeOfFloor f);
+  void setFloorType(FloorType f);
+
+  /**
+  * Requires: nothing
+  * Modifies: nothing
+  * Effects: Convert the floor to json
+  */
+  virtual json toJson() const override;
+
+  /**
+  * Requires: json object
+  * Modifies: floorType
+  * Effects: Convert json to the floor
+  */
+  virtual void fromJson(json j) override;
 
 private:
-  TypeOfFloor floorType = GrassFloor;
+  FloorType floorType = GrassFloor;
 };
 
 #endif
