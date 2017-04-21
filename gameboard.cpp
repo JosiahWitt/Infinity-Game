@@ -52,6 +52,13 @@ GameBoard::GameBoard(int nBlocksWide, int nBlocksHigh, int blockW, int blockH) {
   // Initialize the percent wall
   percentWall = 0.3;
 
+  // Default the player to (0,0)
+  player.setVectorX(0);
+  player.setVectorY(0);
+
+  // Set the (0,0) position to a floor
+  changes[0][0] = make_shared<Floor>();
+
   // Generate the board
   generateBoard();
 }
@@ -96,6 +103,7 @@ int GameBoard::getBlockWidth() const { return blockWidth; }
 int GameBoard::getBlockHeight() const { return blockHeight; }
 int GameBoard::getSeed() const { return seed; }
 int GameBoard::getPercentWall() const { return percentWall; }
+Player GameBoard::getPlayer() const { return player; }
 vector<vector<shared_ptr<Block>>> GameBoard::getBoard() const { return board; }
 map<int, map<int, shared_ptr<Block>>> GameBoard::getChanges() const {
   return changes;
@@ -261,24 +269,25 @@ void GameBoard::loadGame(string filename) {
 * Effects: moves the player in the direction specified
 */
 void GameBoard::movePlayer(GameDirection direction) {
-  if (direction == DIR_LEFT && player.getVectorX() < numBlocksWide &&
-      board[player.getVectorX() + 1][player.getVectorY()]->canMoveOnTop()) {
-    // We can move to the left
-    player.setVectorX(player.getVectorX() + 1);
-  } else if (direction == DIR_RIGHT && player.getVectorX() > 0 &&
-             board[player.getVectorX() - 1][player.getVectorY()]
-                 ->canMoveOnTop()) {
-    // We can move to the right
+  if (direction == DIR_LEFT && player.getVectorX() > 0 &&
+      board[player.getVectorX() - 1][player.getVectorY()]->canMoveOnTop()) {
+    // We can move to the left (no edge or wall blocking)
     player.setVectorX(player.getVectorX() - 1);
+  } else if (direction == DIR_RIGHT &&
+             player.getVectorX() < numBlocksWide - 1 &&
+             board[player.getVectorX() + 1][player.getVectorY()]
+                 ->canMoveOnTop()) {
+    // We can move to the right (no edge or wall blocking)
+    player.setVectorX(player.getVectorX() + 1);
   } else if (direction == DIR_UP && player.getVectorY() > 0 &&
              board[player.getVectorX()][player.getVectorY() - 1]
                  ->canMoveOnTop()) {
-    // We can move up
+    // We can move up (no edge or wall blocking)
     player.setVectorY(player.getVectorY() - 1);
-  } else if (direction == DIR_DOWN && player.getVectorY() < numBlocksHigh &&
+  } else if (direction == DIR_DOWN && player.getVectorY() < numBlocksHigh - 1 &&
              board[player.getVectorX()][player.getVectorY() + 1]
                  ->canMoveOnTop()) {
-    // We can move down
+    // We can move down (no edge or wall blocking)
     player.setVectorY(player.getVectorY() + 1);
   }
 }

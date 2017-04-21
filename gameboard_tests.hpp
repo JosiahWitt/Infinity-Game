@@ -39,4 +39,11 @@ bool gameboardTests_saveAndLoad();
 */
 bool gameboardTests_generateBoard();
 
+/**
+* Requires: nothing
+* Modifies: nothing
+* Effects: Test movePlayer()
+*/
+bool gameboardTests_movePlayer();
+
 #endif

@@ -12,6 +12,7 @@ bool gameboardTests_run() {
   t.check(gameboardTests_getGamePixelWidthAndHeight());
   t.check(gameboardTests_saveAndLoad());
   t.check(gameboardTests_generateBoard());
+  t.check(gameboardTests_movePlayer());
 
   // Display pass or fail result
   if (t.getResult()) {
@@ -103,7 +104,12 @@ bool gameboardTests_saveAndLoad() {
 
   // Create an game with custom percentWall, seed, and changes, and save it
   GameBoard g3(2, 3, 4, 5, 42, 0.3, testChanges);
+  g3.movePlayer(DIR_RIGHT);
   g3.saveGame("testing.infinity.json");
+  // Game map:
+  // F F
+  // W W
+  // F F
 
   // Create a new object and load it
   GameBoard g4;
@@ -118,7 +124,9 @@ bool gameboardTests_saveAndLoad() {
               g3.getPercentWall() == g4.getPercentWall() &&
               g3.getChanges()[1][1]->getBlockType() == WallBlock &&
               g3.getChanges()[1][2]->getBlockType() == FloorBlock &&
-              g3.getChanges()[3][6]->getBlockType() == FloorBlock,
+              g3.getChanges()[3][6]->getBlockType() == FloorBlock &&
+              g3.getPlayer().getVectorX() == 1 &&
+              g3.getPlayer().getVectorY() == 0,
           "saveGame() and loadGame() doesn't work for custom seed, "
           "percentWall, and changes");
 
@@ -132,6 +140,10 @@ bool gameboardTests_generateBoard() {
 
   // Create an object with a custom seed
   GameBoard g1(2, 3, 20, 20, 42, 0.3);
+  // Game map:
+  // F F
+  // W F
+  // F W
 
   // Assert the board is correctly created from that random seed
   t.check(g1.getBoard()[0][0]->getBlockType() == FloorBlock &&
@@ -150,6 +162,10 @@ bool gameboardTests_generateBoard() {
 
   // Create an object with a custom seed and changes
   GameBoard g2(2, 3, 20, 20, 42, 0.3, testChanges);
+  // Game map:
+  // F F
+  // W W
+  // F F
 
   // Assert the board is correctly created from that random seed
   t.check(g2.getBoard()[0][0]->getBlockType() == FloorBlock &&
@@ -160,6 +176,75 @@ bool gameboardTests_generateBoard() {
               g2.getBoard()[1][2]->getBlockType() == FloorBlock,
           "generateBoard() with changes, random seed of 42, and percent "
           "wall of 0.3 doesn't work");
+
+  return t.getResult(); // Return pass or fail result
+}
+
+// Test movePlayer()
+bool gameboardTests_movePlayer() {
+  // Start new testing object
+  Testing t("movePlayer()");
+
+  // Create a map of changes
+  map<int, map<int, shared_ptr<Block>>> testChanges;
+  testChanges[1][2] = make_shared<Floor>();
+
+  // Create an object with a custom seed and one change
+  GameBoard g1(3, 3, 20, 20, 42, 0.3, testChanges);
+  // Game map:
+  // F F F
+  // W F F
+  // F F W
+
+  // Check moving the player, while not moving out of bounds or into walls
+  g1.movePlayer(DIR_UP); // Tests not moving up
+  t.check(g1.getPlayer().getVectorX() == 0 && g1.getPlayer().getVectorY() == 0,
+          "movePlayer() can move up when at (0,0) out of bounds");
+  g1.movePlayer(DIR_LEFT); // Tests not moving left
+  t.check(g1.getPlayer().getVectorX() == 0 && g1.getPlayer().getVectorY() == 0,
+          "movePlayer() can move left when at (0,0) out of bounds");
+  g1.movePlayer(DIR_RIGHT); // Tests moving right
+  t.check(g1.getPlayer().getVectorX() == 1 && g1.getPlayer().getVectorY() == 0,
+          "movePlayer() can't move right when at (0,0)");
+  g1.movePlayer(DIR_RIGHT); // Tests moving right
+  t.check(g1.getPlayer().getVectorX() == 2 && g1.getPlayer().getVectorY() == 0,
+          "movePlayer() can't move right when at (1,0)");
+  g1.movePlayer(DIR_RIGHT); // Tests not moving right
+  t.check(g1.getPlayer().getVectorX() == 2 && g1.getPlayer().getVectorY() == 0,
+          "movePlayer() can move right when at (2,0) out of bounds");
+  g1.movePlayer(DIR_DOWN); // Tests moving down
+  t.check(g1.getPlayer().getVectorX() == 2 && g1.getPlayer().getVectorY() == 1,
+          "movePlayer() can't move down when at (2,0)");
+  g1.movePlayer(DIR_DOWN); // Tests not moving down into wall
+  t.check(g1.getPlayer().getVectorX() == 2 && g1.getPlayer().getVectorY() == 1,
+          "movePlayer() can move down when at (2,1) into wall");
+  g1.movePlayer(DIR_LEFT); // Tests moving left
+  t.check(g1.getPlayer().getVectorX() == 1 && g1.getPlayer().getVectorY() == 1,
+          "movePlayer() can't move left when at (2,1)");
+  g1.movePlayer(DIR_LEFT); // Tests not moving left into wall
+  t.check(g1.getPlayer().getVectorX() == 1 && g1.getPlayer().getVectorY() == 1,
+          "movePlayer() can move left when at (1,1) into wall");
+  g1.movePlayer(DIR_UP); // Tests moving up
+  t.check(g1.getPlayer().getVectorX() == 1 && g1.getPlayer().getVectorY() == 0,
+          "movePlayer() can't move up when at (1,1)");
+  g1.movePlayer(DIR_DOWN); // Tests moving down
+  t.check(g1.getPlayer().getVectorX() == 1 && g1.getPlayer().getVectorY() == 1,
+          "movePlayer() can't move up when at (1,0)");
+  g1.movePlayer(DIR_DOWN); // Tests moving down
+  t.check(g1.getPlayer().getVectorX() == 1 && g1.getPlayer().getVectorY() == 2,
+          "movePlayer() can't move down when at (1,1)");
+  g1.movePlayer(DIR_DOWN); // Tests not moving down
+  t.check(g1.getPlayer().getVectorX() == 1 && g1.getPlayer().getVectorY() == 2,
+          "movePlayer() can move down when at (1,2) out of bounds");
+  g1.movePlayer(DIR_RIGHT); // Tests not moving right into wall
+  t.check(g1.getPlayer().getVectorX() == 1 && g1.getPlayer().getVectorY() == 2,
+          "movePlayer() can move right when at (1,2) into wall");
+  g1.movePlayer(DIR_LEFT); // Tests moving left
+  t.check(g1.getPlayer().getVectorX() == 0 && g1.getPlayer().getVectorY() == 2,
+          "movePlayer() can't move left when at (1,2)");
+  g1.movePlayer(DIR_UP); // Tests not moving up into wall
+  t.check(g1.getPlayer().getVectorX() == 0 && g1.getPlayer().getVectorY() == 2,
+          "movePlayer() can move up when at (0,2) into wall");
 
   return t.getResult(); // Return pass or fail result
 }
