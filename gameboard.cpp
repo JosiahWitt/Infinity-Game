@@ -163,6 +163,12 @@ bool GameBoard::saveGame(string filename) {
     // Create new json object
     json gameJson;
 
+    // Add game version
+    gameJson["gameVersion"] = GAME_VERSION;
+
+    // Add time saved
+    gameJson["saveTime"] = time(nullptr);
+
     // Add the game dimensions
     gameJson["numBlocksWide"] = numBlocksWide;
     gameJson["numBlocksHigh"] = numBlocksHigh;

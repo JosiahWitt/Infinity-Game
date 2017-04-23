@@ -10,6 +10,10 @@
 #include <random>
 #include <vector>
 
+// Game version (to keep track of save files)
+const int GAME_VERSION = 1;
+
+// Direction to move in game
 enum GameDirection { DIR_UP, DIR_DOWN, DIR_LEFT, DIR_RIGHT };
 
 class GameBoard {
