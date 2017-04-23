@@ -21,7 +21,7 @@ bool gameboardTests_constructors();
 /**
 * Requires: nothing
 * Modifies: nothing
-* Effects: Test getGamePixelWidth() and getGamePixelHight()
+* Effects: Test getGamePixelWidth() and getGamePixelHeight()
 */
 bool gameboardTests_getGamePixelWidthAndHeight();
 

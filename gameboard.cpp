@@ -115,7 +115,9 @@ map<int, map<int, shared_ptr<Block>>> GameBoard::getChanges() const {
 * Effects: Computes and returns the total pixel width or hight
 */
 int GameBoard::getGamePixelWidth() const { return blockWidth * numBlocksWide; }
-int GameBoard::getGamePixelHight() const { return blockHeight * numBlocksHigh; }
+int GameBoard::getGamePixelHeight() const {
+  return blockHeight * numBlocksHigh;
+}
 
 /**
 * Requires: a valid path to save the file to

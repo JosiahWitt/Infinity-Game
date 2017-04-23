@@ -54,22 +54,22 @@ bool gameboardTests_constructors() {
   return t.getResult(); // Return pass or fail result
 }
 
-// Test getGamePixelWidth() and getGamePixelHight()
+// Test getGamePixelWidth() and getGamePixelHeight()
 bool gameboardTests_getGamePixelWidthAndHeight() {
   // Start new testing object
-  Testing t("getGamePixelWidth() and getGamePixelHight()");
+  Testing t("getGamePixelWidth() and getGamePixelHeight()");
 
   // Create an object and check the
   GameBoard g1;
-  t.check(g1.getGamePixelWidth() == 800 && g1.getGamePixelHight() == 600,
+  t.check(g1.getGamePixelWidth() == 800 && g1.getGamePixelHeight() == 600,
           "Default constructor with getGamePixelWidth() and "
-          "getGamePixelHight() didn't work correctly");
+          "getGamePixelHeight() didn't work correctly");
 
   // Create an object and check its values were set correctly
   GameBoard g2(21, 23, 49, 24);
-  t.check(g2.getGamePixelWidth() == 1029 && g2.getGamePixelHight() == 552,
+  t.check(g2.getGamePixelWidth() == 1029 && g2.getGamePixelHeight() == 552,
           "Constructor with accepted values and getGamePixelWidth() and "
-          "getGamePixelHight() didn't work correctly");
+          "getGamePixelHeight() didn't work correctly");
 
   return t.getResult(); // Return pass or fail result
 }

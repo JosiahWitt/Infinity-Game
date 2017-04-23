@@ -58,7 +58,7 @@ public:
   * Effects: Computes and returns the total pixel width or hight
   */
   int getGamePixelWidth() const;
-  int getGamePixelHight() const;
+  int getGamePixelHeight() const;
 
   /**
   * Requires: a valid path to save the file to
