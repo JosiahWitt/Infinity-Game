@@ -56,6 +56,10 @@ GameBoard::GameBoard(int nBlocksWide, int nBlocksHigh, int blockW, int blockH) {
   player.setVectorX(0);
   player.setVectorY(0);
 
+  // Set the player's color and alternate color to blue
+  player.setColor({66 / 255.0, 134 / 255.0, 244 / 255.0});
+  player.setAlternateColor({41 / 255.0, 87 / 255.0, 160 / 255.0});
+
   // Set the (0,0) position to a floor
   changes[0][0] = make_shared<Floor>();
 
