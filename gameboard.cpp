@@ -120,6 +120,30 @@ int GameBoard::getGamePixelHeight() const {
 }
 
 /**
+* Requires: positive vectorX or vectorY
+* Modifies: nothing
+* Effects: Converts the vector coordinate to pixel coordinates
+*/
+int GameBoard::convertVectorXToPixelX(int vectorX) const {
+  // Allow only positive coordinates
+  if (vectorX < 0) {
+    return 0;
+  }
+
+  // Calculate the pixelX position
+  return vectorX * blockWidth;
+}
+int GameBoard::convertVectorYToPixelY(int vectorY) const {
+  // Allow only positive coordinates
+  if (vectorY < 0) {
+    return 0;
+  }
+
+  // Calculate the pixelY position
+  return vectorY * blockHeight;
+}
+
+/**
 * Requires: a valid path to save the file to
 * Modifies: nothing
 * Effects: saves the game to a file

@@ -28,6 +28,13 @@ bool gameboardTests_getGamePixelWidthAndHeight();
 /**
 * Requires: nothing
 * Modifies: nothing
+* Effects: Test convertVectorXToPixelX() and convertVectorYToPixelY()
+*/
+bool gameboardTests_convertVectorToPixel();
+
+/**
+* Requires: nothing
+* Modifies: nothing
 * Effects: Test saveGame() and loadGame()
 */
 bool gameboardTests_saveAndLoad();

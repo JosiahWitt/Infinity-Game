@@ -61,6 +61,14 @@ public:
   int getGamePixelHeight() const;
 
   /**
+  * Requires: positive vectorX or vectorY
+  * Modifies: nothing
+  * Effects: Converts the vector coordinate to pixel coordinates
+  */
+  int convertVectorXToPixelX(int vectorX) const;
+  int convertVectorYToPixelY(int vectorY) const;
+
+  /**
   * Requires: a valid path to save the file to
   * Modifies: nothing
   * Effects: saves the game to a file, returns save status

@@ -10,6 +10,7 @@ bool gameboardTests_run() {
   // Run all tests
   t.check(gameboardTests_constructors());
   t.check(gameboardTests_getGamePixelWidthAndHeight());
+  t.check(gameboardTests_convertVectorToPixel());
   t.check(gameboardTests_saveAndLoad());
   t.check(gameboardTests_generateBoard());
   t.check(gameboardTests_movePlayer());
@@ -59,7 +60,7 @@ bool gameboardTests_getGamePixelWidthAndHeight() {
   // Start new testing object
   Testing t("getGamePixelWidth() and getGamePixelHeight()");
 
-  // Create an object and check the
+  // Create an object and check the default game pixel width and height
   GameBoard g1;
   t.check(g1.getGamePixelWidth() == 800 && g1.getGamePixelHeight() == 600,
           "Default constructor with getGamePixelWidth() and "
@@ -70,6 +71,30 @@ bool gameboardTests_getGamePixelWidthAndHeight() {
   t.check(g2.getGamePixelWidth() == 1029 && g2.getGamePixelHeight() == 552,
           "Constructor with accepted values and getGamePixelWidth() and "
           "getGamePixelHeight() didn't work correctly");
+
+  return t.getResult(); // Return pass or fail result
+}
+
+// Test convertVectorXToPixelX() and convertVectorYToPixelY()
+bool gameboardTests_convertVectorToPixel() {
+  // Start new testing object
+  Testing t("convertVectorXToPixelX() and convertVectorYToPixelY()");
+
+  // Create an object and check if the vector coordinates are converted
+  // to pixel coordinates correctly for negative, 0, and positive cases
+  GameBoard g1(21, 23, 49, 24);
+  t.check(g1.convertVectorXToPixelX(-4) == 0,
+          "Converting X coordinates for negative numbers is not working");
+  t.check(g1.convertVectorYToPixelY(-1) == 0,
+          "Converting Y coordinates for negative numbers is not working");
+  t.check(g1.convertVectorXToPixelX(0) == 0,
+          "Converting X coordinates for 0 is not working");
+  t.check(g1.convertVectorYToPixelY(0) == 0,
+          "Converting Y coordinates for 0 is not working");
+  t.check(g1.convertVectorXToPixelX(2) == 98,
+          "Converting X coordinates for positive numbers is not working");
+  t.check(g1.convertVectorYToPixelY(4) == 96,
+          "Converting Y coordinates for positive numbers is not working");
 
   return t.getResult(); // Return pass or fail result
 }
