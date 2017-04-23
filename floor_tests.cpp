@@ -76,8 +76,8 @@ bool floorTests_toJsonAndFromJson() {
   json j1 = f1.toJson();
   Floor f2;
   f2.fromJson(j1);
-  t.check(f2.getColor().r == 0 && f2.getColor().g == 0 &&
-              f2.getColor().b == 0 && f2.getFloorType() == GrassFloor,
+  t.check(f2.getColor().r == 0 && f2.getColor().g == 123 / 255.0 &&
+              f2.getColor().b == 12 / 255.0 && f2.getFloorType() == GrassFloor,
           "Didn't export and import default JSON correctly.");
 
   // Create an object, change the color, and export and import using json, and

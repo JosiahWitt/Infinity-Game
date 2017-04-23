@@ -1,6 +1,19 @@
 #include "floor.hpp"
 
 /**
+* Requires: nothing
+* Modifies: floorType and color
+* Effects: Create a new floor
+*/
+Floor::Floor() : Floor(GrassFloor) {}
+/**
+* Requires: a floor type
+* Modifies: floorType and color
+* Effects: Create a new floor of a certain type
+*/
+Floor::Floor(FloorType f) { setFloorType(f); }
+
+/**
  * Requires: nothing
  * Modifies: nothing
  * Effects: Returns if the player can move on top of the block
@@ -66,5 +79,5 @@ void Floor::fromJson(json j) {
   Block::fromJson(j);
 
   // Import the floor type
-  floorType = j.at("floorType").get<FloorType>();
+  setFloorType(j.at("floorType").get<FloorType>());
 }

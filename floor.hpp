@@ -8,6 +8,19 @@ enum FloorType { GrassFloor = 1, SandFloor = 2, DirtFloor = 3 };
 class Floor : public Block {
 public:
   /**
+  * Requires: nothing
+  * Modifies: floorType and color
+  * Effects: Create a new floor
+  */
+  Floor();
+  /**
+  * Requires: a floor type
+  * Modifies: floorType and color
+  * Effects: Create a new floor of a certain type
+  */
+  Floor(FloorType f);
+
+  /**
    * Requires: nothing
    * Modifies: nothing
    * Effects: Returns if the player can move on top of the block
@@ -49,7 +62,7 @@ public:
   virtual void fromJson(json j) override;
 
 private:
-  FloorType floorType = GrassFloor;
+  FloorType floorType;
 };
 
 #endif
