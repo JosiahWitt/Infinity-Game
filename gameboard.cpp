@@ -353,22 +353,23 @@ void GameBoard::movePlayer(GameDirection direction) {
 /**
 * Requires: nothing
 * Modifies: nothing
-* Effects: Displays the board to the console
+* Effects: Displays the board to the screen
 */
 void GameBoard::display() const {
   // Loop through the board to print it out
   for (int row = 0; row < numBlocksHigh; row++) {
     for (int column = 0; column < numBlocksWide; column++) {
-      if (board[column][row]->getBlockType() == WallBlock) {
-        cout << "W "; // Wall is W
-      } else if (board[column][row]->getBlockType() == FloorBlock) {
-        cout << "F "; // Floor is F
-      } else {
-        cout << board[column][row]->getBlockType() << " ";
-      }
+      // Draw the block
+      board[column][row]->draw(convertVectorXToPixelX(column),
+                               convertVectorYToPixelY(row), getBlockWidth(),
+                               getBlockHeight());
     }
-    cout << endl;
   }
+
+  // Draw the player
+  player.draw(convertVectorXToPixelX(player.getVectorX()),
+              convertVectorYToPixelY(player.getVectorY()), getBlockWidth(),
+              getBlockHeight());
 }
 
 /**

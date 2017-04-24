@@ -96,7 +96,7 @@ public:
   /**
   * Requires: nothing
   * Modifies: nothing
-  * Effects: Displays the board to the console
+  * Effects: Displays the board to the screen
   */
   void display() const;
 

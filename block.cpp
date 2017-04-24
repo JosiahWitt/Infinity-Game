@@ -1,4 +1,5 @@
 #include "block.hpp"
+#include "gui.hpp"
 
 /**
 * Requires: nothing
@@ -38,7 +39,16 @@ void Block::setColor(Color c) {
 * Effects: Draws the block to the screen at the specified location
 */
 void Block::draw(int pixelX, int pixelY, int width, int height) const {
-  // TODO: Implement drawing when we use graphics
+  // Set the color of the block
+  glColor3f(color.r, color.g, color.b);
+
+  // Draw the block
+  glBegin(GL_QUADS);
+  glVertex2i(pixelX, pixelY);
+  glVertex2i(pixelX + width, pixelY);
+  glVertex2i(pixelX + width, pixelY + width);
+  glVertex2i(pixelX, pixelY + height);
+  glEnd();
 }
 
 /**

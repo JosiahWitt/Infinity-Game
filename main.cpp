@@ -5,6 +5,7 @@
 #include "floor_tests.hpp"
 #include "gameboard.hpp"
 #include "gameboard_tests.hpp"
+#include "gui.hpp"
 #include "player_tests.hpp"
 #include "wall_tests.hpp"
 
@@ -12,20 +13,20 @@ using namespace std;
 
 // These methods are defined below
 void runTests();
-void runGUI();
+void runGUI(int argc, char **argv);
 
 /**
  * Requires: The command line arguments
  * Modifies: everything
  * Effects: Starts the application
 */
-int main(int argc, char const *argv[]) {
+int main(int argc, char **argv) {
   if (argc > 1 && string(argv[1]) == "test") {
     // Run tests
     runTests();
   } else if (argc > 1 && string(argv[1]) == "gui") {
     // Run GUI
-    runGUI();
+    runGUI(argc, argv);
   } else {
     // Present the user with the options
     cout << "Would you like to: " << endl
@@ -53,7 +54,7 @@ int main(int argc, char const *argv[]) {
     case 1:
       // Launch the game
       cout << endl;
-      runGUI();
+      runGUI(argc, argv);
       break;
     case 2:
       // Run tests
@@ -74,7 +75,7 @@ int main(int argc, char const *argv[]) {
            << endl;
       runTests();
       cout << endl;
-      runGUI();
+      runGUI(argc, argv);
     }
   }
 
@@ -134,22 +135,15 @@ void runTests() {
 }
 
 /**
-* Requires: nothing
+* Requires: The command line arguments
 * Modifies: nothing
 * Effects: Launches the game
 */
-void runGUI() {
-  cout << "This will launch Infinity when we add the graphics." << endl;
-  cout
-      << "Right now, it serves as an example that saves and loads instances of "
-         "the game."
-      << endl
-      << endl;
-
+void runGUI(int argc, char **argv) {
   // Present the user with the options
   cout << "Would you like to: " << endl
-       << " 1) Save an instance of the game" << endl
-       << " 2) Load an instance of the game" << endl
+       << " 1) Start New Game" << endl
+       << " 2) Load Existing Game" << endl
        << "Please enter your choice: ";
 
   // Get the user's choice
@@ -173,22 +167,25 @@ void runGUI() {
   switch (option) {
   case 1:
     if (g.saveGame()) {
-      cout << "Saved!" << endl;
+      cout << "Created a new game!" << endl;
+      cout << "Launching Infinity..." << endl;
+
+      // Start the game
+      startGUI(argc, argv, &g);
     } else {
-      cout << "Error saving game. Couldn't open file." << endl;
+      cout << "Error saving game. Couldn't create the file." << endl;
     }
     break;
   case 2:
     if (g.loadGame()) {
-      cout << "Loaded!" << endl;
+      cout << "Game loaded!" << endl;
+      cout << "Launching Infinity..." << endl;
+
+      // Start the game
+      startGUI(argc, argv, &g);
     } else {
       cout << "Error loading game. Couldn't open the file." << endl;
     }
     break;
   }
-
-  cout << endl;
-  cout << "Once graphics are added, we will use a keyboard shortcut to "
-          "save the game while it is running."
-       << endl;
 }
