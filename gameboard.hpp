@@ -94,13 +94,13 @@ public:
   * Effects: moves the player in the direction specified
   */
   void movePlayer(GameDirection direction);
-    
-    /**
-     * Requires: nothing
-     * Modifies: player
-     * Effects: swaps the player color
-     */
-    void swapPlayerColor();
+
+  /**
+   * Requires: nothing
+   * Modifies: player
+   * Effects: swaps the player color
+   */
+  void swapPlayerColor();
 
   /**
   * Requires: positive lastX, lastY, currentX, and currentY

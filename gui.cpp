@@ -19,7 +19,7 @@ Point2D lastCursorPosition;
 // Store if the mouse right button is depressed
 bool isDragging;
 
-// store the time when we last saved
+// Store the time when we last saved
 int lastSave;
 
 /**
@@ -139,29 +139,30 @@ void display() {
 
   // Display the gameboard
   gameboard->display();
-  //display if recently saved
-  displayConfirmation(); 
+
+  // Display if recently saved
+  displayConfirmation();
+
   // Render now
   glFlush();
 }
 
 /**
 * Requires: nothing
-* Modifies: nothing 
+* Modifies: nothing
 * Effects: nothing (confirms save)
 */
 void displayConfirmation() {
-	// Take current time stamp and substract it from the last save
-	// display for 3 seconds.
-	if (time(nullptr) - lastSave < 3) { 
-		string saveMessage = "Game Saved";
-		glColor3f(1, 1, 1);
-		glRasterPos2i(5, 18);
-		for (int i = 0; i < saveMessage.length(); ++i) {
-			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, saveMessage[i]);
-		}
-		
-	}
+  // Take current time stamp and substract it from the last save
+  // display for 3 seconds.
+  if (time(nullptr) - lastSave < 3) {
+    string saveMessage = "Game Saved";
+    glColor3f(1, 1, 1);
+    glRasterPos2i(5, 18);
+    for (int i = 0; i < saveMessage.length(); ++i) {
+      glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, saveMessage[i]);
+    }
+  }
 }
 
 /**
@@ -179,17 +180,18 @@ void kbd(unsigned char key, int x, int y) {
     glutDestroyWindow(wd);
     exit(0);
   }
+
   // Save the game with the s key
   if (key == 's') {
     gameboard->saveGame();
-      lastSave = time(nullptr);
+    lastSave = time(nullptr);
   }
-    
-    // Swap color with spacebar
-    if (key == 32) {
-        gameboard->swapPlayerColor();
-    }
-    
+
+  // Swap color with spacebar
+  if (key == 32) {
+    gameboard->swapPlayerColor();
+  }
+
   glutPostRedisplay();
 
   return;
