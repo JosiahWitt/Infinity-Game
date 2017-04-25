@@ -38,7 +38,7 @@ bool gameboardTests_constructors() {
   // Create an object and check its default constructor worked
   GameBoard g1;
   t.check(g1.getNumBlocksWide() == 30 && g1.getNumBlocksHigh() == 20 &&
-              g1.getBlockWidth() == 35 && g1.getBlockHeight() == 35,
+              g1.getBlockWidth() == 30 && g1.getBlockHeight() == 30,
           "Default constructor didn't work correctly");
 
   // Create an object and check its values were set correctly
@@ -63,7 +63,7 @@ bool gameboardTests_getGamePixelWidthAndHeight() {
 
   // Create an object and check the default game pixel width and height
   GameBoard g1;
-  t.check(g1.getGamePixelWidth() == 1050 && g1.getGamePixelHeight() == 700,
+  t.check(g1.getGamePixelWidth() == 900 && g1.getGamePixelHeight() == 600,
           "Default constructor with getGamePixelWidth() and "
           "getGamePixelHeight() didn't work correctly");
 

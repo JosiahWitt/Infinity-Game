@@ -33,14 +33,14 @@ GameBoard::GameBoard(int nBlocksWide, int nBlocksHigh, int blockW, int blockH) {
 
   // Set the block width
   if (blockW <= 0) {
-    blockWidth = 35; // Default block width
+    blockWidth = 30; // Default block width
   } else {
     blockWidth = blockW;
   }
 
   // Set the block height
   if (blockH <= 0) {
-    blockHeight = 35; // Default block height
+    blockHeight = 30; // Default block height
   } else {
     blockHeight = blockH;
   }
