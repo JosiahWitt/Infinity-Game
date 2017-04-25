@@ -46,7 +46,7 @@ void Block::draw(int pixelX, int pixelY, int width, int height) const {
   glBegin(GL_QUADS);
   glVertex2i(pixelX, pixelY);
   glVertex2i(pixelX + width, pixelY);
-  glVertex2i(pixelX + width, pixelY + width);
+  glVertex2i(pixelX + width, pixelY + height);
   glVertex2i(pixelX, pixelY + height);
   glEnd();
 }

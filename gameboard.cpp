@@ -19,28 +19,28 @@ GameBoard::GameBoard() : GameBoard(0, 0, 0, 0) {}
 GameBoard::GameBoard(int nBlocksWide, int nBlocksHigh, int blockW, int blockH) {
   // Set the number of blocks wide
   if (nBlocksWide <= 0) {
-    numBlocksWide = 16; // Default number of blocks wide
+    numBlocksWide = 30; // Default number of blocks wide
   } else {
     numBlocksWide = nBlocksWide;
   }
 
   // Set the number of blocks high
   if (nBlocksHigh <= 0) {
-    numBlocksHigh = 12; // Default number of blocks high
+    numBlocksHigh = 20; // Default number of blocks high
   } else {
     numBlocksHigh = nBlocksHigh;
   }
 
   // Set the block width
   if (blockW <= 0) {
-    blockWidth = 50; // Default block width
+    blockWidth = 35; // Default block width
   } else {
     blockWidth = blockW;
   }
 
   // Set the block height
   if (blockH <= 0) {
-    blockHeight = 50; // Default block height
+    blockHeight = 35; // Default block height
   } else {
     blockHeight = blockH;
   }

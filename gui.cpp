@@ -42,7 +42,7 @@ void startGUI(int argc, char **argv, GameBoard *g) {
                      gameboard->getGamePixelHeight());
 
   // Position the window's initial top-left corner
-  glutInitWindowPosition(300, 300);
+  glutInitWindowPosition(200, 200);
 
   // create the window and store the handle to it
   wd = glutCreateWindow("Infinity");
