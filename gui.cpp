@@ -156,7 +156,11 @@ void kbd(unsigned char key, int x, int y) {
   if (key == 's') {
     gameboard->saveGame();
   }
-
+    
+    // Swap color with spacebar
+    if (key == 32) {
+        gameboard->swapPlayerColor();
+    }
   glutPostRedisplay();
 
   return;

@@ -57,8 +57,8 @@ GameBoard::GameBoard(int nBlocksWide, int nBlocksHigh, int blockW, int blockH) {
   player.setVectorY(0);
 
   // Set the player's color and alternate color to blue
-  player.setColor({66 / 255.0, 134 / 255.0, 244 / 255.0});
-  player.setAlternateColor({41 / 255.0, 87 / 255.0, 160 / 255.0});
+  player.setColor({30 / 255.0,144 / 255.0 , 1});
+    player.setAlternateColor({1, 215 / 255.0, 0});
 
   // Set the (0,0) position to a floor
   changes[0][0] = make_shared<Floor>();
@@ -366,6 +366,15 @@ void GameBoard::movePlayer(GameDirection direction) {
     // We can move down (no edge or wall blocking)
     player.setVectorY(player.getVectorY() + 1);
   }
+}
+
+/**
+ * Requires: nothing
+ * Modifies: player
+ * Effects: swaps the player color
+ */
+void GameBoard::swapPlayerColor() {
+    player.swapColor();
 }
 
 /**
