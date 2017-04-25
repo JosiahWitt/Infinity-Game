@@ -191,6 +191,19 @@ void kbd(unsigned char key, int x, int y) {
   if (key == 32) {
     gameboard->swapPlayerColor();
   }
+    
+    // Swap floor types/colors
+    switch(key) {
+        case 'd':
+            gameboard->changeFloorTypeUnderPlayer(DirtFloor);
+            break;
+        case 'f':
+            gameboard->changeFloorTypeUnderPlayer(SandFloor);
+            break;
+        case 'g':
+            gameboard->changeFloorTypeUnderPlayer(GrassFloor);
+            break;
+    }
 
   glutPostRedisplay();
 

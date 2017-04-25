@@ -102,6 +102,13 @@ public:
    */
   void swapPlayerColor();
 
+    /**
+     * Requires: nothing
+     * Modifies: floor type
+     * Effects: change the floor type
+     */
+    void changeFloorTypeUnderPlayer(FloorType f);
+    
   /**
   * Requires: positive lastX, lastY, currentX, and currentY
   * Modifies: board and changes

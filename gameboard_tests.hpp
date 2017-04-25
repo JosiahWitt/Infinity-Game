@@ -54,6 +54,14 @@ bool gameboardTests_generateBoard();
 */
 bool gameboardTests_movePlayer();
 
+
+/**
+ * Requires: nothing
+ * Modifies: nothing
+ * Effects: Test changeFloorTypeUnderPlayer()
+ */
+bool gameboardTests_changeFloorTypeUnderPlayer();
+
 /**
 * Requires: nothing
 * Modifies: nothing
