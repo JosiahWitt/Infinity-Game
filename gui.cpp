@@ -9,10 +9,13 @@ struct Point2D {
 
 // Pointer to gameboard
 GameBoard *gameboard;
+
 // Reference to window
 int wd;
+
 // Store the last cursor position
 Point2D lastCursorPosition;
+
 // Store if the mouse right button is depressed
 bool isDragging;
 
@@ -131,9 +134,24 @@ void display() {
 
   // Display the gameboard
   gameboard->display();
-
+  displayConfirmation();
   // Render now
   glFlush();
+}
+
+/**
+* Requires: nothing
+* Modifies: nothing 
+* Effects: nothing (confirms save)
+*/
+void displayConfirmation() {
+	string saveMessage = "Game Saved";
+	glColor3f(1, 1, 1);
+	glRasterPos2i(220, 250);
+	for (int i = 0; i < saveMessage.length(); ++i) {
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, saveMessage[i]);
+	}
+	cout << saveMessage << endl;
 }
 
 /**
@@ -151,11 +169,11 @@ void kbd(unsigned char key, int x, int y) {
     glutDestroyWindow(wd);
     exit(0);
   }
-
   // Save the game with the s key
   if (key == 's') {
     gameboard->saveGame();
-  }
+	displayConfirmation();
+	}
 
   glutPostRedisplay();
 
