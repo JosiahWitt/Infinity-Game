@@ -15,6 +15,8 @@ bool gameboardTests_run() {
   t.check(gameboardTests_generateBoard());
   t.check(gameboardTests_movePlayer());
   t.check(gameboardTests_moveWall());
+  t.check(gameboardTests_addWall());
+  t.check(gameboardTests_removeWall());
 
   // Display pass or fail result
   if (t.getResult()) {
@@ -343,7 +345,7 @@ bool gameboardTests_moveWall() {
               g1.getChanges() == initialChanges,
           "We moved on top of the player");
 
-  // We should return false if we are prevented from a valid move
+  // Check if we are prevented from a valid move
   t.check(g1.moveWall(0, 1, 1, 1), "Something prevented a valid move");
   t.check(g1.getBoard()[0][1]->getBlockType() == FloorBlock,
           "board moved from position is not a floor");
@@ -353,6 +355,97 @@ bool gameboardTests_moveWall() {
           "changes moved from position is not a floor");
   t.check(g1.getChanges()[1][1]->getBlockType() == WallBlock,
           "changes moved to position is not a wall");
+
+  return t.getResult(); // Return pass or fail result
+}
+
+// Test addWall()
+bool gameboardTests_addWall() {
+  // Start new testing object
+  Testing t("addWall()");
+
+  // Create a map of changes
+  map<int, map<int, shared_ptr<Block>>> testChanges;
+  testChanges[1][2] = make_shared<Floor>();
+
+  // Create an object with a custom seed and one change
+  GameBoard g1(3, 3, 1, 1, 42, 0.3, testChanges);
+  // Game map:
+  // F F F
+  // W F F
+  // F F W
+
+  // Store the initial values for the board and changes
+  vector<vector<shared_ptr<Block>>> initialBoard = g1.getBoard();
+  map<int, map<int, shared_ptr<Block>>> initialChanges = g1.getChanges();
+
+  // We should return false if any coordinate is out of bounds
+  t.check(!g1.addWall(3, 1) && g1.getBoard() == initialBoard &&
+              g1.getChanges() == initialChanges,
+          "pixelX can be out of bounds");
+  t.check(!g1.addWall(0, 3) && g1.getBoard() == initialBoard &&
+              g1.getChanges() == initialChanges,
+          "pixelY can be out of bounds");
+
+  // We should return false if the location is not a floor
+  t.check(!g1.addWall(0, 1) && g1.getBoard() == initialBoard &&
+              g1.getChanges() == initialChanges,
+          "We added a wall on a wall");
+
+  // We should return false if we try to add on top of a player
+  t.check(!g1.addWall(0, 0) && g1.getBoard() == initialBoard &&
+              g1.getChanges() == initialChanges,
+          "We moved on top of the player");
+
+  // Check if we are prevented from a valid add
+  t.check(g1.addWall(1, 1), "Something prevented a valid add");
+  t.check(g1.getBoard()[1][1]->getBlockType() == WallBlock,
+          "board at added position is not a wall");
+  t.check(g1.getChanges()[1][1]->getBlockType() == WallBlock,
+          "changes at added position is not a wall");
+
+  return t.getResult(); // Return pass or fail result
+}
+
+// Test removeWall()
+bool gameboardTests_removeWall() {
+  // Start new testing object
+  Testing t("removeWall()");
+
+  // Create a map of changes
+  map<int, map<int, shared_ptr<Block>>> testChanges;
+  testChanges[1][2] = make_shared<Floor>();
+
+  // Create an object with a custom seed and one change
+  GameBoard g1(3, 3, 1, 1, 42, 0.3, testChanges);
+  // Game map:
+  // F F F
+  // W F F
+  // F F W
+
+  // Store the initial values for the board and changes
+  vector<vector<shared_ptr<Block>>> initialBoard = g1.getBoard();
+  map<int, map<int, shared_ptr<Block>>> initialChanges = g1.getChanges();
+
+  // We should return false if any coordinate is out of bounds
+  t.check(!g1.removeWall(3, 1) && g1.getBoard() == initialBoard &&
+              g1.getChanges() == initialChanges,
+          "pixelX can be out of bounds");
+  t.check(!g1.removeWall(0, 3) && g1.getBoard() == initialBoard &&
+              g1.getChanges() == initialChanges,
+          "pixelY can be out of bounds");
+
+  // We should return false if the location is not a wall
+  t.check(!g1.removeWall(1, 1) && g1.getBoard() == initialBoard &&
+              g1.getChanges() == initialChanges,
+          "We removed a floor instead of a wall");
+
+  // Check if we are prevented from a valid remove
+  t.check(g1.removeWall(0, 1), "Something prevented a valid remove");
+  t.check(g1.getBoard()[0][1]->getBlockType() == FloorBlock,
+          "board at remove position is not a floor");
+  t.check(g1.getChanges()[0][1]->getBlockType() == FloorBlock,
+          "changes at remove position is not a floor");
 
   return t.getResult(); // Return pass or fail result
 }

@@ -426,6 +426,77 @@ bool GameBoard::moveWall(int lastX, int lastY, int currentX, int currentY) {
 }
 
 /**
+* Requires: positive pixelX and pixelY
+* Modifies: board and changes
+* Effects: Adds a wall to the current position if we can move on top, boolean
+* return value signifies success
+*/
+bool GameBoard::addWall(int pixelX, int pixelY) {
+  // Convert to vector coordinates (will make them positive)
+  int vectorX = convertPixelXToVectorX(pixelX);
+  int vectorY = convertPixelYToVectorY(pixelY);
+
+  // Make sure all the coordinates are within the board
+  if (vectorX >= board.size() || vectorY >= getNumBlocksHigh()) {
+    return false;
+  }
+
+  // Make sure we can move on top of the new location
+  if (!board[vectorX][vectorY]->canMoveOnTop()) {
+    return false;
+  }
+
+  // Make sure the player isn't at the current location
+  if (player.getVectorX() == vectorX && player.getVectorY() == vectorY) {
+    return false;
+  }
+
+  // Create the wall
+  shared_ptr<Block> wall = make_shared<Wall>();
+
+  // Save the changes
+  changes[vectorX][vectorY] = wall;
+
+  // Update the board
+  board[vectorX][vectorY] = wall;
+
+  return true;
+}
+
+/**
+* Requires: positive pixelX and pixelY
+* Modifies: board and changes
+* Effects: Removes a wall at the current position, boolean return value
+* signifies success
+*/
+bool GameBoard::removeWall(int pixelX, int pixelY) {
+  // Convert to vector coordinates (will make them positive)
+  int vectorX = convertPixelXToVectorX(pixelX);
+  int vectorY = convertPixelYToVectorY(pixelY);
+
+  // Make sure all the coordinates are within the board
+  if (vectorX >= board.size() || vectorY >= getNumBlocksHigh()) {
+    return false;
+  }
+
+  // Make sure the block is a wall
+  if (board[vectorX][vectorY]->getBlockType() != WallBlock) {
+    return false;
+  }
+
+  // Create the floor
+  shared_ptr<Block> floor = make_shared<Floor>();
+
+  // Save the changes
+  changes[vectorX][vectorY] = floor;
+
+  // Update the board
+  board[vectorX][vectorY] = floor;
+
+  return true;
+}
+
+/**
 * Requires: nothing
 * Modifies: nothing
 * Effects: Displays the board to the screen

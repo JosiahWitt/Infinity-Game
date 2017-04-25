@@ -61,4 +61,18 @@ bool gameboardTests_movePlayer();
 */
 bool gameboardTests_moveWall();
 
+/**
+* Requires: nothing
+* Modifies: nothing
+* Effects: Test addWall()
+*/
+bool gameboardTests_addWall();
+
+/**
+* Requires: nothing
+* Modifies: nothing
+* Effects: Test removeWall()
+*/
+bool gameboardTests_removeWall();
+
 #endif
