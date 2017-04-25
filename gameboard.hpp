@@ -65,12 +65,14 @@ public:
   int getGamePixelHeight() const;
 
   /**
-  * Requires: positive vectorX or vectorY
+  * Requires: positive vectorX, vectorY, pixelX, or pixelY
   * Modifies: nothing
-  * Effects: Converts the vector coordinate to pixel coordinates
+  * Effects: Converts the vector coordinate to pixel coordinates or vice versa
   */
   int convertVectorXToPixelX(int vectorX) const;
   int convertVectorYToPixelY(int vectorY) const;
+  int convertPixelXToVectorX(int pixelX) const;
+  int convertPixelYToVectorY(int pixelY) const;
 
   /**
   * Requires: a valid path to save the file to
@@ -92,6 +94,14 @@ public:
   * Effects: moves the player in the direction specified
   */
   void movePlayer(GameDirection direction);
+
+  /**
+  * Requires: positive lastX, lastY, currentX, and currentY
+  * Modifies: board and changes
+  * Effects: Moves the wall located at the last coordinates to the current
+  * coordinates, boolean return value signifies success
+  */
+  bool moveWall(int lastX, int lastY, int currentX, int currentY);
 
   /**
   * Requires: nothing
@@ -119,6 +129,7 @@ private:
   double percentWall;
 
   // Store the 2D vector of pointers to the blocks on the board
+  // Stored as board[column][row]
   vector<vector<shared_ptr<Block>>> board;
 
   // Store a map of changes to the default blocks

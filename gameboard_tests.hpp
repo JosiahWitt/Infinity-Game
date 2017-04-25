@@ -28,9 +28,10 @@ bool gameboardTests_getGamePixelWidthAndHeight();
 /**
 * Requires: nothing
 * Modifies: nothing
-* Effects: Test convertVectorXToPixelX() and convertVectorYToPixelY()
+* Effects: Test convertVectorXToPixelX(), convertVectorYToPixelY(),
+* convertPixelXToVectorX(), and convertPixelYToVectorY()
 */
-bool gameboardTests_convertVectorToPixel();
+bool gameboardTests_convertCoordinates();
 
 /**
 * Requires: nothing
@@ -52,5 +53,12 @@ bool gameboardTests_generateBoard();
 * Effects: Test movePlayer()
 */
 bool gameboardTests_movePlayer();
+
+/**
+* Requires: nothing
+* Modifies: nothing
+* Effects: Test moveWall()
+*/
+bool gameboardTests_moveWall();
 
 #endif

@@ -10,10 +10,11 @@ bool gameboardTests_run() {
   // Run all tests
   t.check(gameboardTests_constructors());
   t.check(gameboardTests_getGamePixelWidthAndHeight());
-  t.check(gameboardTests_convertVectorToPixel());
+  t.check(gameboardTests_convertCoordinates());
   t.check(gameboardTests_saveAndLoad());
   t.check(gameboardTests_generateBoard());
   t.check(gameboardTests_movePlayer());
+  t.check(gameboardTests_moveWall());
 
   // Display pass or fail result
   if (t.getResult()) {
@@ -75,26 +76,40 @@ bool gameboardTests_getGamePixelWidthAndHeight() {
   return t.getResult(); // Return pass or fail result
 }
 
-// Test convertVectorXToPixelX() and convertVectorYToPixelY()
-bool gameboardTests_convertVectorToPixel() {
+// Test convertVectorXToPixelX(), convertVectorYToPixelY(),
+// convertPixelXToVectorX(), and convertPixelYToVectorY()
+bool gameboardTests_convertCoordinates() {
   // Start new testing object
-  Testing t("convertVectorXToPixelX() and convertVectorYToPixelY()");
+  Testing t("convertVectorXToPixelX(), convertVectorYToPixelY(), "
+            "convertPixelXToVectorX(), and convertPixelYToVectorY()");
 
   // Create an object and check if the vector coordinates are converted
   // to pixel coordinates correctly for negative, 0, and positive cases
   GameBoard g1(21, 23, 49, 24);
   t.check(g1.convertVectorXToPixelX(-4) == 0,
-          "Converting X coordinates for negative numbers is not working");
+          "Converting vectorX coordinates for negative numbers is not working");
   t.check(g1.convertVectorYToPixelY(-1) == 0,
-          "Converting Y coordinates for negative numbers is not working");
+          "Converting vectorY coordinates for negative numbers is not working");
+  t.check(g1.convertPixelXToVectorX(-2) == 0,
+          "Converting pixelX coordinates for negative numbers is not working");
+  t.check(g1.convertPixelYToVectorY(-3) == 0,
+          "Converting pixelY coordinates for negative numbers is not working");
   t.check(g1.convertVectorXToPixelX(0) == 0,
-          "Converting X coordinates for 0 is not working");
+          "Converting vectorX coordinates for 0 is not working");
   t.check(g1.convertVectorYToPixelY(0) == 0,
-          "Converting Y coordinates for 0 is not working");
+          "Converting vectorY coordinates for 0 is not working");
+  t.check(g1.convertPixelXToVectorX(0) == 0,
+          "Converting pixelX coordinates for 0 is not working");
+  t.check(g1.convertPixelYToVectorY(0) == 0,
+          "Converting pixelY coordinates for 0 is not working");
   t.check(g1.convertVectorXToPixelX(2) == 98,
-          "Converting X coordinates for positive numbers is not working");
+          "Converting vectorX coordinates for positive numbers is not working");
   t.check(g1.convertVectorYToPixelY(4) == 96,
-          "Converting Y coordinates for positive numbers is not working");
+          "Converting vectorY coordinates for positive numbers is not working");
+  t.check(g1.convertPixelXToVectorX(147) == 3,
+          "Converting pixelX coordinates for positive numbers is not working");
+  t.check(g1.convertPixelYToVectorY(120) == 5,
+          "Converting pixelY coordinates for positive numbers is not working");
 
   return t.getResult(); // Return pass or fail result
 }
@@ -270,6 +285,74 @@ bool gameboardTests_movePlayer() {
   g1.movePlayer(DIR_UP); // Tests not moving up into wall
   t.check(g1.getPlayer().getVectorX() == 0 && g1.getPlayer().getVectorY() == 2,
           "movePlayer() can move up when at (0,2) into wall");
+
+  return t.getResult(); // Return pass or fail result
+}
+
+// Test moveWall()
+bool gameboardTests_moveWall() {
+  // Start new testing object
+  Testing t("moveWall()");
+
+  // Create a map of changes
+  map<int, map<int, shared_ptr<Block>>> testChanges;
+  testChanges[1][2] = make_shared<Floor>();
+
+  // Create an object with a custom seed and one change
+  GameBoard g1(3, 3, 1, 1, 42, 0.3, testChanges);
+  // Game map:
+  // F F F
+  // W F F
+  // F F W
+
+  // Store the initial values for the board and changes
+  vector<vector<shared_ptr<Block>>> initialBoard = g1.getBoard();
+  map<int, map<int, shared_ptr<Block>>> initialChanges = g1.getChanges();
+
+  // We should return false if any coordinate is out of bounds
+  t.check(!g1.moveWall(3, 1, 1, 1) && g1.getBoard() == initialBoard &&
+              g1.getChanges() == initialChanges,
+          "lastX can be out of bounds");
+  t.check(!g1.moveWall(0, 3, 1, 1) && g1.getBoard() == initialBoard &&
+              g1.getChanges() == initialChanges,
+          "lastY can be out of bounds");
+  t.check(!g1.moveWall(0, 0, 3, 1) && g1.getBoard() == initialBoard &&
+              g1.getChanges() == initialChanges,
+          "currentX can be out of bounds");
+  t.check(!g1.moveWall(0, 0, 0, 3) && g1.getBoard() == initialBoard &&
+              g1.getChanges() == initialChanges,
+          "currentY can be out of bounds");
+
+  // We should return false if we are in the same spot
+  t.check(!g1.moveWall(1, 1, 1, 1) && g1.getBoard() == initialBoard &&
+              g1.getChanges() == initialChanges,
+          "We moved even though we shouldn't");
+
+  // We should return false if the old location was not a wall
+  t.check(!g1.moveWall(1, 1, 1, 0) && g1.getBoard() == initialBoard &&
+              g1.getChanges() == initialChanges,
+          "We moved something other than a wall");
+
+  // We should return false if we try to move on top of a wall
+  t.check(!g1.moveWall(0, 1, 2, 2) && g1.getBoard() == initialBoard &&
+              g1.getChanges() == initialChanges,
+          "We moved on top of a wall");
+
+  // We should return false if we try to move on top of a player
+  t.check(!g1.moveWall(0, 1, 0, 0) && g1.getBoard() == initialBoard &&
+              g1.getChanges() == initialChanges,
+          "We moved on top of the player");
+
+  // We should return false if we are prevented from a valid move
+  t.check(g1.moveWall(0, 1, 1, 1), "Something prevented a valid move");
+  t.check(g1.getBoard()[0][1]->getBlockType() == FloorBlock,
+          "board moved from position is not a floor");
+  t.check(g1.getBoard()[1][1]->getBlockType() == WallBlock,
+          "board moved to position is not a wall");
+  t.check(g1.getChanges()[0][1]->getBlockType() == FloorBlock,
+          "changes moved from position is not a floor");
+  t.check(g1.getChanges()[1][1]->getBlockType() == WallBlock,
+          "changes moved to position is not a wall");
 
   return t.getResult(); // Return pass or fail result
 }

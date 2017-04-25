@@ -25,6 +25,13 @@ void startGUI(int argc, char **argv, GameBoard *g);
 
 /**
 * Requires: nothing
+* Modifies: isDragging lastCursorPosition
+* Effects: Prepares the variables
+*/
+void init();
+
+/**
+* Requires: nothing
 * Modifies: GULT
 * Effects: Prepares the GUI
 */

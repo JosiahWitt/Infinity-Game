@@ -1,10 +1,20 @@
 #include "gui.hpp"
 #include <stdlib.h>
 
+// Point 2D struct
+struct Point2D {
+  int x;
+  int y;
+};
+
 // Pointer to gameboard
 GameBoard *gameboard;
 // Reference to window
 int wd;
+// Store the last cursor position
+Point2D lastCursorPosition;
+// Store if the mouse right button is depressed
+bool isDragging;
 
 /**
 * Requires: Command line arguments, and a pointer to a gameboard
@@ -17,6 +27,9 @@ void startGUI(int argc, char **argv, GameBoard *g) {
 
   // Set at exit callback to save the game
   atexit(exitGUI);
+
+  // Initialize the variables
+  init();
 
   // Initialize GLUT
   glutInit(&argc, argv);
@@ -48,7 +61,7 @@ void startGUI(int argc, char **argv, GameBoard *g) {
   glutSpecialFunc(kbdS);
 
   // handles mouse movement
-  glutPassiveMotionFunc(cursor);
+  glutMotionFunc(cursor);
 
   // handles mouse click
   glutMouseFunc(mouse);
@@ -58,6 +71,18 @@ void startGUI(int argc, char **argv, GameBoard *g) {
 
   // Enter the event-processing loop
   glutMainLoop();
+}
+
+/**
+* Requires: nothing
+* Modifies: isDragging lastCursorPosition
+* Effects: Prepares the variables
+*/
+void init() {
+  // We are not dragging
+  isDragging = false;
+  // Last cursor position is (0,0)
+  lastCursorPosition = {0, 0};
 }
 
 /**
@@ -169,7 +194,17 @@ void kbdS(int key, int x, int y) {
 * Modifies: GLUT
 * Effects: Handle "mouse cursor moved" events
 */
-void cursor(int x, int y) { glutPostRedisplay(); }
+void cursor(int x, int y) {
+  // If we are dragging, move the wall
+  if (isDragging) {
+    if (gameboard->moveWall(lastCursorPosition.x, lastCursorPosition.y, x, y)) {
+      // Only update the last cursor position if we successfully moved the block
+      lastCursorPosition = {x, y};
+    }
+  }
+
+  glutPostRedisplay();
+}
 
 /**
 * Requires: GLUT to be setup and mouse info
@@ -179,6 +214,21 @@ void cursor(int x, int y) { glutPostRedisplay(); }
 void mouse(int button, int state, int x, int y) {
   // button will be GLUT_LEFT_BUTTON or GLUT_RIGHT_BUTTON
   // state will be GLUT_UP or GLUT_DOWN
+
+  // Only for the left button
+  if (button == GLUT_LEFT_BUTTON) {
+    if (state == GLUT_DOWN) {
+      // On state down, enable dragging
+      isDragging = true;
+      lastCursorPosition = {x, y};
+    } else if (state == GLUT_UP) {
+      // On state up, disable dragging
+      isDragging = false;
+      // Save the game
+      gameboard->saveGame();
+    }
+  }
+
   glutPostRedisplay();
 }
 

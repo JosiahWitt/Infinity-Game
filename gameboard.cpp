@@ -124,9 +124,9 @@ int GameBoard::getGamePixelHeight() const {
 }
 
 /**
-* Requires: positive vectorX or vectorY
+* Requires: positive vectorX, vectorY, pixelX, or pixelY
 * Modifies: nothing
-* Effects: Converts the vector coordinate to pixel coordinates
+* Effects: Converts the vector coordinate to pixel coordinates or vice versa
 */
 int GameBoard::convertVectorXToPixelX(int vectorX) const {
   // Allow only positive coordinates
@@ -145,6 +145,24 @@ int GameBoard::convertVectorYToPixelY(int vectorY) const {
 
   // Calculate the pixelY position
   return vectorY * blockHeight;
+}
+int GameBoard::convertPixelXToVectorX(int pixelX) const {
+  // Allow only positive coordinates
+  if (pixelX < 0) {
+    return 0;
+  }
+
+  // Calculate the pixelX position
+  return pixelX / blockWidth;
+}
+int GameBoard::convertPixelYToVectorY(int pixelY) const {
+  // Allow only positive coordinates
+  if (pixelY < 0) {
+    return 0;
+  }
+
+  // Calculate the pixelY position
+  return pixelY / blockHeight;
 }
 
 /**
@@ -348,6 +366,63 @@ void GameBoard::movePlayer(GameDirection direction) {
     // We can move down (no edge or wall blocking)
     player.setVectorY(player.getVectorY() + 1);
   }
+}
+
+/**
+* Requires: positive lastX, lastY, currentX, and currentY
+* Modifies: board and changes
+* Effects: Moves the wall located at the last coordinates to the current
+* coordinates, boolean return value signifies if we moved
+*/
+bool GameBoard::moveWall(int lastX, int lastY, int currentX, int currentY) {
+  // Convert to vector coordinates (will make them positive)
+  int lastVectorX = convertPixelXToVectorX(lastX);
+  int lastVectorY = convertPixelYToVectorY(lastY);
+  int currentVectorX = convertPixelXToVectorX(currentX);
+  int currentVectorY = convertPixelYToVectorY(currentY);
+
+  // Make sure all the coordinates are within the board
+  if (lastVectorX >= board.size() || lastVectorY >= getNumBlocksHigh() ||
+      currentVectorX >= board.size() || currentVectorY >= getNumBlocksHigh()) {
+    return false;
+  }
+
+  // Make sure we aren't moving to the same vector location
+  if (lastVectorX == currentVectorX && lastVectorY == currentVectorY) {
+    return false;
+  }
+
+  // Make sure the old location is a wall
+  if (board[lastVectorX][lastVectorY]->getBlockType() != WallBlock) {
+    return false;
+  }
+
+  // Make sure we can move on top of the new location
+  if (!board[currentVectorX][currentVectorY]->canMoveOnTop()) {
+    return false;
+  }
+
+  // Make sure the player isn't at the current location
+  if (player.getVectorX() == currentVectorX &&
+      player.getVectorY() == currentVectorY) {
+    return false;
+  }
+
+  // Create the floor to replace the wall
+  shared_ptr<Block> floor = make_shared<Floor>();
+
+  // Grab the pointer to the wall
+  shared_ptr<Block> wall = board[lastVectorX][lastVectorY];
+
+  // Save the changes
+  changes[lastVectorX][lastVectorY] = floor;
+  changes[currentVectorX][currentVectorY] = wall;
+
+  // Update the board
+  board[lastVectorX][lastVectorY] = floor;
+  board[currentVectorX][currentVectorY] = wall;
+
+  return true;
 }
 
 /**
