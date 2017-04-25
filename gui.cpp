@@ -19,6 +19,9 @@ Point2D lastCursorPosition;
 // Store if the mouse right button is depressed
 bool isDragging;
 
+// store the time when we last saved
+int lastSave;
+
 /**
 * Requires: Command line arguments, and a pointer to a gameboard
 * Modifies: everything
@@ -86,6 +89,8 @@ void init() {
   isDragging = false;
   // Last cursor position is (0,0)
   lastCursorPosition = {0, 0};
+  // Store current time
+  lastSave = 0;
 }
 
 /**
@@ -134,7 +139,8 @@ void display() {
 
   // Display the gameboard
   gameboard->display();
-  displayConfirmation();
+  //display if recently saved
+  displayConfirmation(); 
   // Render now
   glFlush();
 }
@@ -145,13 +151,17 @@ void display() {
 * Effects: nothing (confirms save)
 */
 void displayConfirmation() {
-	string saveMessage = "Game Saved";
-	glColor3f(1, 1, 1);
-	glRasterPos2i(220, 250);
-	for (int i = 0; i < saveMessage.length(); ++i) {
-		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, saveMessage[i]);
+	// Take current time stamp and substract it from the last save
+	// display for 3 seconds.
+	if (time(nullptr) - lastSave < 3) { 
+		string saveMessage = "Game Saved";
+		glColor3f(1, 1, 1);
+		glRasterPos2i(5, 18);
+		for (int i = 0; i < saveMessage.length(); ++i) {
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, saveMessage[i]);
+		}
+		
 	}
-	cout << saveMessage << endl;
 }
 
 /**
@@ -172,7 +182,7 @@ void kbd(unsigned char key, int x, int y) {
   // Save the game with the s key
   if (key == 's') {
     gameboard->saveGame();
-	displayConfirmation();
+	lastSave = time(nullptr);
 	}
 
   glutPostRedisplay();

@@ -55,6 +55,13 @@ void exitGUI();
 void display(void);
 
 /**
+* Requires: nothing
+* Modifies: nothing
+* Effects: nothing (confirms save)
+*/
+void displayConfirmation();
+
+/**
 * Requires: GLUT to be setup and key info
 * Modifies: GLUT
 * Effects: Trap and process keyboard events
