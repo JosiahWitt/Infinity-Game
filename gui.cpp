@@ -236,12 +236,24 @@ void mouse(int button, int state, int x, int y) {
   // Only for the left button
   if (button == GLUT_LEFT_BUTTON) {
     if (state == GLUT_DOWN) {
+      // Add a wall
+      gameboard->addWall(x, y);
       // On state down, enable dragging
       isDragging = true;
       lastCursorPosition = {x, y};
     } else if (state == GLUT_UP) {
       // On state up, disable dragging
       isDragging = false;
+      // Save the game
+      gameboard->saveGame();
+    }
+  }
+
+  // Only for right button
+  if (button == GLUT_RIGHT_BUTTON) {
+    if (state == GLUT_DOWN) {
+      // Remove a wall
+      gameboard->removeWall(x, y);
       // Save the game
       gameboard->saveGame();
     }

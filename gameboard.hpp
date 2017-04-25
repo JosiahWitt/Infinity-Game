@@ -104,6 +104,22 @@ public:
   bool moveWall(int lastX, int lastY, int currentX, int currentY);
 
   /**
+  * Requires: positive pixelX and pixelY
+  * Modifies: board and changes
+  * Effects: Adds a wall to the current position if we can move on top, boolean
+  * return value signifies success
+  */
+  bool addWall(int pixelX, int pixelY);
+
+  /**
+  * Requires: positive pixelX and pixelY
+  * Modifies: board and changes
+  * Effects: Removes a wall at the current position, boolean return value
+  * signifies success
+  */
+  bool removeWall(int pixelX, int pixelY);
+
+  /**
   * Requires: nothing
   * Modifies: nothing
   * Effects: Displays the board to the screen
