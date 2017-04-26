@@ -1,5 +1,9 @@
 #include "gui.hpp"
 #include <stdlib.h>
+#include <Windows.h>
+#include <mmsystem.h>
+#include <iostream>
+#pragma comment(lib, "winmm.lib")
 
 // Point 2D struct
 struct Point2D {
@@ -143,6 +147,7 @@ void display() {
   // Display if recently saved
   displayConfirmation();
 
+
   // Render now
   glFlush();
 }
@@ -155,10 +160,10 @@ void display() {
 void displayConfirmation() {
   // Take current time stamp and substract it from the last save
   // display for 3 seconds.
-  if (time(nullptr) - lastSave < 3) {
+  if (time(nullptr) - lastSave < 1) {
     string saveMessage = "Game Saved";
     glColor3f(1, 1, 1);
-    glRasterPos2i(5, 18);
+	glRasterPos2i(5, 18);
     for (int i = 0; i < saveMessage.length(); ++i) {
       glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, saveMessage[i]);
     }
@@ -196,13 +201,17 @@ void kbd(unsigned char key, int x, int y) {
     switch(key) {
         case 'd':
             gameboard->changeFloorTypeUnderPlayer(DirtFloor);
+			PlaySound(TEXT("blaster-firing.wav"), NULL, SND_FILENAME);
             break;
         case 'f':
             gameboard->changeFloorTypeUnderPlayer(SandFloor);
+			PlaySound(TEXT("blaster-firing.wav"), NULL, SND_FILENAME); 
             break;
         case 'g':
             gameboard->changeFloorTypeUnderPlayer(GrassFloor);
+			PlaySound(TEXT("blaster-firing.wav"), NULL, SND_FILENAME);
             break;
+
     }
 
   glutPostRedisplay();
