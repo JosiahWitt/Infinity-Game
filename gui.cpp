@@ -1,9 +1,5 @@
 #include "gui.hpp"
 #include <stdlib.h>
-#include <Windows.h>
-#include <mmsystem.h>
-#include <iostream>
-#pragma comment(lib, "winmm.lib")
 
 // Point 2D struct
 struct Point2D {
@@ -93,7 +89,7 @@ void init() {
   isDragging = false;
   // Last cursor position is (0,0)
   lastCursorPosition = {0, 0};
-  // Store current time
+  // Set last save time to 0
   lastSave = 0;
 }
 
@@ -147,7 +143,6 @@ void display() {
   // Display if recently saved
   displayConfirmation();
 
-
   // Render now
   glFlush();
 }
@@ -163,7 +158,7 @@ void displayConfirmation() {
   if (time(nullptr) - lastSave < 1) {
     string saveMessage = "Game Saved";
     glColor3f(1, 1, 1);
-	glRasterPos2i(5, 18);
+    glRasterPos2i(5, 18);
     for (int i = 0; i < saveMessage.length(); ++i) {
       glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, saveMessage[i]);
     }
@@ -196,23 +191,19 @@ void kbd(unsigned char key, int x, int y) {
   if (key == 32) {
     gameboard->swapPlayerColor();
   }
-    
-    // Swap floor types/colors
-    switch(key) {
-        case 'd':
-            gameboard->changeFloorTypeUnderPlayer(DirtFloor);
-			PlaySound(TEXT("blaster-firing.wav"), NULL, SND_FILENAME);
-            break;
-        case 'f':
-            gameboard->changeFloorTypeUnderPlayer(SandFloor);
-			PlaySound(TEXT("blaster-firing.wav"), NULL, SND_FILENAME); 
-            break;
-        case 'g':
-            gameboard->changeFloorTypeUnderPlayer(GrassFloor);
-			PlaySound(TEXT("blaster-firing.wav"), NULL, SND_FILENAME);
-            break;
 
-    }
+  // Swap floor types/colors
+  switch (key) {
+  case 'd':
+    gameboard->changeFloorTypeUnderPlayer(DirtFloor);
+    break;
+  case 'f':
+    gameboard->changeFloorTypeUnderPlayer(SandFloor);
+    break;
+  case 'g':
+    gameboard->changeFloorTypeUnderPlayer(GrassFloor);
+    break;
+  }
 
   glutPostRedisplay();
 

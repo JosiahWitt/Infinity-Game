@@ -381,13 +381,16 @@ void GameBoard::swapPlayerColor() { player.swapColor(); }
  * Effects: change the floor type
  */
 void GameBoard::changeFloorTypeUnderPlayer(FloorType f) {
-    // If the block below the player is a floor
-    if (board[player.getVectorX()][player.getVectorY()]->getBlockType() == FloorBlock) {
-        // Change the floor type (need to cast to a floor pointer first)
-        dynamic_pointer_cast<Floor>(board[player.getVectorX()][player.getVectorY()])->setFloorType(f);
-        // Update the changes map at that location with the changed floor
-        changes[player.getVectorX()][player.getVectorY()] = board[player.getVectorX()][player.getVectorY()];
-    }
+  // If the block below the player is a floor
+  if (board[player.getVectorX()][player.getVectorY()]->getBlockType() ==
+      FloorBlock) {
+    // Change the floor type (need to cast to a floor pointer first)
+    dynamic_pointer_cast<Floor>(board[player.getVectorX()][player.getVectorY()])
+        ->setFloorType(f);
+    // Update the changes map at that location with the changed floor
+    changes[player.getVectorX()][player.getVectorY()] =
+        board[player.getVectorX()][player.getVectorY()];
+  }
 }
 
 /**
