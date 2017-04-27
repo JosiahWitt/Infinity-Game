@@ -43,7 +43,7 @@ bool gameboardTests_saveAndLoad();
 /**
 * Requires: nothing
 * Modifies: nothing
-* Effects: Test generateBoard()
+* Effects: Test generateBoard() (and generateColumn() - tested indirectly)
 */
 bool gameboardTests_generateBoard();
 
@@ -53,7 +53,6 @@ bool gameboardTests_generateBoard();
 * Effects: Test movePlayer()
 */
 bool gameboardTests_movePlayer();
-
 
 /**
  * Requires: nothing

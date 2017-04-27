@@ -149,11 +149,17 @@ private:
   int blockWidth;
   int blockHeight;
 
+  // Left edge of the display window
+  int leftDisplayEdge;
+
   // Store the seed used to generate the board
   int seed;
 
   // Store the random object
   mt19937 rand;
+
+  // Generate a new distribution engine to consume the random object
+  uniform_real_distribution<> dist;
 
   // Store the percent (in decimal) for the amount of random wall
   double percentWall;
@@ -175,6 +181,13 @@ private:
   * Effects: generates the board based on the seed
   */
   void generateBoard();
+
+  /**
+  * Requires: nothing
+  * Modifies: board
+  * Effects: generates a new column for the board based on the seed
+  */
+  void generateColumn();
 };
 
 #endif

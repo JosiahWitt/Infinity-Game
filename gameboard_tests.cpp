@@ -14,7 +14,7 @@ bool gameboardTests_run() {
   t.check(gameboardTests_saveAndLoad());
   t.check(gameboardTests_generateBoard());
   t.check(gameboardTests_movePlayer());
-    t.check(gameboardTests_changeFloorTypeUnderPlayer());
+  t.check(gameboardTests_changeFloorTypeUnderPlayer());
   t.check(gameboardTests_moveWall());
   t.check(gameboardTests_addWall());
   t.check(gameboardTests_removeWall());
@@ -176,10 +176,10 @@ bool gameboardTests_saveAndLoad() {
   return t.getResult(); // Return pass or fail result
 }
 
-// Test generateBoard()
+// Test generateBoard() (and generateColumn() - tested indirectly)
 bool gameboardTests_generateBoard() {
   // Start new testing object
-  Testing t("generateBoard()");
+  Testing t("generateBoard() (and generateColumn())");
 
   // Create an object with a custom seed
   GameBoard g1(2, 3, 20, 20, 42, 0.3);
@@ -297,40 +297,44 @@ bool gameboardTests_movePlayer() {
  * Modifies: nothing
  * Effects: Test changeFloorTypeUnderPlayer()
  */
-bool gameboardTests_changeFloorTypeUnderPlayer(){
-    // Start new testing object
-    Testing t("changeFloorTypeUnderPlayer()");
-    
-    // Create a map of changes
-    map<int, map<int, shared_ptr<Block>>> testChanges;
-    testChanges[1][2] = make_shared<Floor>();
-    
-    // Create an object with a custom seed and one change
-    GameBoard g1(3, 3, 1, 1, 42, 0.3, testChanges);
-    // Game map:
-    // F F F
-    // W F F
-    // F F W
-    
-    // Store the initial values for the board and changes
-    vector<vector<shared_ptr<Block>>> initialBoard = g1.getBoard();
-    map<int, map<int, shared_ptr<Block>>> initialChanges = g1.getChanges();
-    
-    // Check to make sure each floor type changes
-    t.check(dynamic_pointer_cast<Floor>(g1.getBoard()[0][0])->getFloorType() == GrassFloor,
-            "Default floor isn't grass");
-    g1.changeFloorTypeUnderPlayer(DirtFloor);
-    t.check(dynamic_pointer_cast<Floor>(g1.getBoard()[0][0])->getFloorType() == DirtFloor,
-            "Floor didn't change to dirt");
-    g1.changeFloorTypeUnderPlayer(GrassFloor);
-    t.check(dynamic_pointer_cast<Floor>(g1.getBoard()[0][0])->getFloorType() == GrassFloor,
-            "Floor didn't change to grass");
-    g1.movePlayer(DIR_RIGHT);
-    g1.changeFloorTypeUnderPlayer(SandFloor);
-    t.check(dynamic_pointer_cast<Floor>(g1.getBoard()[1][0])->getFloorType() == SandFloor,
-            "Floor didn't change to sand");
-    
-    return t.getResult(); // Return pass or fail result
+bool gameboardTests_changeFloorTypeUnderPlayer() {
+  // Start new testing object
+  Testing t("changeFloorTypeUnderPlayer()");
+
+  // Create a map of changes
+  map<int, map<int, shared_ptr<Block>>> testChanges;
+  testChanges[1][2] = make_shared<Floor>();
+
+  // Create an object with a custom seed and one change
+  GameBoard g1(3, 3, 1, 1, 42, 0.3, testChanges);
+  // Game map:
+  // F F F
+  // W F F
+  // F F W
+
+  // Store the initial values for the board and changes
+  vector<vector<shared_ptr<Block>>> initialBoard = g1.getBoard();
+  map<int, map<int, shared_ptr<Block>>> initialChanges = g1.getChanges();
+
+  // Check to make sure each floor type changes
+  t.check(dynamic_pointer_cast<Floor>(g1.getBoard()[0][0])->getFloorType() ==
+              GrassFloor,
+          "Default floor isn't grass");
+  g1.changeFloorTypeUnderPlayer(DirtFloor);
+  t.check(dynamic_pointer_cast<Floor>(g1.getBoard()[0][0])->getFloorType() ==
+              DirtFloor,
+          "Floor didn't change to dirt");
+  g1.changeFloorTypeUnderPlayer(GrassFloor);
+  t.check(dynamic_pointer_cast<Floor>(g1.getBoard()[0][0])->getFloorType() ==
+              GrassFloor,
+          "Floor didn't change to grass");
+  g1.movePlayer(DIR_RIGHT);
+  g1.changeFloorTypeUnderPlayer(SandFloor);
+  t.check(dynamic_pointer_cast<Floor>(g1.getBoard()[1][0])->getFloorType() ==
+              SandFloor,
+          "Floor didn't change to sand");
+
+  return t.getResult(); // Return pass or fail result
 }
 
 // Test moveWall()

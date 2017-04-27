@@ -45,6 +45,9 @@ GameBoard::GameBoard(int nBlocksWide, int nBlocksHigh, int blockW, int blockH) {
     blockHeight = blockH;
   }
 
+  // Set the left edge of the display window to 0
+  leftDisplayEdge = 0;
+
   // Initialize the seed to the current timestamp
   seed = time(nullptr);
   rand.seed(seed);
@@ -197,6 +200,9 @@ bool GameBoard::saveGame(string filename) {
     gameJson["blockWidth"] = blockWidth;
     gameJson["blockHeight"] = blockHeight;
 
+    // Save the left display edge
+    gameJson["leftDisplayEdge"] = leftDisplayEdge;
+
     // Add the seed
     gameJson["seed"] = seed;
 
@@ -268,6 +274,18 @@ bool GameBoard::loadGame(string filename) {
       blockHeight = gameJson.at("blockHeight").get<int>();
     } catch (exception e) {
       cout << "Syntax invalid for save file... Error loading game dimensions..."
+           << endl;
+      isLoaded = false;
+    }
+
+    // Load left display edge - defaults to 0 if not in file
+    try {
+      if (gameJson.count("leftDisplayEdge") > 0) {
+        leftDisplayEdge = gameJson.at("leftDisplayEdge").get<int>();
+      }
+    } catch (exception e) {
+      cout << "Syntax invalid for save file... Error loading left display "
+              "edge..."
            << endl;
       isLoaded = false;
     }
@@ -345,15 +363,30 @@ bool GameBoard::loadGame(string filename) {
 * Effects: moves the player in the direction specified
 */
 void GameBoard::movePlayer(GameDirection direction) {
-  if (direction == DIR_LEFT && player.getVectorX() > 0 &&
+  if (direction == DIR_LEFT && player.getVectorX() > leftDisplayEdge &&
       board[player.getVectorX() - 1][player.getVectorY()]->canMoveOnTop()) {
     // We can move to the left (no edge or wall blocking)
+    if ((player.getVectorX() - leftDisplayEdge) / (double)numBlocksWide <
+            0.25 &&
+        leftDisplayEdge > 0) {
+      // Scroll board
+      leftDisplayEdge--;
+    }
+    // Move player to the left
     player.setVectorX(player.getVectorX() - 1);
-  } else if (direction == DIR_RIGHT &&
-             player.getVectorX() < numBlocksWide - 1 &&
+  } else if (direction == DIR_RIGHT && player.getVectorX() < board.size() - 1 &&
              board[player.getVectorX() + 1][player.getVectorY()]
                  ->canMoveOnTop()) {
     // We can move to the right (no edge or wall blocking)
+    if ((leftDisplayEdge + numBlocksWide - player.getVectorX()) /
+            (double)numBlocksWide <
+        0.25) {
+      // Scroll board
+      leftDisplayEdge++;
+      // Generate an extra column
+      generateColumn();
+    }
+    // Move player to the right
     player.setVectorX(player.getVectorX() + 1);
   } else if (direction == DIR_UP && player.getVectorY() > 0 &&
              board[player.getVectorX()][player.getVectorY() - 1]
@@ -401,9 +434,9 @@ void GameBoard::changeFloorTypeUnderPlayer(FloorType f) {
 */
 bool GameBoard::moveWall(int lastX, int lastY, int currentX, int currentY) {
   // Convert to vector coordinates (will make them positive)
-  int lastVectorX = convertPixelXToVectorX(lastX);
+  int lastVectorX = convertPixelXToVectorX(lastX) + leftDisplayEdge;
   int lastVectorY = convertPixelYToVectorY(lastY);
-  int currentVectorX = convertPixelXToVectorX(currentX);
+  int currentVectorX = convertPixelXToVectorX(currentX) + leftDisplayEdge;
   int currentVectorY = convertPixelYToVectorY(currentY);
 
   // Make sure all the coordinates are within the board
@@ -458,7 +491,7 @@ bool GameBoard::moveWall(int lastX, int lastY, int currentX, int currentY) {
 */
 bool GameBoard::addWall(int pixelX, int pixelY) {
   // Convert to vector coordinates (will make them positive)
-  int vectorX = convertPixelXToVectorX(pixelX);
+  int vectorX = convertPixelXToVectorX(pixelX) + leftDisplayEdge;
   int vectorY = convertPixelYToVectorY(pixelY);
 
   // Make sure all the coordinates are within the board
@@ -496,7 +529,7 @@ bool GameBoard::addWall(int pixelX, int pixelY) {
 */
 bool GameBoard::removeWall(int pixelX, int pixelY) {
   // Convert to vector coordinates (will make them positive)
-  int vectorX = convertPixelXToVectorX(pixelX);
+  int vectorX = convertPixelXToVectorX(pixelX) + leftDisplayEdge;
   int vectorY = convertPixelYToVectorY(pixelY);
 
   // Make sure all the coordinates are within the board
@@ -531,14 +564,14 @@ void GameBoard::display() const {
   for (int row = 0; row < numBlocksHigh; row++) {
     for (int column = 0; column < numBlocksWide; column++) {
       // Draw the block
-      board[column][row]->draw(convertVectorXToPixelX(column),
-                               convertVectorYToPixelY(row), getBlockWidth(),
-                               getBlockHeight());
+      board[column + leftDisplayEdge][row]->draw(
+          convertVectorXToPixelX(column), convertVectorYToPixelY(row),
+          getBlockWidth(), getBlockHeight());
     }
   }
 
   // Draw the player
-  player.draw(convertVectorXToPixelX(player.getVectorX()),
+  player.draw(convertVectorXToPixelX(player.getVectorX() - leftDisplayEdge),
               convertVectorYToPixelY(player.getVectorY()), getBlockWidth(),
               getBlockHeight());
 }
@@ -549,28 +582,42 @@ void GameBoard::display() const {
 * Effects: generates the board based on the seed
 */
 void GameBoard::generateBoard() {
-  // Generate a new distribution engine
-  uniform_real_distribution<> dist;
-
   // Clear the current board
   board.clear();
 
-  for (int column = 0; column < numBlocksWide; column++) {
-    // Create a new column
-    board.push_back(vector<shared_ptr<Block>>());
-    for (int row = 0; row < numBlocksHigh; row++) {
-      // If there is an existing block for here in the changes map, use it
-      if (changes.find(column) != changes.end() &&
-          changes[column].find(row) != changes[column].end()) {
-        board[column].push_back(changes[column][row]); // Add to the board
-        dist(rand); // Eat the random value for this location
+  // Generate enough columns to display past the player and the right edge
+  for (int column = 0;
+       column < max(player.getVectorX(), leftDisplayEdge) + numBlocksWide + 1;
+       column++) {
+    generateColumn();
+  }
+}
+
+/**
+* Requires: nothing
+* Modifies: board
+* Effects: generates a new column for the board based on the seed
+*/
+void GameBoard::generateColumn() {
+  // Create a new column
+  board.push_back(vector<shared_ptr<Block>>());
+
+  // The column number is the size of the board
+  int column = board.size() - 1;
+
+  // Add rows to the column
+  for (int row = 0; row < numBlocksHigh; row++) {
+    // If there is an existing block for here in the changes map, use it
+    if (changes.find(column) != changes.end() &&
+        changes[column].find(row) != changes[column].end()) {
+      board[column].push_back(changes[column][row]); // Add to the board
+      dist(rand); // Eat the random value for this location
+    } else {
+      // Randomly create a new block for the board
+      if (dist(rand) <= percentWall) {
+        board[column].push_back(make_shared<Wall>());
       } else {
-        // Randomly create a new block for the board
-        if (dist(rand) <= percentWall) {
-          board[column].push_back(make_shared<Wall>());
-        } else {
-          board[column].push_back(make_shared<Floor>());
-        }
+        board[column].push_back(make_shared<Floor>());
       }
     }
   }
