@@ -44,8 +44,7 @@ void startGUI(int argc, char **argv, GameBoard *g) {
   glutInitDisplayMode(GLUT_RGBA);
 
   // Set the window size based on the board size
-  glutInitWindowSize(gameboard->getGamePixelWidth(),
-                     gameboard->getGamePixelHeight());
+  glutInitWindowSize(gameboard->getGamePixelWidth(), gameboard->getGamePixelHeight());
 
   // Position the window's initial top-left corner
   glutInitWindowPosition(200, 200);
@@ -121,15 +120,13 @@ void exitGUI() {
 */
 void display() {
   // Use the whole window for drawing
-  glViewport(0, 0, gameboard->getGamePixelWidth(),
-             gameboard->getGamePixelHeight());
+  glViewport(0, 0, gameboard->getGamePixelWidth(), gameboard->getGamePixelHeight());
 
   // Do an orthographic parallel projection with the coordinate
   // system set to first quadrant, limited by screen/window size
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  glOrtho(0.0, gameboard->getGamePixelWidth(), gameboard->getGamePixelHeight(),
-          0.0, -1.f, 1.f);
+  glOrtho(0.0, gameboard->getGamePixelWidth(), gameboard->getGamePixelHeight(), 0.0, -1.f, 1.f);
 
   // Clear the color buffer with background color
   glClear(GL_COLOR_BUFFER_BIT);

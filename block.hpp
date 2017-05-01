@@ -12,7 +12,9 @@ struct Color {
   double r, g, b;
 
   // Convert the color to json
-  json toJson() const { return {{"r", r}, {"g", g}, {"b", b}}; }
+  json toJson() const {
+    return {{"r", r}, {"g", g}, {"b", b}};
+  }
 };
 
 // Type of the block

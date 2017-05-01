@@ -29,10 +29,7 @@ int main(int argc, char **argv) {
     runGUI(argc, argv);
   } else {
     // Present the user with the options
-    cout << "Would you like to: " << endl
-         << " 1) Launch the game" << endl
-         << " 2) Run tests" << endl
-         << "Please enter your choice: ";
+    cout << "Would you like to: " << endl << " 1) Launch the game" << endl << " 2) Run tests" << endl << "Please enter your choice: ";
 
     // Get the user's choice
     int option;
@@ -45,8 +42,7 @@ int main(int argc, char **argv) {
       getline(cin, junk);
 
       // Ask the user to try again
-      cout
-          << "I'm sorry, I couldn't understand that option, please try again: ";
+      cout << "I'm sorry, I couldn't understand that option, please try again: ";
     }
 
     // Take the specified action
@@ -64,8 +60,7 @@ int main(int argc, char **argv) {
     case 42:
       // Bonus mode
       cout << endl;
-      cout << "You found the bonus mode! Unlocking Infinity and Beyond..."
-           << endl;
+      cout << "You found the bonus mode! Unlocking Infinity and Beyond..." << endl;
       cout << "Actually, it doesn't do anything special at the moment, except "
               "run both the tests and the game."
            << endl;
@@ -96,41 +91,29 @@ void runTests() {
 
   t.check(gameboardTests_run());
 
-  cout << endl
-       << "--------------------------------------------" << endl
-       << endl;
+  cout << endl << "--------------------------------------------" << endl << endl;
 
   t.check(blockTests_run());
 
-  cout << endl
-       << "--------------------------------------------" << endl
-       << endl;
+  cout << endl << "--------------------------------------------" << endl << endl;
 
   t.check(playerTests_run());
 
-  cout << endl
-       << "--------------------------------------------" << endl
-       << endl;
+  cout << endl << "--------------------------------------------" << endl << endl;
 
   t.check(floorTests_run());
 
-  cout << endl
-       << "--------------------------------------------" << endl
-       << endl;
+  cout << endl << "--------------------------------------------" << endl << endl;
 
   t.check(wallTests_run());
 
-  cout << endl
-       << "--------------------------------------------" << endl
-       << endl;
+  cout << endl << "--------------------------------------------" << endl << endl;
 
   // Display pass or fail result
   if (t.getResult()) {
-    cout << "*** Done testing. All " << t.getNumTested()
-         << " test sections passed! ***" << endl;
+    cout << "*** Done testing. All " << t.getNumTested() << " test sections passed! ***" << endl;
   } else {
-    cout << "*** Failed " << t.getNumFailed() << "/" << t.getNumTested()
-         << " test section(s). See message(s) above. ***" << endl;
+    cout << "*** Failed " << t.getNumFailed() << "/" << t.getNumTested() << " test section(s). See message(s) above. ***" << endl;
   }
 }
 
@@ -141,10 +124,7 @@ void runTests() {
 */
 void runGUI(int argc, char **argv) {
   // Present the user with the options
-  cout << "Would you like to: " << endl
-       << " 1) Start New Game" << endl
-       << " 2) Load Existing Game" << endl
-       << "Please enter your choice: ";
+  cout << "Would you like to: " << endl << " 1) Start New Game" << endl << " 2) Load Existing Game" << endl << "Please enter your choice: ";
 
   // Get the user's choice
   int option;

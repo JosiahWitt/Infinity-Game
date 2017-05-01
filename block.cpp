@@ -6,20 +6,25 @@
 * Modifies: color
 * Effects: Creates a new block
 */
-Block::Block() : Block({0, 0, 0}) {}
+Block::Block() : Block({0, 0, 0}) {
+}
 /**
 * Requires: a valid color
 * Modifies: color
 * Effects: Creates a new block with a color
 */
-Block::Block(Color c) { setColor(c); }
+Block::Block(Color c) {
+  setColor(c);
+}
 
 /**
 * Requires: nothing
 * Modifies: nothing
 * Effects: Returns the color
 */
-Color Block::getColor() const { return color; }
+Color Block::getColor() const {
+  return color;
+}
 /**
 * Requires: a valid color
 * Modifies: color
@@ -67,7 +72,5 @@ json Block::toJson() const {
 */
 void Block::fromJson(json j) {
   // Import the color
-  setColor({j.at("color").at("r").get<double>(),
-            j.at("color").at("g").get<double>(),
-            j.at("color").at("b").get<double>()});
+  setColor({j.at("color").at("r").get<double>(), j.at("color").at("g").get<double>(), j.at("color").at("b").get<double>()});
 }

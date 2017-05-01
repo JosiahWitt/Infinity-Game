@@ -5,21 +5,27 @@
 * Modifies: nothing
 * Effects: Returns if the player can move on top of the block
 */
-bool Player::canMoveOnTop() const { return false; }
+bool Player::canMoveOnTop() const {
+  return false;
+}
 
 /**
 * Requires: nothing
 * Modifies: nothing
 * Effects: Returns the type of block
 */
-BlockType Player::getBlockType() const { return PlayerBlock; }
+BlockType Player::getBlockType() const {
+  return PlayerBlock;
+}
 
 /**
  * Requires: nothing
  * Modifies: nothing
  * Effects: Returns the alternateColor of the Player
  */
-Color Player::getAlternateColor() const { return alternateColor; }
+Color Player::getAlternateColor() const {
+  return alternateColor;
+}
 
 /**
  * Requires: Color c
@@ -67,8 +73,12 @@ void Player::setVectorY(int y) {
 * Modifies: nothing
 * Effects: returns the players vector x or y coordinate
 */
-int Player::getVectorX() const { return vectorX; }
-int Player::getVectorY() const { return vectorY; }
+int Player::getVectorX() const {
+  return vectorX;
+}
+int Player::getVectorY() const {
+  return vectorY;
+}
 
 /**
 * Requires: nothing
@@ -99,9 +109,7 @@ void Player::fromJson(json j) {
   Block::fromJson(j);
 
   // Import the alternate color
-  setAlternateColor({j.at("alternateColor").at("r").get<double>(),
-                     j.at("alternateColor").at("g").get<double>(),
-                     j.at("alternateColor").at("b").get<double>()});
+  setAlternateColor({j.at("alternateColor").at("r").get<double>(), j.at("alternateColor").at("g").get<double>(), j.at("alternateColor").at("b").get<double>()});
 
   // Import the player's vector positions
   vectorX = j.at("vectorX").get<int>();

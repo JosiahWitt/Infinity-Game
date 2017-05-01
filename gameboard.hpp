@@ -37,8 +37,7 @@ public:
   * percentWall, and changes map
   * Effects: Creates a new gameboard - used primarly for testing purposes
   */
-  GameBoard(int nBlocksWide, int nBlocksHigh, int blockW, int blockH, int s,
-            double pWall = -1, map<int, map<int, shared_ptr<Block>>> c = {});
+  GameBoard(int nBlocksWide, int nBlocksHigh, int blockW, int blockH, int s, double pWall = -1, map<int, map<int, shared_ptr<Block>>> c = {});
 
   /**
   * Requires: nothing

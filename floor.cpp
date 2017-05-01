@@ -5,34 +5,43 @@
 * Modifies: floorType and color
 * Effects: Create a new floor
 */
-Floor::Floor() : Floor(GrassFloor) {}
+Floor::Floor() : Floor(GrassFloor) {
+}
 /**
 * Requires: a floor type
 * Modifies: floorType and color
 * Effects: Create a new floor of a certain type
 */
-Floor::Floor(FloorType f) { setFloorType(f); }
+Floor::Floor(FloorType f) {
+  setFloorType(f);
+}
 
 /**
  * Requires: nothing
  * Modifies: nothing
  * Effects: Returns if the player can move on top of the block
  */
-bool Floor::canMoveOnTop() const { return true; }
+bool Floor::canMoveOnTop() const {
+  return true;
+}
 
 /**
  * Requires: nothing
  * Modifies: nothing
  * Effects: Returns the type of block
  */
-BlockType Floor::getBlockType() const { return FloorBlock; }
+BlockType Floor::getBlockType() const {
+  return FloorBlock;
+}
 
 /**
  * Requires: nothing
  * Modifies: nothing
  * Effects: gets type of floor
  */
-FloorType Floor::getFloorType() const { return floorType; }
+FloorType Floor::getFloorType() const {
+  return floorType;
+}
 
 /**
  * Requires: nothing

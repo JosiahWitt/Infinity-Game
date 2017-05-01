@@ -37,8 +37,7 @@ Testing::~Testing() {
     if (passed) {
       cout << "  Passed " << numTested << " test cases!" << endl;
     } else {
-      cout << "  Failed " << numFailed << "/" << numTested
-           << " test case(s). See message(s) above." << endl;
+      cout << "  Failed " << numFailed << "/" << numTested << " test case(s). See message(s) above." << endl;
     }
     cout << endl;
   }
@@ -75,18 +74,24 @@ void Testing::check(bool test) {
 * Modifies: nothing
 * Effects: Returns if test passed or failed
 */
-bool Testing::getResult() { return passed; }
+bool Testing::getResult() {
+  return passed;
+}
 
 /**
 * Requires: nothing
 * Modifies: nothing
 * Effects: Returns number of failed cases
 */
-int Testing::getNumFailed() { return numFailed; }
+int Testing::getNumFailed() {
+  return numFailed;
+}
 
 /**
 * Requires: nothing
 * Modifies: nothing
 * Effects: Returns number of tested cases
 */
-int Testing::getNumTested() { return numTested; }
+int Testing::getNumTested() {
+  return numTested;
+}

@@ -12,11 +12,9 @@ bool wallTests_run() {
 
   // Display pass or fail result
   if (t.getResult()) {
-    cout << "Done testing. All " << t.getNumTested() << " tests passed!"
-         << endl;
+    cout << "Done testing. All " << t.getNumTested() << " tests passed!" << endl;
   } else {
-    cout << "Failed " << t.getNumFailed() << "/" << t.getNumTested()
-         << " test(s). See message(s) above." << endl;
+    cout << "Failed " << t.getNumFailed() << "/" << t.getNumTested() << " test(s). See message(s) above." << endl;
   }
 
   return t.getResult();
