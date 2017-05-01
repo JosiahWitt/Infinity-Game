@@ -370,7 +370,7 @@ bool GameBoard::loadGame(string filename) {
 void GameBoard::movePlayer(GameDirection direction) {
   if (direction == DIR_LEFT && player.getVectorX() > leftDisplayEdge && board[player.getVectorX() - 1][player.getVectorY()]->canMoveOnTop()) {
     // We can move to the left (no edge or wall blocking)
-    if ((player.getVectorX() - leftDisplayEdge) / (double)numBlocksWide < 0.25 && leftDisplayEdge > 0) {
+    if (((player.getVectorX() - leftDisplayEdge) / (double)numBlocksWide < 0.25 || player.getVectorX() - leftDisplayEdge == 1) && leftDisplayEdge > 0) {
       // Scroll board
       leftDisplayEdge--;
     }
@@ -378,7 +378,7 @@ void GameBoard::movePlayer(GameDirection direction) {
     player.setVectorX(player.getVectorX() - 1);
   } else if (direction == DIR_RIGHT && player.getVectorX() < board.size() - 1 && board[player.getVectorX() + 1][player.getVectorY()]->canMoveOnTop()) {
     // We can move to the right (no edge or wall blocking)
-    if ((leftDisplayEdge + numBlocksWide - player.getVectorX()) / (double)numBlocksWide < 0.25) {
+    if ((leftDisplayEdge + numBlocksWide - 1 - player.getVectorX()) / (double)numBlocksWide < 0.25 || leftDisplayEdge + numBlocksWide - 1 - player.getVectorX() == 1) {
       // Scroll board
       leftDisplayEdge++;
       // Generate an extra column

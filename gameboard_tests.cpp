@@ -178,9 +178,9 @@ bool gameboardTests_movePlayer() {
   // Create an object with a custom seed and one change
   GameBoard g1(3, 3, 20, 20, 42, 0.3, testChanges);
   // Game map:
-  // F F F
-  // W F F
-  // F F W
+  // F F F | F F F
+  // W F F | W W F
+  // F F W | F F W
 
   // Check moving the player, while not moving out of bounds or into walls
   g1.movePlayer(DIR_UP); // Tests not moving up
@@ -193,6 +193,10 @@ bool gameboardTests_movePlayer() {
   t.check(g1.getPlayer().getVectorX() == 2 && g1.getPlayer().getVectorY() == 0, "movePlayer() can't move right when at (1,0)");
   g1.movePlayer(DIR_RIGHT); // Tests moving right into newly generated region
   t.check(g1.getPlayer().getVectorX() == 3 && g1.getPlayer().getVectorY() == 0, "movePlayer() can't move right when at (2,0) into newly generated region");
+  g1.movePlayer(DIR_DOWN); // Tests not moving down into wall in newly generated region
+  t.check(g1.getPlayer().getVectorX() == 3 && g1.getPlayer().getVectorY() == 0, "movePlayer() can move down when at (3,0) into wall in newly generated region");
+  g1.movePlayer(DIR_UP); // Tests not moving upin newly generated region
+  t.check(g1.getPlayer().getVectorX() == 3 && g1.getPlayer().getVectorY() == 0, "movePlayer() can move up when at (0,0) out of bounds in newly generated region");
   g1.movePlayer(DIR_LEFT); // Tests moving left out of newly generated region
   t.check(g1.getPlayer().getVectorX() == 2 && g1.getPlayer().getVectorY() == 0, "movePlayer() can't move right when at (3,0) out of newly generated region");
   g1.movePlayer(DIR_DOWN); // Tests moving down
@@ -237,9 +241,9 @@ bool gameboardTests_changeFloorTypeUnderPlayer() {
   // Create an object with a custom seed and one change
   GameBoard g1(3, 3, 1, 1, 42, 0.3, testChanges);
   // Game map:
-  // F F F
-  // W F F
-  // F F W
+  // F F F | F F F
+  // W F F | W W F
+  // F F W | F F W
 
   // Store the initial values for the board and changes
   vector<vector<shared_ptr<Block>>> initialBoard = g1.getBoard();
@@ -254,6 +258,22 @@ bool gameboardTests_changeFloorTypeUnderPlayer() {
   g1.movePlayer(DIR_RIGHT);
   g1.changeFloorTypeUnderPlayer(SandFloor);
   t.check(dynamic_pointer_cast<Floor>(g1.getBoard()[1][0])->getFloorType() == SandFloor, "Floor didn't change to sand");
+
+  // Move player into newly generated region
+  g1.movePlayer(DIR_RIGHT);
+  g1.movePlayer(DIR_RIGHT);
+  g1.movePlayer(DIR_RIGHT);
+
+  // Make sure the floor type changes in the newly generated region
+  t.check(dynamic_pointer_cast<Floor>(g1.getBoard()[4][0])->getFloorType() == GrassFloor, "Default floor isn't grass in the newly generated region");
+  g1.changeFloorTypeUnderPlayer(DirtFloor);
+  t.check(dynamic_pointer_cast<Floor>(g1.getBoard()[4][0])->getFloorType() == DirtFloor, "Floor didn't change to dirt in the newly generated region");
+  g1.changeFloorTypeUnderPlayer(GrassFloor);
+  t.check(dynamic_pointer_cast<Floor>(g1.getBoard()[4][0])->getFloorType() == GrassFloor, "Floor didn't change to grass in the newly generated region");
+  g1.movePlayer(DIR_RIGHT);
+  g1.movePlayer(DIR_DOWN);
+  g1.changeFloorTypeUnderPlayer(SandFloor);
+  t.check(dynamic_pointer_cast<Floor>(g1.getBoard()[5][1])->getFloorType() == SandFloor, "Floor didn't change to sand in the newly generated region");
 
   return t.getResult(); // Return pass or fail result
 }
@@ -270,9 +290,9 @@ bool gameboardTests_moveWall() {
   // Create an object with a custom seed and one change
   GameBoard g1(3, 3, 1, 1, 42, 0.3, testChanges);
   // Game map:
-  // F F F
-  // W F F
-  // F F W
+  // F F F | F F F
+  // W F F | W W F
+  // F F W | F F W
 
   // Store the initial values for the board and changes
   vector<vector<shared_ptr<Block>>> initialBoard = g1.getBoard();
@@ -303,6 +323,19 @@ bool gameboardTests_moveWall() {
   t.check(g1.getChanges()[0][1]->getBlockType() == FloorBlock, "changes moved from position is not a floor");
   t.check(g1.getChanges()[1][1]->getBlockType() == WallBlock, "changes moved to position is not a wall");
 
+  // Move player into newly generated region
+  g1.movePlayer(DIR_RIGHT);
+  g1.movePlayer(DIR_RIGHT);
+  g1.movePlayer(DIR_RIGHT);
+  g1.movePlayer(DIR_RIGHT);
+
+  // Attempt moving a wall in the newly generated region
+  t.check(g1.moveWall(1, 1, 1, 2), "Something prevented a valid move in the newly generated region");
+  t.check(g1.getBoard()[4][1]->getBlockType() == FloorBlock, "board moved from position is not a floor in the newly generated region");
+  t.check(g1.getBoard()[4][2]->getBlockType() == WallBlock, "board moved to position is not a wall in the newly generated region");
+  t.check(g1.getChanges()[4][1]->getBlockType() == FloorBlock, "changes moved from position is not a floor in the newly generated region");
+  t.check(g1.getChanges()[4][2]->getBlockType() == WallBlock, "changes moved to position is not a wall in the newly generated region");
+
   return t.getResult(); // Return pass or fail result
 }
 
@@ -318,9 +351,9 @@ bool gameboardTests_addWall() {
   // Create an object with a custom seed and one change
   GameBoard g1(3, 3, 1, 1, 42, 0.3, testChanges);
   // Game map:
-  // F F F
-  // W F F
-  // F F W
+  // F F F | F F F
+  // W F F | W W F
+  // F F W | F F W
 
   // Store the initial values for the board and changes
   vector<vector<shared_ptr<Block>>> initialBoard = g1.getBoard();
@@ -341,6 +374,17 @@ bool gameboardTests_addWall() {
   t.check(g1.getBoard()[1][1]->getBlockType() == WallBlock, "board at added position is not a wall");
   t.check(g1.getChanges()[1][1]->getBlockType() == WallBlock, "changes at added position is not a wall");
 
+  // Move player into newly generated region
+  g1.movePlayer(DIR_RIGHT);
+  g1.movePlayer(DIR_RIGHT);
+  g1.movePlayer(DIR_RIGHT);
+  g1.movePlayer(DIR_RIGHT);
+
+  // Attempt adding a wall in the newly generated regionre
+  t.check(g1.addWall(1, 2), "Something prevented a valid add in the newly generated region");
+  t.check(g1.getBoard()[4][2]->getBlockType() == WallBlock, "board at added position is not a wall in the newly generated region");
+  t.check(g1.getChanges()[4][2]->getBlockType() == WallBlock, "changes at added position is not a wall in the newly generated region");
+
   return t.getResult(); // Return pass or fail result
 }
 
@@ -356,9 +400,9 @@ bool gameboardTests_removeWall() {
   // Create an object with a custom seed and one change
   GameBoard g1(3, 3, 1, 1, 42, 0.3, testChanges);
   // Game map:
-  // F F F
-  // W F F
-  // F F W
+  // F F F | F F F
+  // W F F | W W F
+  // F F W | F F W
 
   // Store the initial values for the board and changes
   vector<vector<shared_ptr<Block>>> initialBoard = g1.getBoard();
@@ -375,6 +419,17 @@ bool gameboardTests_removeWall() {
   t.check(g1.removeWall(0, 1), "Something prevented a valid remove");
   t.check(g1.getBoard()[0][1]->getBlockType() == FloorBlock, "board at remove position is not a floor");
   t.check(g1.getChanges()[0][1]->getBlockType() == FloorBlock, "changes at remove position is not a floor");
+
+  // Move player into newly generated region
+  g1.movePlayer(DIR_RIGHT);
+  g1.movePlayer(DIR_RIGHT);
+  g1.movePlayer(DIR_RIGHT);
+  g1.movePlayer(DIR_RIGHT);
+
+  // Attempt removing a wall in the newly generated region
+  t.check(g1.removeWall(1, 1), "Something prevented a valid remove in the newly generated region");
+  t.check(g1.getBoard()[4][1]->getBlockType() == FloorBlock, "board at remove position is not a floor in the newly generated region");
+  t.check(g1.getChanges()[4][1]->getBlockType() == FloorBlock, "changes at remove position is not a floor in the newly generated region");
 
   return t.getResult(); // Return pass or fail result
 }
