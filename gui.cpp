@@ -283,9 +283,10 @@ void mouse(int button, int state, int x, int y) {
   if (button == GLUT_RIGHT_BUTTON) {
     if (state == GLUT_DOWN && !isDragging) {
       // Remove a wall
-      gameboard->removeWall(x, y);
-      // Save the game
-      gameboard->saveGame();
+      if (gameboard->removeWall(x, y)) {
+        // Save the game
+        gameboard->saveGame();
+      }
     }
   }
 

@@ -252,9 +252,14 @@ bool gameboardTests_movePlayer() {
   g1.movePlayer(DIR_RIGHT); // Tests moving right
   t.check(g1.getPlayer().getVectorX() == 2 && g1.getPlayer().getVectorY() == 0,
           "movePlayer() can't move right when at (1,0)");
-  g1.movePlayer(DIR_RIGHT); // Tests not moving right
+  g1.movePlayer(DIR_RIGHT); // Tests moving right into newly generated region
+  t.check(g1.getPlayer().getVectorX() == 3 && g1.getPlayer().getVectorY() == 0,
+          "movePlayer() can't move right when at (2,0) into newly generated "
+          "region");
+  g1.movePlayer(DIR_LEFT); // Tests moving left out of newly generated region
   t.check(g1.getPlayer().getVectorX() == 2 && g1.getPlayer().getVectorY() == 0,
-          "movePlayer() can move right when at (2,0) out of bounds");
+          "movePlayer() can't move right when at (3,0) out of newly generated "
+          "region");
   g1.movePlayer(DIR_DOWN); // Tests moving down
   t.check(g1.getPlayer().getVectorX() == 2 && g1.getPlayer().getVectorY() == 1,
           "movePlayer() can't move down when at (2,0)");
@@ -358,16 +363,16 @@ bool gameboardTests_moveWall() {
   map<int, map<int, shared_ptr<Block>>> initialChanges = g1.getChanges();
 
   // We should return false if any coordinate is out of bounds
-  t.check(!g1.moveWall(3, 1, 1, 1) && g1.getBoard() == initialBoard &&
+  t.check(!g1.moveWall(6, 1, 1, 1) && g1.getBoard() == initialBoard &&
               g1.getChanges() == initialChanges,
           "lastX can be out of bounds");
-  t.check(!g1.moveWall(0, 3, 1, 1) && g1.getBoard() == initialBoard &&
+  t.check(!g1.moveWall(0, 6, 1, 1) && g1.getBoard() == initialBoard &&
               g1.getChanges() == initialChanges,
           "lastY can be out of bounds");
-  t.check(!g1.moveWall(0, 0, 3, 1) && g1.getBoard() == initialBoard &&
+  t.check(!g1.moveWall(0, 0, 6, 1) && g1.getBoard() == initialBoard &&
               g1.getChanges() == initialChanges,
           "currentX can be out of bounds");
-  t.check(!g1.moveWall(0, 0, 0, 3) && g1.getBoard() == initialBoard &&
+  t.check(!g1.moveWall(0, 0, 0, 6) && g1.getBoard() == initialBoard &&
               g1.getChanges() == initialChanges,
           "currentY can be out of bounds");
 
@@ -474,10 +479,10 @@ bool gameboardTests_removeWall() {
   map<int, map<int, shared_ptr<Block>>> initialChanges = g1.getChanges();
 
   // We should return false if any coordinate is out of bounds
-  t.check(!g1.removeWall(3, 1) && g1.getBoard() == initialBoard &&
+  t.check(!g1.removeWall(6, 1) && g1.getBoard() == initialBoard &&
               g1.getChanges() == initialChanges,
           "pixelX can be out of bounds");
-  t.check(!g1.removeWall(0, 3) && g1.getBoard() == initialBoard &&
+  t.check(!g1.removeWall(0, 6) && g1.getBoard() == initialBoard &&
               g1.getChanges() == initialChanges,
           "pixelY can be out of bounds");
 
