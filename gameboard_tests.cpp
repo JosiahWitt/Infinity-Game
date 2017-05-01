@@ -58,13 +58,11 @@ bool gameboardTests_getGamePixelWidthAndHeight() {
 
   // Create an object and check the default game pixel width and height
   GameBoard g1;
-  t.check(g1.getGamePixelWidth() == 900 && g1.getGamePixelHeight() == 600, "Default constructor with getGamePixelWidth() and "
-                                                                           "getGamePixelHeight() didn't work correctly");
+  t.check(g1.getGamePixelWidth() == 900 && g1.getGamePixelHeight() == 600, "Default constructor with getGamePixelWidth() and getGamePixelHeight() didn't work correctly");
 
   // Create an object and check its values were set correctly
   GameBoard g2(21, 23, 49, 24);
-  t.check(g2.getGamePixelWidth() == 1029 && g2.getGamePixelHeight() == 552, "Constructor with accepted values and getGamePixelWidth() and "
-                                                                            "getGamePixelHeight() didn't work correctly");
+  t.check(g2.getGamePixelWidth() == 1029 && g2.getGamePixelHeight() == 552, "Constructor with accepted values and getGamePixelWidth() and getGamePixelHeight() didn't work correctly");
 
   return t.getResult(); // Return pass or fail result
 }
@@ -73,8 +71,7 @@ bool gameboardTests_getGamePixelWidthAndHeight() {
 // convertPixelXToVectorX(), and convertPixelYToVectorY()
 bool gameboardTests_convertCoordinates() {
   // Start new testing object
-  Testing t("convertVectorXToPixelX(), convertVectorYToPixelY(), "
-            "convertPixelXToVectorX(), and convertPixelYToVectorY()");
+  Testing t("convertVectorXToPixelX(), convertVectorYToPixelY(), convertPixelXToVectorX(), and convertPixelYToVectorY()");
 
   // Create an object and check if the vector coordinates are converted
   // to pixel coordinates correctly for negative, 0, and positive cases
@@ -109,8 +106,7 @@ bool gameboardTests_saveAndLoad() {
   g2.loadGame("testing.infinity.json");
 
   // Make sure the values were loaded correctly
-  t.check(g1.getBlockHeight() == g2.getBlockHeight() && g1.getBlockWidth() == g2.getBlockWidth() && g1.getNumBlocksHigh() == g2.getNumBlocksHigh() && g1.getNumBlocksWide() == g2.getNumBlocksWide() && g1.getSeed() == g2.getSeed(), "saveGame() and loadGame() doesn't work with only blockHeight/Width, "
-                                                                                                                                                                                                                                      "and numBlocksHigh/Wide");
+  t.check(g1.getBlockHeight() == g2.getBlockHeight() && g1.getBlockWidth() == g2.getBlockWidth() && g1.getNumBlocksHigh() == g2.getNumBlocksHigh() && g1.getNumBlocksWide() == g2.getNumBlocksWide() && g1.getSeed() == g2.getSeed(), "saveGame() and loadGame() doesn't work with only blockHeight/Width, and numBlocksHigh/Wide");
 
   // Create a map of changes
   map<int, map<int, shared_ptr<Block>>> testChanges;
@@ -132,10 +128,7 @@ bool gameboardTests_saveAndLoad() {
   g4.loadGame("testing.infinity.json");
 
   // Make sure the values were loaded correctly
-  t.check(g3.getBlockHeight() == g4.getBlockHeight() && g3.getBlockWidth() == g4.getBlockWidth() && g3.getNumBlocksHigh() == g4.getNumBlocksHigh() && g3.getNumBlocksWide() == g4.getNumBlocksWide() && g3.getSeed() == g4.getSeed() && g3.getPercentWall() == g4.getPercentWall() && g4.getChanges()[1][1]->getBlockType() == WallBlock && g4.getChanges()[1][2]->getBlockType() == FloorBlock && g4.getChanges()[3][6]->getBlockType() == FloorBlock && g4.getPlayer().getVectorX() == 1 &&
-              g4.getPlayer().getVectorY() == 0,
-          "saveGame() and loadGame() doesn't work for custom seed, "
-          "percentWall, and changes");
+  t.check(g3.getBlockHeight() == g4.getBlockHeight() && g3.getBlockWidth() == g4.getBlockWidth() && g3.getNumBlocksHigh() == g4.getNumBlocksHigh() && g3.getNumBlocksWide() == g4.getNumBlocksWide() && g3.getSeed() == g4.getSeed() && g3.getPercentWall() == g4.getPercentWall() && g4.getChanges()[1][1]->getBlockType() == WallBlock && g4.getChanges()[1][2]->getBlockType() == FloorBlock && g4.getChanges()[3][6]->getBlockType() == FloorBlock && g4.getPlayer().getVectorX() == 1 && g4.getPlayer().getVectorY() == 0, "saveGame() and loadGame() doesn't work for custom seed, percentWall, and changes");
 
   return t.getResult(); // Return pass or fail result
 }
@@ -153,8 +146,7 @@ bool gameboardTests_generateBoard() {
   // F W
 
   // Assert the board is correctly created from that random seed
-  t.check(g1.getBoard()[0][0]->getBlockType() == FloorBlock && g1.getBoard()[0][1]->getBlockType() == WallBlock && g1.getBoard()[0][2]->getBlockType() == FloorBlock && g1.getBoard()[1][0]->getBlockType() == FloorBlock && g1.getBoard()[1][1]->getBlockType() == FloorBlock && g1.getBoard()[1][2]->getBlockType() == WallBlock, "generateBoard() with no changes, random seed of 42, and percent "
-                                                                                                                                                                                                                                                                                                                                    "wall of 0.3 doesn't work");
+  t.check(g1.getBoard()[0][0]->getBlockType() == FloorBlock && g1.getBoard()[0][1]->getBlockType() == WallBlock && g1.getBoard()[0][2]->getBlockType() == FloorBlock && g1.getBoard()[1][0]->getBlockType() == FloorBlock && g1.getBoard()[1][1]->getBlockType() == FloorBlock && g1.getBoard()[1][2]->getBlockType() == WallBlock, "generateBoard() with no changes, random seed of 42, and percent wall of 0.3 doesn't work");
 
   // Create a map of changes
   map<int, map<int, shared_ptr<Block>>> testChanges;
@@ -169,8 +161,7 @@ bool gameboardTests_generateBoard() {
   // F F
 
   // Assert the board is correctly created from that random seed
-  t.check(g2.getBoard()[0][0]->getBlockType() == FloorBlock && g2.getBoard()[0][1]->getBlockType() == WallBlock && g2.getBoard()[0][2]->getBlockType() == FloorBlock && g2.getBoard()[1][0]->getBlockType() == FloorBlock && g2.getBoard()[1][1]->getBlockType() == WallBlock && g2.getBoard()[1][2]->getBlockType() == FloorBlock, "generateBoard() with changes, random seed of 42, and percent "
-                                                                                                                                                                                                                                                                                                                                    "wall of 0.3 doesn't work");
+  t.check(g2.getBoard()[0][0]->getBlockType() == FloorBlock && g2.getBoard()[0][1]->getBlockType() == WallBlock && g2.getBoard()[0][2]->getBlockType() == FloorBlock && g2.getBoard()[1][0]->getBlockType() == FloorBlock && g2.getBoard()[1][1]->getBlockType() == WallBlock && g2.getBoard()[1][2]->getBlockType() == FloorBlock, "generateBoard() with changes, random seed of 42, and percent wall of 0.3 doesn't work");
 
   return t.getResult(); // Return pass or fail result
 }
@@ -201,11 +192,9 @@ bool gameboardTests_movePlayer() {
   g1.movePlayer(DIR_RIGHT); // Tests moving right
   t.check(g1.getPlayer().getVectorX() == 2 && g1.getPlayer().getVectorY() == 0, "movePlayer() can't move right when at (1,0)");
   g1.movePlayer(DIR_RIGHT); // Tests moving right into newly generated region
-  t.check(g1.getPlayer().getVectorX() == 3 && g1.getPlayer().getVectorY() == 0, "movePlayer() can't move right when at (2,0) into newly generated "
-                                                                                "region");
+  t.check(g1.getPlayer().getVectorX() == 3 && g1.getPlayer().getVectorY() == 0, "movePlayer() can't move right when at (2,0) into newly generated region");
   g1.movePlayer(DIR_LEFT); // Tests moving left out of newly generated region
-  t.check(g1.getPlayer().getVectorX() == 2 && g1.getPlayer().getVectorY() == 0, "movePlayer() can't move right when at (3,0) out of newly generated "
-                                                                                "region");
+  t.check(g1.getPlayer().getVectorX() == 2 && g1.getPlayer().getVectorY() == 0, "movePlayer() can't move right when at (3,0) out of newly generated region");
   g1.movePlayer(DIR_DOWN); // Tests moving down
   t.check(g1.getPlayer().getVectorX() == 2 && g1.getPlayer().getVectorY() == 1, "movePlayer() can't move down when at (2,0)");
   g1.movePlayer(DIR_DOWN); // Tests not moving down into wall

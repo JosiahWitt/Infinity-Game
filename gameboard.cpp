@@ -297,9 +297,7 @@ bool GameBoard::loadGame(string filename) {
         leftDisplayEdge = gameJson.at("leftDisplayEdge").get<int>();
       }
     } catch (exception e) {
-      cout << "Syntax invalid for save file... Error loading left display "
-              "edge..."
-           << endl;
+      cout << "Syntax invalid for save file... Error loading left display edge..." << endl;
       isLoaded = false;
     }
 
