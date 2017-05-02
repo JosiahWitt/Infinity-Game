@@ -72,16 +72,8 @@ int main(int argc, char **argv) {
       // Bonus mode
       cout << endl;
       cout << "You found the bonus mode! Unlocking Infinity and Beyond..." << endl;
-      cout << "Actually, it doesn't do anything special at the moment, except "
-              "run both the tests and the game."
-           << endl;
-      cout << "I'm sorry for getting your hopes up... unless, of course, "
-              "that's what you were looking for! :)"
-           << endl
-           << endl;
-      runTests();
-      cout << endl;
-      runGUI(argc, argv);
+      cout << "Actually, it doesn't do anything special at the moment, except that it is Bob's favorite number." << endl;
+      cout << "I'm sorry for getting your hopes up... unless, of course, that's what you were looking for! :)" << endl << endl;
     }
   }
 
