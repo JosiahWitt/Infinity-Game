@@ -1,4 +1,5 @@
 #include <experimental/filesystem>
+#include <iomanip>
 #include <iostream>
 #include <string>
 
@@ -192,10 +193,10 @@ void runGUI(int argc, char **argv) {
 
       // Print all the game files
       for (int i = 0; i < saveFiles.size(); i++) {
-        cout << "  " << right << setw(5) << to_string(i) + ": " << saveFiles[i] << endl;
+        cout << " " << right << setw(6) << to_string(i) + ": " << saveFiles[i] << endl;
       }
 
-      cout << "Please enter your choice: ";
+      cout << "Please enter your choice (by number): ";
 
       // Get the user's choice
       while (!(cin >> fileChoice) || (fileChoice < 0 || fileChoice >= saveFiles.size())) {
