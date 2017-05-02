@@ -195,7 +195,7 @@ bool GameBoard::saveGame(string filename) {
 
   // If filename is empty, use default filename
   if (filename.empty()) {
-    filename = "game.infinity.json";
+    filename = to_string(seed) + ".infinity.json";
   }
 
   // Open session file

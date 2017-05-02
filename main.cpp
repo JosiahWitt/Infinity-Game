@@ -157,6 +157,8 @@ void runGUI(int argc, char **argv) {
     }
     break;
   case 2:
+    // Display saved games... if (filename contains .infinity.json display them)
+    
     if (g.loadGame()) {
       cout << "Game loaded!" << endl;
       cout << "Launching Infinity..." << endl;
