@@ -60,7 +60,7 @@ GameBoard::GameBoard(int nBlocksWide, int nBlocksHigh, int blockW, int blockH) {
   player.setVectorX(0);
   player.setVectorY(0);
 
-  // Set the player's color and alternate color to blue
+  // Set the player's color to blue and alternate color to gold
   player.setColor({30 / 255.0, 144 / 255.0, 1});
   player.setAlternateColor({1, 215 / 255.0, 0});
 

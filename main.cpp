@@ -1,3 +1,4 @@
+#include <experimental/filesystem>
 #include <iostream>
 #include <string>
 
@@ -10,6 +11,7 @@
 #include "wall_tests.hpp"
 
 using namespace std;
+using namespace experimental::filesystem;
 
 // These methods are defined below
 void runTests();
@@ -123,25 +125,48 @@ void runTests() {
 * Effects: Launches the game
 */
 void runGUI(int argc, char **argv) {
-  // Present the user with the options
-  cout << "Would you like to: " << endl << " 1) Start New Game" << endl << " 2) Load Existing Game" << endl << "Please enter your choice: ";
+  // Store the list of game files
+  vector<string> saveFiles;
 
-  // Get the user's choice
-  int option;
-  while (!(cin >> option) || !(option == 1 || option == 2)) {
-    // Not in a good stream state, so clear the stream
-    cin.clear();
+  // Loop through all the files in the current directory
+  // http://en.cppreference.com/w/cpp/experimental/fs
+  for (auto &p : directory_iterator(".")) {
+    // Get the path as a string
+    string path = p.path().string();
 
-    // Get rid of the bad input
-    string junk;
-    getline(cin, junk);
+    // Try to find game files
+    string::size_type found = path.rfind(".infinity.json");
 
-    // Ask the user to try again
-    cout << "I'm sorry, I couldn't understand that option, please try again: ";
+    // If the file is a game file, add it to the vector
+    if (found != string::npos) {
+      saveFiles.push_back(path.substr(0, found).substr(2));
+    }
   }
 
   // Create a new gameboard
   GameBoard g;
+
+  // Default save or load game option
+  int option = 1;
+
+  // If there aren't any game files, load the game
+  if (saveFiles.size() != 0) {
+    // Present the user with the options
+    cout << "Would you like to: " << endl << " 1) Start New Game" << endl << " 2) Load Existing Game" << endl << "Please enter your choice: ";
+
+    // Get the user's choice
+    while (!(cin >> option) || !(option == 1 || option == 2)) {
+      // Not in a good stream state, so clear the stream
+      cin.clear();
+
+      // Get rid of the bad input
+      string junk;
+      getline(cin, junk);
+
+      // Ask the user to try again
+      cout << "I'm sorry, I couldn't understand that option, please try again: ";
+    }
+  }
 
   // Take the specified action
   switch (option) {
@@ -157,9 +182,38 @@ void runGUI(int argc, char **argv) {
     }
     break;
   case 2:
-    // Display saved games... if (filename contains .infinity.json display them)
-    
-    if (g.loadGame()) {
+    // Store user's game choice
+    int fileChoice = 0;
+
+    // If there is only 1 game file, load that one
+    if (saveFiles.size() != 1) {
+      // Present the user with the options
+      cout << endl << "Please choose the game file you would like to load: " << endl;
+
+      // Print all the game files
+      for (int i = 0; i < saveFiles.size(); i++) {
+        cout << "  " << right << setw(5) << to_string(i) + ": " << saveFiles[i] << endl;
+      }
+
+      cout << "Please enter your choice: ";
+
+      // Get the user's choice
+      while (!(cin >> fileChoice) || (fileChoice < 0 || fileChoice >= saveFiles.size())) {
+        // Not in a good stream state, so clear the stream
+        cin.clear();
+
+        // Get rid of the bad input
+        string junk;
+        getline(cin, junk);
+
+        // Ask the user to try again
+        cout << "I'm sorry, I couldn't understand that option, please try again: ";
+      }
+    }
+
+    // Load the chosen game
+    cout << endl << "Loading '" << saveFiles[fileChoice] + ".infinity.json'..." << endl;
+    if (g.loadGame(saveFiles[fileChoice] + ".infinity.json")) {
       cout << "Game loaded!" << endl;
       cout << "Launching Infinity..." << endl;
 
