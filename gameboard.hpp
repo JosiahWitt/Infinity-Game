@@ -174,6 +174,9 @@ private:
   // Store the player object
   Player player;
 
+  // Store the filename
+  string gameFilename;
+
   /**
   * Requires: nothing
   * Modifies: board

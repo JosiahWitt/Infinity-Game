@@ -115,7 +115,7 @@ bool gameboardTests_saveAndLoad() {
   testChanges[3][6] = make_shared<Floor>();
 
   // Create an game with custom percentWall, seed, and changes, and save it
-  GameBoard g3(2, 3, 4, 5, 42, 0.3, testChanges);
+  GameBoard g3(2, 3, 34, 35, 42, 0.3, testChanges);
   g3.movePlayer(DIR_RIGHT);
   g3.saveGame("testing.infinity.json");
   // Game map:

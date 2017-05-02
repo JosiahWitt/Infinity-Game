@@ -1,4 +1,7 @@
+#include <experimental/filesystem> // Only available in C++17. On Linux, compile with the -lstdc++fs flag.
+#include <iomanip>
 #include <iostream>
+#include <math.h>
 #include <string>
 
 #include "block_tests.hpp"
@@ -10,10 +13,18 @@
 #include "wall_tests.hpp"
 
 using namespace std;
+using namespace experimental::filesystem;
 
 // These methods are defined below
 void runTests();
 void runGUI(int argc, char **argv);
+
+// Structure the file metadata
+struct FileMetadata {
+  string shortName;          // Part before .infinity.json
+  string lastModifiedString; // Human readable string
+  long int lastModifiedInt;  // Unix timestamp
+};
 
 /**
  * Requires: The command line arguments
@@ -123,25 +134,68 @@ void runTests() {
 * Effects: Launches the game
 */
 void runGUI(int argc, char **argv) {
-  // Present the user with the options
-  cout << "Would you like to: " << endl << " 1) Start New Game" << endl << " 2) Load Existing Game" << endl << "Please enter your choice: ";
+  // Store the list of game files
+  vector<FileMetadata> saveFiles;
+  // Store the longest game name
+  int longestName = 0;
 
-  // Get the user's choice
-  int option;
-  while (!(cin >> option) || !(option == 1 || option == 2)) {
-    // Not in a good stream state, so clear the stream
-    cin.clear();
+  // Loop through all the files in the current directory
+  // http://en.cppreference.com/w/cpp/experimental/fs
+  for (auto &p : directory_iterator(".")) {
+    // Get the path as a string
+    string path = p.path().string();
 
-    // Get rid of the bad input
-    string junk;
-    getline(cin, junk);
+    // Try to find game files
+    string::size_type found = path.rfind(".infinity.json");
 
-    // Ask the user to try again
-    cout << "I'm sorry, I couldn't understand that option, please try again: ";
+    // If the file is a game file, add it to the vector
+    if (found != string::npos) {
+      // Create a string representing the last modified time
+      auto lastWriteTime = last_write_time(p);
+      time_t lastModifiedStringTime = decltype(lastWriteTime)::clock::to_time_t(lastWriteTime);
+      char lastModifiedString[21];
+      strftime(lastModifiedString, 21, "%m/%d/%Y %I:%M%p", localtime(&lastModifiedStringTime));
+
+      // Create the filename from the path string
+      string filename = path.substr(0, found).substr(2);
+
+      // Add to the vector
+      saveFiles.push_back({filename, lastModifiedString, static_cast<long int>(lastModifiedStringTime)});
+
+      // Update the longest name
+      if (filename.length() > longestName) {
+        longestName = filename.length();
+      }
+    }
   }
+
+  // Sort the files by descending date
+  sort(saveFiles.begin(), saveFiles.end(), [](const FileMetadata &lhs, const FileMetadata &rhs) { return lhs.lastModifiedInt > rhs.lastModifiedInt; });
 
   // Create a new gameboard
   GameBoard g;
+
+  // Default save or load game option
+  int option = 1;
+
+  // If there aren't any game files, load the game
+  if (saveFiles.size() != 0) {
+    // Present the user with the options
+    cout << "Would you like to: " << endl << " 1) Start New Game" << endl << " 2) Load Existing Game" << endl << "Please enter your choice: ";
+
+    // Get the user's choice
+    while (!(cin >> option) || !(option == 1 || option == 2)) {
+      // Not in a good stream state, so clear the stream
+      cin.clear();
+
+      // Get rid of the bad input
+      string junk;
+      getline(cin, junk);
+
+      // Ask the user to try again
+      cout << "I'm sorry, I couldn't understand that option, please try again: ";
+    }
+  }
 
   // Take the specified action
   switch (option) {
@@ -157,7 +211,42 @@ void runGUI(int argc, char **argv) {
     }
     break;
   case 2:
-    if (g.loadGame()) {
+    // Store user's game choice
+    int fileChoice = 0;
+
+    // If there is only 1 game file, load that one
+    if (saveFiles.size() != 1) {
+      // Present the user with the options
+      cout << endl << "Please choose the game file you would like to load: " << endl;
+
+      // Print the header
+      cout << " " << right << setw(log10(saveFiles.size()) + 4) << "#  " << left << setw(longestName + 5) << "Filename"
+           << "Last Modified" << endl;
+
+      // Print all the game files
+      for (int i = 0; i < saveFiles.size(); i++) {
+        cout << " " << right << setw(log10(saveFiles.size()) + 4) << to_string(i) + ": " << left << setw(longestName + 5) << saveFiles[i].shortName << saveFiles[i].lastModifiedString << endl;
+      }
+
+      cout << "Please enter your choice #: ";
+
+      // Get the user's choice
+      while (!(cin >> fileChoice) || (fileChoice < 0 || fileChoice >= saveFiles.size())) {
+        // Not in a good stream state, so clear the stream
+        cin.clear();
+
+        // Get rid of the bad input
+        string junk;
+        getline(cin, junk);
+
+        // Ask the user to try again
+        cout << "I'm sorry, I couldn't understand that option, please try again: ";
+      }
+    }
+
+    // Load the chosen game
+    cout << endl << "Loading '" << saveFiles[fileChoice].shortName + ".infinity.json'..." << endl;
+    if (g.loadGame(saveFiles[fileChoice].shortName + ".infinity.json")) {
       cout << "Game loaded!" << endl;
       cout << "Launching Infinity..." << endl;
 
