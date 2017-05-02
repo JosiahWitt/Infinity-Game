@@ -24,7 +24,7 @@ bool isDragging;
 // Store the time when we last saved
 int lastSave;
 
-// boolean for tutorial
+// Should we display the tutorial
 bool dispTutorial;
 
 /**
@@ -32,7 +32,7 @@ bool dispTutorial;
 * Modifies: everything
 * Effects: Starts the GUI
 */
-void startGUI(int argc, char **argv, GameBoard *g) {
+void startGUI(int argc, char **argv, GameBoard *g, bool dispTut) {
   // Save the pointer to the gameboard
   gameboard = g;
 
@@ -41,6 +41,9 @@ void startGUI(int argc, char **argv, GameBoard *g) {
 
   // Initialize the variables
   init();
+
+  // Set if we should display the tutorial
+  dispTutorial = dispTut;
 
   // Initialize GLUT
   glutInit(&argc, argv);
@@ -95,7 +98,7 @@ void init() {
   lastCursorPosition = {0, 0};
   // Set last save time to 0
   lastSave = 0;
-  // Set Tutorial toggle
+  // Set tutorial toggle
   dispTutorial = false;
 }
 
@@ -145,7 +148,7 @@ void display() {
   gameboard->display();
 
   // Display if recently saved
-  displayConfirmation();
+  displaySavedMessage();
 
   // Display Tutorial
   displayTutorial();
@@ -155,68 +158,65 @@ void display() {
 }
 
 /**
-* Requires: nothing
-* Modifies: nothing
-* Effects: nothing (confirms save)
+* Requires: GLUT
+* Modifies: GLUT
+* Effects: Displays save message
 */
-void displayConfirmation() {
-  // Take current time stamp and substract it from the last save
-  // display for 3 seconds.
+void displaySavedMessage() {
+  // Take current time stamp and substract it from the last save to display for 3 seconds.
   if (time(nullptr) - lastSave < 1) {
     string saveMessage = "Game Saved";
     glColor3f(1, 1, 1);
     glRasterPos2i(5, 18);
-    for (int i = 0; i < saveMessage.length(); ++i) {
+    for (int i = 0; i < saveMessage.length(); i++) {
       glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, saveMessage[i]);
     }
   }
 }
 
 /**
-* Requires: nothing
-* Modifies: nothing
-* Effects: nothing (displays tutorial)
+* Requires: GLUT
+* Modifies: GLUT
+* Effects: Displays tutorial
 */
 void displayTutorial() {
-	//displays tutorial for 15 seconds
-	if (dispTutorial) {
+  // If the display tutorial flag is toggled, display it
+  if (dispTutorial) {
+    // Set the color
+    glColor3f(1, 1, 1);
 
-	glColor3f(1, 1, 1);
-	vector<string> s = { 
-		"How to play:",
-		"1. Move arrow keys to move", 
-		"2. Pressing D will create dirt underneath you ",
-		"3. Pressing F will create sand underneath you", 
-		"4. Pressing G will create grass underneath you", 
-		"5. Pressing S will save the game",
-		"6. Pressing Space will change player color",
-		"7. The left arrow key will create walls", 
-		"8. The right arrow key will delete the walls",
-		"9. Drag walls with the mouse",
-		"10. Pressing T shows/hides tutorial"};
-	
+    // Tutorial messages
+    vector<string> s = {"How to play:",
+                        " 1.  Press arrow keys to move",
+                        " 2.  Press D to create dirt underneath you",
+                        " 3.  Press F to create sand underneath you",
+                        " 4.  Press G to create grass underneath you",
+                        " 5.  Press S to save the game",
+                        " 6.  Press Space to change the player's color",
+                        " 7.  Left click to create walls",
+                        " 8.  Right click to delete walls",
+                        " 9.  Drag walls with the mouse",
+                        " 10. Press T to show/hide the tutorial"};
 
-	for (int i = 0; i < s.size(); i++) {
-
-			string tutMessage = s[i];
-			
-			glRasterPos2i(10, i*20+30);
-				for (int i = 0; i < tutMessage.length(); ++i) {
-					glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, tutMessage[i]);
-				}
-			}
-
-		}
-	
+    // Display all the messages
+    for (int i = 0; i < s.size(); i++) {
+      // Set the position of the message
+      glRasterPos2i(10, i * 20 + 30);
+      // Display each character
+      for (int j = 0; j < s[i].length(); j++) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, s[i][j]);
+      }
+    }
+  }
 }
+
 /**
 * Requires: GLUT to be setup and key info
 * Modifies: GLUT
 * Effects: Trap and process keyboard events
 */
 void kbd(unsigned char key, int x, int y) {
-  // Escape:
-  // http://www.theasciicode.com.ar/ascii-control-characters/escape-ascii-code-27.html
+  // Escape: http://www.theasciicode.com.ar/ascii-control-characters/escape-ascii-code-27.html
   if (key == 27) {
     // Prepare to exit
     exitGUI();
@@ -224,8 +224,10 @@ void kbd(unsigned char key, int x, int y) {
     glutDestroyWindow(wd);
     exit(0);
   }
+
+  // Display the tutorial with the t key
   if (key == 't') {
-	  dispTutorial = !dispTutorial;
+    dispTutorial = !dispTutorial;
   }
 
   // Save the game with the s key

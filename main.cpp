@@ -204,8 +204,8 @@ void runGUI(int argc, char **argv) {
       cout << "Created a new game!" << endl;
       cout << "Launching Infinity..." << endl;
 
-      // Start the game
-      startGUI(argc, argv, &g);
+      // Start the game, launch the tutorial if the first game
+      startGUI(argc, argv, &g, saveFiles.size() == 0 ? true : false);
     } else {
       cout << "Error saving game. Couldn't create the file." << endl;
     }

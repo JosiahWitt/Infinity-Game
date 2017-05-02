@@ -1,4 +1,4 @@
-ColumnLimit: 5000
+ColumnLimit: 400
 AlignTrailingComments: true
 AllowShortIfStatementsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: false

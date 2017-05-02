@@ -21,7 +21,7 @@
 * Modifies: everything
 * Effects: Starts the GUI
 */
-void startGUI(int argc, char **argv, GameBoard *g);
+void startGUI(int argc, char **argv, GameBoard *g, bool dispTut = false);
 
 /**
 * Requires: nothing
@@ -55,16 +55,16 @@ void exitGUI();
 void display(void);
 
 /**
-* Requires: nothing
-* Modifies: nothing
-* Effects: nothing (confirms save)
+* Requires: GLUT
+* Modifies: GLUT
+* Effects: Displays save message
 */
-void displayConfirmation();
+void displaySavedMessage();
 
 /**
-* Requires: nothing
-* Modifies: nothing
-* Effects: nothing (displays tutorial)
+* Requires: GLUT
+* Modifies: GLUT
+* Effects: Displays tutorial
 */
 void displayTutorial();
 
