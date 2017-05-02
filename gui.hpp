@@ -62,6 +62,13 @@ void display(void);
 void displayConfirmation();
 
 /**
+* Requires: nothing
+* Modifies: nothing
+* Effects: nothing (displays tutorial)
+*/
+void displayTutorial();
+
+/**
 * Requires: GLUT to be setup and key info
 * Modifies: GLUT
 * Effects: Trap and process keyboard events

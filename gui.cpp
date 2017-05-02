@@ -1,4 +1,6 @@
 #include "gui.hpp"
+#include <fstream>
+#include <iostream>
 #include <stdlib.h>
 
 // Point 2D struct
@@ -21,6 +23,9 @@ bool isDragging;
 
 // Store the time when we last saved
 int lastSave;
+
+// boolean for tutorial
+bool dispTutorial;
 
 /**
 * Requires: Command line arguments, and a pointer to a gameboard
@@ -90,6 +95,8 @@ void init() {
   lastCursorPosition = {0, 0};
   // Set last save time to 0
   lastSave = 0;
+  // Set Tutorial toggle
+  dispTutorial = false;
 }
 
 /**
@@ -140,6 +147,9 @@ void display() {
   // Display if recently saved
   displayConfirmation();
 
+  // Display Tutorial
+  displayTutorial();
+
   // Render now
   glFlush();
 }
@@ -163,6 +173,43 @@ void displayConfirmation() {
 }
 
 /**
+* Requires: nothing
+* Modifies: nothing
+* Effects: nothing (displays tutorial)
+*/
+void displayTutorial() {
+	//displays tutorial for 15 seconds
+	if (dispTutorial) {
+
+	glColor3f(1, 1, 1);
+	vector<string> s = { 
+		"How to play:",
+		"1. Move arrow keys to move", 
+		"2. Pressing D will create dirt underneath you ",
+		"3. Pressing F will create sand underneath you", 
+		"4. Pressing G will create grass underneath you", 
+		"5. Pressing S will save the game",
+		"6. Pressing Space will change player color",
+		"7. The left arrow key will create walls", 
+		"8. The right arrow key will delete the walls",
+		"9. Drag walls with the mouse",
+		"10. Pressing T shows/hides tutorial"};
+	
+
+	for (int i = 0; i < s.size(); i++) {
+
+			string tutMessage = s[i];
+			
+			glRasterPos2i(10, i*20+30);
+				for (int i = 0; i < tutMessage.length(); ++i) {
+					glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, tutMessage[i]);
+				}
+			}
+
+		}
+	
+}
+/**
 * Requires: GLUT to be setup and key info
 * Modifies: GLUT
 * Effects: Trap and process keyboard events
@@ -176,6 +223,9 @@ void kbd(unsigned char key, int x, int y) {
     // Destroy window
     glutDestroyWindow(wd);
     exit(0);
+  }
+  if (key == 't') {
+	  dispTutorial = !dispTutorial;
   }
 
   // Save the game with the s key
