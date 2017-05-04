@@ -1,0 +1,141 @@
+{
+    "blockHeight": 30,
+    "blockWidth": 30,
+    "changes": [
+        {
+            "color": {
+                "b": 0.0470588235294118,
+                "g": 0.482352941176471,
+                "r": 0.0
+            },
+            "column": 0,
+            "floorType": 1,
+            "row": 0,
+            "type": 2
+        },
+        {
+            "color": {
+                "b": 0.686274509803922,
+                "g": 0.788235294117647,
+                "r": 0.929411764705882
+            },
+            "column": 1,
+            "floorType": 2,
+            "row": 2,
+            "type": 2
+        },
+        {
+            "color": {
+                "b": 0.0,
+                "g": 0.0,
+                "r": 0.0
+            },
+            "column": 2,
+            "row": 1,
+            "type": 3
+        },
+        {
+            "color": {
+                "b": 0.0,
+                "g": 0.0,
+                "r": 0.0
+            },
+            "column": 2,
+            "row": 3,
+            "type": 3
+        },
+        {
+            "color": {
+                "b": 0.0,
+                "g": 0.0,
+                "r": 0.0
+            },
+            "column": 3,
+            "row": 1,
+            "type": 3
+        },
+        {
+            "color": {
+                "b": 0.0,
+                "g": 0.0,
+                "r": 0.0
+            },
+            "column": 3,
+            "row": 3,
+            "type": 3
+        },
+        {
+            "color": {
+                "b": 0.0,
+                "g": 0.0,
+                "r": 0.0
+            },
+            "column": 5,
+            "row": 1,
+            "type": 3
+        },
+        {
+            "color": {
+                "b": 0.0,
+                "g": 0.0,
+                "r": 0.0
+            },
+            "column": 5,
+            "row": 3,
+            "type": 3
+        },
+        {
+            "color": {
+                "b": 0.0,
+                "g": 0.0,
+                "r": 0.0
+            },
+            "column": 6,
+            "row": 1,
+            "type": 3
+        },
+        {
+            "color": {
+                "b": 0.0,
+                "g": 0.0,
+                "r": 0.0
+            },
+            "column": 6,
+            "row": 3,
+            "type": 3
+        },
+        {
+            "color": {
+                "b": 0.686274509803922,
+                "g": 0.788235294117647,
+                "r": 0.929411764705882
+            },
+            "column": 7,
+            "floorType": 2,
+            "row": 2,
+            "type": 2
+        }
+    ],
+    "gameVersion": 1,
+    "leftDisplayEdge": 0,
+    "numBlocksHigh": 5,
+    "numBlocksWide": 9,
+    "percentWall": 0.0,
+    "player": {
+        "alternateColor": {
+            "b": 1.0,
+            "g": 0.564705882352941,
+            "r": 0.117647058823529
+        },
+        "color": {
+            "b": 0.0,
+            "g": 0.843137254901961,
+            "r": 1.0
+        },
+        "type": 1,
+        "vectorX": 4,
+        "vectorY": 2
+    },
+    "saveTime": 1493848642,
+    "seed": 1493848411
+}

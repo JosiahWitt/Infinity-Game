@@ -6,3 +6,5 @@ GRTAGS
 GTAGS
 *.infinity.json
 *.old
+!InfinityLogo.infinity.json
+!InfinityLogoSmall.infinity.json
