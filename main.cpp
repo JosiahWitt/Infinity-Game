@@ -1,4 +1,4 @@
-#include <experimental/filesystem> // Only available in C++17. On Linux, compile with the -lstdc++fs flag.
+#include <experimental/filesystem> // Only available in C++17. See notes for special compile configurations per system.
 #include <iomanip>
 #include <iostream>
 #include <math.h>
@@ -132,7 +132,7 @@ void runGUI(int argc, char **argv) {
   int longestName = 0;
 
   // Loop through all the files in the current directory
-  // http://en.cppreference.com/w/cpp/experimental/fs
+  // Filesystem documenation: http://en.cppreference.com/w/cpp/experimental/fs
   for (auto &p : directory_iterator(".")) {
     // Get the path as a string
     string path = p.path().string();

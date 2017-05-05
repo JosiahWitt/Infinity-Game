@@ -46,7 +46,7 @@ FloorType Floor::getFloorType() const {
 /**
  * Requires: nothing
  * Modifies: nothing
- * Effects: changes type of floor
+ * Effects: changes type of floor and sets the respective color
  */
 void Floor::setFloorType(FloorType f) {
   floorType = f;

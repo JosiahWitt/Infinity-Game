@@ -96,11 +96,4 @@ void cursor(int x, int y);
 */
 void mouse(int button, int state, int x, int y);
 
-/**
-* Requires: GLUT to be setup and extra timer info
-* Modifies: GLUT
-* Effects: Handle timer
-*/
-void timer(int extra);
-
 #endif /* gui_h */

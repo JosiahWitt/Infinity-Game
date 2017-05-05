@@ -79,9 +79,6 @@ void startGUI(int argc, char **argv, GameBoard *g, bool dispTut) {
   // handles mouse click
   glutMouseFunc(mouse);
 
-  // handles timer
-  glutTimerFunc(0, timer, 0);
-
   // Enter the event-processing loop
   glutMainLoop();
 }
@@ -196,7 +193,7 @@ void displayTutorial() {
                         " 7.  Left click to create walls",
                         " 8.  Right click to delete walls",
                         " 9.  Drag walls with the mouse",
-                        " 10. Press T to show/hide the tutorial"};
+                        " 10. Press T to show/hide this tutorial"};
 
     // Display all the messages
     for (int i = 0; i < s.size(); i++) {
@@ -265,7 +262,7 @@ void kbd(unsigned char key, int x, int y) {
 * Effects: Trap and process special keyboard events
 */
 void kbdS(int key, int x, int y) {
-  // Move a direction depending on the key
+  // Move a direction depending on the key pressed
   switch (key) {
   case GLUT_KEY_DOWN:
     gameboard->movePlayer(DIR_DOWN);
@@ -340,15 +337,4 @@ void mouse(int button, int state, int x, int y) {
   }
 
   glutPostRedisplay();
-}
-
-/**
-* Requires: GLUT to be setup and extra timer info
-* Modifies: GLUT
-* Effects: Handle timer
-*/
-void timer(int extra) {
-
-  glutPostRedisplay();
-  glutTimerFunc(30, timer, 0); // Every 30 ms
 }

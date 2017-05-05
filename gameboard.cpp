@@ -236,10 +236,10 @@ bool GameBoard::saveGame(string filename) {
     // Add the changes
     for (map<int, map<int, shared_ptr<Block>>>::iterator i = changes.begin(); i != changes.end(); i++) {
       for (map<int, shared_ptr<Block>>::iterator j = (i->second).begin(); j != (i->second).end(); j++) {
-        json object = (j->second)->toJson();
-        object["column"] = i->first;
-        object["row"] = j->first;
-        gameJson["changes"].push_back(object);
+        json object = (j->second)->toJson();   // Convert the block to JSON
+        object["column"] = i->first;           // Add the column position
+        object["row"] = j->first;              // Add the row position
+        gameJson["changes"].push_back(object); // Add to the changes json array
       }
     }
 
@@ -559,7 +559,7 @@ bool GameBoard::removeWall(int pixelX, int pixelY) {
 * Effects: Displays the board to the screen
 */
 void GameBoard::display() const {
-  // Loop through the board to print it out
+  // Loop through the board to draw each block
   for (int row = 0; row < numBlocksHigh; row++) {
     for (int column = 0; column < numBlocksWide; column++) {
       // Draw the block
@@ -567,7 +567,7 @@ void GameBoard::display() const {
     }
   }
 
-  // Draw the player
+  // Draw the player (draw last so it is on top)
   player.draw(convertVectorXToPixelX(player.getVectorX() - leftDisplayEdge), convertVectorYToPixelY(player.getVectorY()), getBlockWidth(), getBlockHeight());
 }
 

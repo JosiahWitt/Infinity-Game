@@ -3,6 +3,7 @@
 
 #include "block.hpp"
 
+// Types of floor
 enum FloorType { GrassFloor = 1, SandFloor = 2, DirtFloor = 3 };
 
 class Floor : public Block {
@@ -43,7 +44,7 @@ public:
   /**
    * Requires: nothing
    * Modifies: nothing
-   * Effects: changes type of floor
+   * Effects: changes type of floor and sets the respective color
    */
   void setFloorType(FloorType f);
 
