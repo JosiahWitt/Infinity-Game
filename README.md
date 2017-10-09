@@ -1,13 +1,16 @@
 # Infinity
 
+[![Build Status](https://travis-ci.org/JosiahWitt/Infinity-Game.svg?branch=master)](https://travis-ci.org/JosiahWitt/Infinity-Game)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
 ## Description
 <img align="right" src="docs/InfinityPlaying.png" width="30%">
 Infinity is a game that allows a player to move around in a randomly generated 2D world that infinitely scrolls to the right. The arrow keys control the player (in blue), which can only move on the floor (grass - green, sand - tan, dirt - brown). A mouse click creates or removes walls (in black), while a mouse drag moves walls.
 
 This project was written in C++ using [GLUT](https://www.opengl.org/resources/libraries/glut/) and [OpenGL](https://www.opengl.org/) for an Advanced Programming Class at the [University of Vermont](https://uvm.edu). It is free and open source under the [GPL-3.0 license](LICENSE).
 
- 
-**Note**: We are using the [filesystem](http://en.cppreference.com/w/cpp/experimental/fs) library from the yet unreleased C++17 (as of writing), thus, some platforms require special configuration when building. Please follow the instructions below for your system. 
+
+**Note**: We are using the [filesystem](http://en.cppreference.com/w/cpp/experimental/fs) library from the yet unreleased C++17 (as of writing), thus, some platforms require special configuration when building. Please follow the instructions below for your system.
 
 -----
 
