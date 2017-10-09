@@ -117,6 +117,7 @@ void runTests() {
     cout << "*** Done testing. All " << t.getNumTested() << " test sections passed! ***" << endl;
   } else {
     cout << "*** Failed " << t.getNumFailed() << "/" << t.getNumTested() << " test section(s). See message(s) above. ***" << endl;
+    exit(EXIT_FAILURE);
   }
 }
 
