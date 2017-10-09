@@ -1,7 +1,6 @@
 #include "gui.hpp"
 #include <fstream>
 #include <iostream>
-#include <stdlib.h>
 
 // Point 2D struct
 struct Point2D {
